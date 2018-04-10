@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { StackNavigator, addNavigationHelpers } from 'react-navigation';
+import { addListener } from '../utils/redux';
 import Home from '../scenes/Home';
 import Counter from '../scenes/Counter';
 
@@ -14,27 +15,22 @@ export const AppNavigator = StackNavigator({
   },
 });
 
-@connect(
-  state => ({ navigation: state.navigation })
-)
-export default class Navigator extends Component {
-  static propTypes = {
-    navigation: PropTypes.shape().isRequired,
-    dispatch: PropTypes.func.isRequired
-  }
-
-  render() {
-    const { dispatch, navigation: state } = this.props;
-
-    return (
-      <AppNavigator
-        navigation={
-          addNavigationHelpers({
-            dispatch,
-            state
-          })
-        }
-      />
-    );
-  }
+type Props = {
+  navigation: Object,
+  dispatch: Function
 }
+function Navigator(props: Props) {
+  const { dispatch, navigation: state } = props;
+  return (
+    <AppNavigator
+      navigation={
+        addNavigationHelpers({
+          dispatch,
+          state,
+          addListener
+        })
+      }
+    />
+  );
+}
+export default connect(state => ({ navigation: state.navigation }))(Navigator);
