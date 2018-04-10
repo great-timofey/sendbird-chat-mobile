@@ -1,5 +1,5 @@
 const ActionTypes = {
-  //Counter action types
+  // Counter action types
   INCREMENT: 'INCREMENT',
   DECREMENT: 'DECREMENT'
 };
