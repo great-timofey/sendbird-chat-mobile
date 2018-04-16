@@ -1,9 +1,8 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import devTools from 'remote-redux-devtools';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../sagas';
 import { navigatoinMiddleware } from '../../utils/redux';
-
+import devTools from 'remote-redux-devtools';
 
 import reducers from '../reducers';
 
@@ -15,7 +14,7 @@ const configureStore = (initialState) => {
   const store = createStore(
     reducers,
     initialState,
-    compose(applyMiddleware(...middleware), global.reduxNativeDevTools ? global.reduxNativeDevTools({ name: 'MyApp' }) : nope => nope)
+    compose(applyMiddleware(...middleware), devTools({ name: 'MyApp' }))
   );
   sagaMiddleware.run(rootSaga);
 

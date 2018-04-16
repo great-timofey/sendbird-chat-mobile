@@ -4,7 +4,8 @@ import { colors } from '../../global';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   button: {
     backgroundColor: colors.flatBlue,
@@ -14,17 +15,5 @@ export default StyleSheet.create({
     margin: 12,
     fontWeight: 'bold',
     color: 'black'
-  },
-  titleText: {
-    marginLeft: 20,
-    marginTop: 5,
-  },
-  input: {
-    flexDirection: 'row',
-    marginLeft: 20,
-    justifyContent: 'space-between',
-  },
-  textInput: {
-    flex: 1,
   }
 });
