@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../sagas';
-import { navigatoinMiddleware } from '../../utils/redux';
+import { middleware as navigatoinMiddleware } from '../../utils/redux';
 import devTools from 'remote-redux-devtools';
 
 import reducers from '../reducers';

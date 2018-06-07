@@ -1,15 +1,12 @@
 import {
   createReactNavigationReduxMiddleware,
-  createReduxBoundAddListener,
+  createNavigationPropConstructor,
 } from 'react-navigation-redux-helpers';
 
-const navigatoinMiddleware = createReactNavigationReduxMiddleware(
+const middleware = createReactNavigationReduxMiddleware(
   'root',
-  state => state.navigation,
+  state => state.nav
 );
-const addListener = createReduxBoundAddListener('root');
+const navigationPropConstructor = createNavigationPropConstructor('root');
 
-export {
-  navigatoinMiddleware,
-  addListener,
-};
+export { middleware, navigationPropConstructor };

@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import navigation from './navigation';
+import nav from './navigation';
 import counter from './counter';
 
 const rootReducer = combineReducers({
-  navigation,
+  nav,
   counter
 });
 
