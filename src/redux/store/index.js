@@ -1,20 +1,19 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import rootSaga from '../sagas';
-import { middleware as navigatoinMiddleware } from '../../utils/redux';
-import devTools from 'remote-redux-devtools';
 
 import reducers from '../reducers';
 
 const configureStore = (initialState) => {
   const sagaMiddleware = createSagaMiddleware();
 
-  const middleware = [sagaMiddleware, navigatoinMiddleware];
+  const middleware = [sagaMiddleware];
 
   const store = createStore(
     reducers,
     initialState,
-    compose(applyMiddleware(...middleware), devTools({ name: 'MyApp' }))
+    composeWithDevTools(applyMiddleware(...middleware))
   );
   sagaMiddleware.run(rootSaga);
 
