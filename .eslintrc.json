@@ -7,7 +7,7 @@
     "import"
   ],
   "rules": {
-    "comma-dangle": 0,
+    "comma-dangle": 2,
     "no-restricted-syntax": 1,
     "new-cap": 1,
     "no-continue": 1,
