@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import constants from '../../global/constants';
 
 export default StyleSheet.create({
   container: {
@@ -8,7 +9,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgb(46, 56, 87)',
     paddingTop: 100,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
   },
   header: {
     color: 'white',
@@ -19,16 +20,32 @@ export default StyleSheet.create({
   },
   form: {
     width: '100%',
+    marginBottom: 48,
+  },
+  inputSection: {
+    marginBottom: 24,
+    height: 44,
+    position: 'relative',
+  },
+  image: {
+    position: 'absolute',
+    left: 16,
+    bottom: 10,
+  },
+  eyeImage: {
+    left: 'auto',
+    right: 8,
   },
   input: {
-    marginBottom: 24,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
     color: 'white',
     fontSize: 16,
-    height: 44,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    paddingLeft: 55,
     width: '100%',
+    height: '100%',
+  },
+  lastInput: {
+    marginBottom: 0,
   },
   signButton: {
     display: 'flex',
@@ -37,10 +54,22 @@ export default StyleSheet.create({
     width: 180,
     height: 40,
     borderRadius: 6,
-    backgroundColor: 'rgb(61, 165, 217)',
+    backgroundColor: constants.darkSkyBlue,
+    marginBottom: 40,
   },
   signText: {
     fontSize: 17,
-    color: 'rgb(34, 42, 65)',
+    color: constants.dark,
+  },
+  toSignUp: {
+    width: '70%',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  toSignUpText: {
+    color: 'rgba(255, 255, 255, 0.3)',
+  },
+  toSignUpLink: {
+    color: constants.sky,
   },
 });
