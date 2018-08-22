@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StatusBar,
-  TextInput,
-  Image,
+  View, Text, TouchableOpacity, StatusBar,
 } from 'react-native';
+import Input from '../../components/Input';
 import styles from './styles';
-import images from '../../global/images';
 
 export default class SignIn extends Component {
   static navigationOptions = {
@@ -16,25 +11,14 @@ export default class SignIn extends Component {
   };
 
   render() {
-    console.log(images.mail);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Text style={styles.header}>Sign In</Text>
         <View style={styles.form}>
-          <View style={styles.inputSection}>
-            <Image source={images.login} style={styles.image} />
-            <TextInput style={styles.input} />
-          </View>
-          <View style={styles.inputSection}>
-            <Image source={images.mail} style={styles.image} />
-            <TextInput style={styles.input} />
-          </View>
-          <View style={styles.inputSection}>
-            <Image source={images.password} style={styles.image} />
-            <Image source={images.eye} style={[styles.image, styles.eyeImage]} />
-            <TextInput style={[styles.input, styles.lastInput]} />
-          </View>
+          <Input type="login" />
+          <Input type="password" />
+          <Input type="mail" />
         </View>
         <TouchableOpacity style={styles.signButton}>
           <Text style={styles.signText}>Sign In</Text>
