@@ -12,8 +12,10 @@ export default StyleSheet.create({
     left: 16,
     bottom: 10,
   },
-  eyeImage: {
-    left: 'auto',
+  showPasswordButton: {
+    position: 'absolute',
+    zIndex: 1,
+    bottom: 10,
     right: 8,
   },
   input: {
