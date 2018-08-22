@@ -3,15 +3,18 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import styles from './styles';
 
 type Props = {
-  navigation: Object
-}
+  navigation: Object,
+};
 
 function Home(props: Props) {
   const { navigation } = props;
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Counter')}>
-        <Text style={styles.buttonText}>Redux Counter</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('Counter')}
+      >
+        <Text style={styles.buttonText}>Counter</Text>
       </TouchableOpacity>
     </View>
   );
