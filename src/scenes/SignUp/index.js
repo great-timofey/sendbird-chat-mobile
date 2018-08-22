@@ -12,7 +12,7 @@ type Props = {
   fetchUser: Function,
 };
 
-class SignIn extends Component<Props> {
+class SignUp extends Component<Props> {
   static navigationOptions = {
     header: null,
   };
@@ -30,7 +30,7 @@ class SignIn extends Component<Props> {
     });
   };
 
-  handleSignIn = () => {
+  handleSignUp = () => {
     const { username, email, password } = this.state;
     this.props.fetchUser(username, email, password);
   };
@@ -45,7 +45,7 @@ class SignIn extends Component<Props> {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
-        <Text style={styles.header}>Sign In</Text>
+        <Text style={styles.header}>Sign Up</Text>
         <View style={styles.form}>
           <Input onInput={this.handleChange('username')} type="login" />
           <Input onInput={this.handleChange('email')} type="mail" />
@@ -56,13 +56,13 @@ class SignIn extends Component<Props> {
             type="password"
           />
         </View>
-        <TouchableOpacity style={styles.signButton} onPress={this.handleSignIn}>
-          <Text style={styles.signText}>Sign In</Text>
+        <TouchableOpacity style={styles.signButton} onPress={this.handleSignUp}>
+          <Text style={styles.signText}>Sign Up</Text>
         </TouchableOpacity>
         <View style={styles.toSignUp}>
-          <Text style={styles.toSignUpText}>Don’t have an account yet? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-            <Text style={styles.toSignUpLink}>Sign Up</Text>
+          <Text style={styles.toSignUpText}>Already have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+            <Text style={styles.toSignUpLink}>Sign In</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -73,4 +73,4 @@ class SignIn extends Component<Props> {
 export default connect(
   null,
   { fetchUser },
-)(SignIn);
+)(SignUp);
