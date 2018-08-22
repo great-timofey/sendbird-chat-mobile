@@ -3,13 +3,13 @@ import {
   View, Text, TouchableOpacity, StatusBar,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchUser } from '../../redux/user/actions';
+import { createUser } from '../../redux/user/actions';
 import Input from '../../components/Input';
 import styles from './styles';
 
 type Props = {
   navigation: Object,
-  fetchUser: Function,
+  createUser: Function,
 };
 
 class SignUp extends Component<Props> {
@@ -32,7 +32,7 @@ class SignUp extends Component<Props> {
 
   handleSignUp = () => {
     const { username, email, password } = this.state;
-    this.props.fetchUser(username, email, password);
+    this.props.createUser(username, email, password);
   };
 
   handleShowPassword = () => this.setState({
@@ -72,5 +72,5 @@ class SignUp extends Component<Props> {
 
 export default connect(
   null,
-  { fetchUser },
+  { createUser },
 )(SignUp);
