@@ -1,16 +1,32 @@
 import React from 'react';
-import { createStackNavigator } from 'react-navigation';
-import SignIn from '../scenes/SignIn';
-import SignUp from '../scenes/SignUp';
+import { createStackNavigator, NavigationActions } from 'react-navigation';
+import Auth from '../scenes/Auth';
+import Chat from '../scenes/Chat';
+import { HomeScene, ChatScene } from './scenes';
 
 export const AppNavigator = createStackNavigator({
-  SignIn: {
-    screen: SignIn,
+  [HomeScene]: {
+    screen: Auth,
   },
-  SignUp: {
-    screen: SignUp,
+  [ChatScene]: {
+    screen: Chat,
   },
 });
-export default function Navigator() {
-  return <AppNavigator />;
-}
+
+let navigatorRef;
+export const navigate = (routeName, params) => {
+  navigatorRef.dispatch(
+    NavigationActions.navigate({
+      routeName,
+      params,
+    }),
+  );
+};
+
+export default () => (
+  <AppNavigator
+    ref={(ref) => {
+      navigatorRef = ref;
+    }}
+  />
+);

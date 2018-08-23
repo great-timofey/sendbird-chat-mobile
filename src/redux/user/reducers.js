@@ -3,10 +3,9 @@ import * as TYPES from './types';
 
 const initialState = {
   user: null,
-  loading: false,
 };
 
-const setUser = (state, { user }) => ({ ...state, user });
+const setUser = (_, { user }) => ({ user });
 
 const handlers = {
   [TYPES.SET_USER]: setUser,

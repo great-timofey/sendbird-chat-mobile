@@ -1,8 +1,12 @@
-
 const colors = {
-  flatBlue: '#3498db',
-  flatGreen: '#2ecc71',
-  flatRed: '#e74c3c'
+  white: 'rgb(255, 255, 255)',
+  white20: 'rgba(255, 255, 255, 0.2)',
+  white30: 'rgba(255, 255, 255, 0.3)',
+  sky: 'rgb(121, 208, 253)',
+  darkSkyBlue: 'rgb(61, 165, 217)',
+  darkGreyBlueTwo: 'rgb(46, 56, 87)',
+  darkGreyBlueTransparent: 'rgba(46, 56, 87, 0.8)',
+  dark: 'rgb(34, 42, 65)',
 };
 
 export default colors;
