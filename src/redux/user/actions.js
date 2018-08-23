@@ -14,3 +14,20 @@ export const setUser = user => ({
   type: TYPES.SET_USER,
   payload: { user },
 });
+
+export const connectionCheckingStart = () => ({
+  type: TYPES.CONNECTION_CHECKING_START,
+});
+
+export const connectionCheckingSuccess = () => ({
+  type: TYPES.CONNECTION_CHECKING_SUCCESS,
+});
+
+export const connectionCheckingFailure = error => ({
+  type: TYPES.CONNECTION_CHECKING_FAILURE,
+  payload: error,
+});
+
+export const connectionCheckingFinish = () => ({
+  type: TYPES.CONNECTION_CHECKING_FINISH,
+});

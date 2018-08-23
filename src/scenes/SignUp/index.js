@@ -5,14 +5,21 @@ import {
 import { connect } from 'react-redux';
 import { createUser } from '../../redux/user/actions';
 import Input from '../../components/Input';
+import Spinner from '../../components/Spinner';
 import styles from './styles';
 
 type Props = {
   navigation: Object,
+  loading: Boolean,
   createUser: Function,
+  error?: Object,
 };
 
 class SignUp extends Component<Props> {
+  static defaultProps = {
+    error: null,
+  };
+
   static navigationOptions = {
     header: null,
   };
@@ -40,10 +47,11 @@ class SignUp extends Component<Props> {
   });
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, loading, error } = this.props;
     const { hidePassword } = this.state;
     return (
       <View style={styles.container}>
+        {loading && <Spinner error={error} />}
         <StatusBar barStyle="light-content" />
         <Text style={styles.header}>Sign Up</Text>
         <View style={styles.form}>
@@ -71,6 +79,6 @@ class SignUp extends Component<Props> {
 }
 
 export default connect(
-  null,
+  ({ user }) => ({ loading: user.loading, error: user.error }),
   { createUser },
 )(SignUp);
