@@ -3,19 +3,19 @@ import {
   View, Text, TouchableOpacity, StatusBar,
 } from 'react-native';
 import { connect } from 'react-redux';
-import styles from './styles'
+import styles from './styles';
 
-class Chat extends Component<Props> {
+export default class Chat extends Component<Props> {
   static navigationOptions = {
     header: null,
   };
 
   render() {
-    return(
+    return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
-        <Text>Hello, I'm a chat screen!</Text>
+        <Text>Hello, I am a chat screen!</Text>
       </View>
-    )
+    );
   }
 }

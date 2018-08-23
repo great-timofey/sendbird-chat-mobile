@@ -8,6 +8,8 @@ import {
   connectionCheckingFinish,
   connectionCheckingFailure,
 } from './actions';
+import { navigate } from '../../navigation';
+import { ChatScene } from '../../navigation/scenes';
 import * as TYPES from './types';
 
 function* fetchUserWorker(action) {
@@ -20,6 +22,7 @@ function* fetchUserWorker(action) {
     yield put(setUser({ ...data }));
     yield put(connectionCheckingSuccess());
     yield put(connectionCheckingFinish());
+    yield call(navigate, ChatScene);
   } catch (err) {
     const { error } = err.response.data;
     console.log(error);
@@ -41,6 +44,7 @@ function* addUserWorker(action) {
     yield put(setUser({ ...data }));
     yield put(connectionCheckingSuccess());
     yield put(connectionCheckingFinish());
+    yield call(navigate, ChatScene);
   } catch (err) {
     const { error } = err.response.data;
     console.log(error);
