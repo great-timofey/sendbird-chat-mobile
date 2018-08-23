@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import constants from '../../global/constants';
+import colors from '../../global/colors';
 
 export default StyleSheet.create({
   inputSection: {
@@ -19,9 +19,9 @@ export default StyleSheet.create({
     right: 8,
   },
   input: {
-    color: 'white',
+    color: colors.white,
     fontSize: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: colors.white20,
     paddingLeft: 55,
     width: '100%',
     height: '100%',

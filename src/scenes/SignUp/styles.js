@@ -1,13 +1,11 @@
 import { StyleSheet } from 'react-native';
-import constants from '../../global/constants';
+import colors from '../../global/colors';
 
 export default StyleSheet.create({
   container: {
     height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: 'rgb(46, 56, 87)',
+    backgroundColor: colors.darkGreyBlueTwo,
     paddingTop: 100,
     paddingHorizontal: 16,
   },
@@ -23,28 +21,27 @@ export default StyleSheet.create({
     marginBottom: 48,
   },
   signButton: {
-    display: 'flex',
+    flex: 0,
     alignItems: 'center',
     justifyContent: 'center',
     width: 180,
     height: 40,
     borderRadius: 6,
-    backgroundColor: constants.darkSkyBlue,
+    backgroundColor: colors.darkSkyBlue,
     marginBottom: 40,
   },
   signText: {
     fontSize: 17,
-    color: constants.dark,
+    color: colors.dark,
   },
   toSignUp: {
     width: '70%',
-    display: 'flex',
     flexDirection: 'row',
   },
   toSignUpText: {
-    color: 'rgba(255, 255, 255, 0.3)',
+    color: colors.white30,
   },
   toSignUpLink: {
-    color: constants.sky,
+    color: colors.sky,
   },
 });
