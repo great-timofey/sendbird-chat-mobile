@@ -1,40 +1,33 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { SBconnect } from '../../services/SendBird';
 import { loginUser, registerUser } from './requests';
-import {
-  setUser,
-  connectionCheckingStart,
-  connectionCheckingSuccess,
-  connectionCheckingFinish,
-  connectionCheckingFailure,
-} from './actions';
 import { navigate } from '../../navigation';
 import { ChatScene } from '../../navigation/scenes';
 import * as TYPES from './types';
+import { setUser } from './actions';
+import { toggleLoading, setError } from '../common/actions';
 
 function* fetchUserWorker(action) {
   try {
-    yield put(connectionCheckingStart());
+    yield put(toggleLoading());
     const { username, email, password } = action.payload;
     const { data } = yield call(loginUser, username, email, password);
     const { sbUserId, sbAccessToken } = data;
     yield call(SBconnect, sbUserId, sbAccessToken);
     yield put(setUser({ ...data }));
-    yield put(connectionCheckingSuccess());
-    yield put(connectionCheckingFinish());
     yield call(navigate, ChatScene);
+    yield put(toggleLoading());
   } catch (err) {
     const { error } = err.response.data;
+    yield put(toggleLoading());
+    yield put(setError(error));
     console.log(error);
-    yield put(connectionCheckingFailure(error));
-    yield put(connectionCheckingFinish());
-    console.log(err);
   }
 }
 
 function* addUserWorker(action) {
   try {
-    yield put(connectionCheckingStart());
+    yield put(toggleLoading());
     const { username, email, password } = action.payload;
     console.log(username, email, password);
     const { data } = yield call(registerUser, username, email, password);
@@ -42,15 +35,13 @@ function* addUserWorker(action) {
     const { sbUserId, sbAccessToken } = data;
     yield call(SBconnect, sbUserId, sbAccessToken);
     yield put(setUser({ ...data }));
-    yield put(connectionCheckingSuccess());
-    yield put(connectionCheckingFinish());
+    yield put(toggleLoading());
     yield call(navigate, ChatScene);
   } catch (err) {
     const { error } = err.response.data;
     console.log(error);
-    yield put(connectionCheckingFailure(error));
-    yield put(connectionCheckingFinish());
-    console.log(err);
+    yield put(toggleLoading());
+    yield put(setError(error));
   }
 }
 
