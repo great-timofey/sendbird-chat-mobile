@@ -9,10 +9,9 @@ import Spinner from '../../components/Spinner';
 import styles from './styles';
 
 type Props = {
-  navigation: Object,
   loading: Boolean,
+  navigation: Object,
   createUser: Function,
-  error?: Object,
 };
 
 class SignUp extends Component<Props> {
@@ -47,11 +46,11 @@ class SignUp extends Component<Props> {
   });
 
   render() {
-    const { navigation, loading, error } = this.props;
+    const { navigation, loading } = this.props;
     const { hidePassword } = this.state;
     return (
       <View style={styles.container}>
-        {loading && <Spinner error={error} />}
+        {loading && <Spinner />}
         <StatusBar barStyle="light-content" />
         <Text style={styles.header}>Sign Up</Text>
         <View style={styles.form}>
@@ -79,6 +78,6 @@ class SignUp extends Component<Props> {
 }
 
 export default connect(
-  ({ user }) => ({ loading: user.loading, error: user.error }),
+  ({ user }) => ({ loading: user.loading }),
   { createUser },
 )(SignUp);

@@ -9,7 +9,7 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 10,
-    backgroundColor: colors.darkGreyBlueTwo,
+    backgroundColor: colors.darkGreyBlueTransparent,
     justifyContent: 'center',
     alignItems: 'center',
   },

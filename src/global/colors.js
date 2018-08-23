@@ -5,6 +5,7 @@ const colors = {
   sky: 'rgb(121, 208, 253)',
   darkSkyBlue: 'rgb(61, 165, 217)',
   darkGreyBlueTwo: 'rgb(46, 56, 87)',
+  darkGreyBlueTransparent: 'rgba(46, 56, 87, 0.8)',
   dark: 'rgb(34, 42, 65)',
 };
 

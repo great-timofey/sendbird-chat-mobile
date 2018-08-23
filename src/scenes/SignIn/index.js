@@ -10,7 +10,6 @@ import styles from './styles';
 
 type Props = {
   loading: Boolean,
-  error?: Object,
   navigation: Object,
   fetchUser: Function,
 };
@@ -47,11 +46,11 @@ class SignIn extends Component<Props> {
   });
 
   render() {
-    const { navigation, loading, error } = this.props;
+    const { navigation, loading } = this.props;
     const { hidePassword } = this.state;
     return (
       <View style={styles.container}>
-        {loading && <Spinner error={error} />}
+        {loading && <Spinner />}
         <StatusBar barStyle="light-content" />
         <Text style={styles.header}>Sign In</Text>
         <View style={styles.form}>
@@ -79,6 +78,6 @@ class SignIn extends Component<Props> {
 }
 
 export default connect(
-  ({ user }) => ({ loading: user.loading, error: user.error }),
+  ({ user }) => ({ loading: user.loading }),
   { fetchUser },
 )(SignIn);
