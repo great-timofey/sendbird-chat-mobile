@@ -6,26 +6,34 @@ import {
   StatusBar,
   Image,
   TextInput,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { connect } from 'react-redux';
+import colors from '../../global/colors';
 import styles from './styles';
 
 type Props = {};
 
 export default class Chat extends Component<Props> {
   static navigationOptions = {
-    header: null,
+    title: 'Chat',
+    headerStyle: {
+      backgroundColor: colors.white20,
+    },
+    headerTintColor: colors.darkSkyBlue,
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding"
+        keyboardVerticalOffset={65}
+      >
         <StatusBar barStyle="light-content" />
-        <View style={styles.topBar}>
-          <TouchableOpacity style={styles.menu}>
-            <Image style={styles.menuImage} />
-          </TouchableOpacity>
-        </View>
         <View style={styles.chatZone}>
           <View style={styles.message}>
             <Text>I am a message</Text>
@@ -34,10 +42,10 @@ export default class Chat extends Component<Props> {
         <View style={styles.bottomBar}>
           <TextInput style={styles.messageInput} />
           <TouchableOpacity style={styles.sendButton}>
-            <Text style={styles.sendText}>Send</Text>
+            <Text style={styles.sendText}>></Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
