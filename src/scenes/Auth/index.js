@@ -10,7 +10,6 @@ import styles from './styles';
 
 type Props = {
   loading: Boolean,
-  navigation: Object,
   createUser: Function,
   fetchUser: Function,
 };

@@ -1,5 +1,6 @@
 const colors = {
   white: 'rgb(255, 255, 255)',
+  black: 'rgb(0, 0, 0)',
   white20: 'rgba(255, 255, 255, 0.2)',
   white30: 'rgba(255, 255, 255, 0.3)',
   sky: 'rgb(121, 208, 253)',
