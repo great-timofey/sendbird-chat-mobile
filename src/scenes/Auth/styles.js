@@ -3,7 +3,7 @@ import colors from '../../global/colors';
 
 export default StyleSheet.create({
   container: {
-    height: '100%',
+    flex: 1,
     alignItems: 'center',
     backgroundColor: colors.darkGreyBlueTwo,
     paddingTop: 100,
@@ -14,10 +14,9 @@ export default StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 40,
   },
   form: {
-    width: '100%',
+    marginTop: 40,
     marginBottom: 48,
   },
   signButton: {
@@ -35,7 +34,6 @@ export default StyleSheet.create({
     color: colors.dark,
   },
   toggleModeSection: {
-    width: '70%',
     flexDirection: 'row',
   },
   toggleModeText: {

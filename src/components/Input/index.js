@@ -10,14 +10,26 @@ type Props = {
   onInput: Function,
   hidePassword?: Boolean,
   handleShowPassword?: Function,
+  value: String,
 };
 
 function Input({
-  type, onInput, hidePassword, handleShowPassword, value
+  type,
+  onInput,
+  hidePassword,
+  handleShowPassword,
+  value,
 }: Props) {
   return (
     <View style={styles.inputSection}>
       <Image source={images[type]} style={styles.image} />
+      <TextInput
+        secureTextEntry={hidePassword}
+        onChangeText={onInput}
+        style={styles.input}
+        value={value}
+        placeholder={type}
+      />
       {type === 'password' && (
         <TouchableOpacity
           style={styles.showPasswordButton}
@@ -26,12 +38,6 @@ function Input({
           <Image source={images.eye} style={styles.eyeImage} />
         </TouchableOpacity>
       )}
-      <TextInput
-        secureTextEntry={hidePassword}
-        onChangeText={onInput}
-        style={styles.input}
-        value={value}
-      />
     </View>
   );
 }
