@@ -1,14 +1,10 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
-import SignIn from '../scenes/SignIn';
-import SignUp from '../scenes/SignUp';
+import Auth from '../scenes/Auth';
 
 export const AppNavigator = createStackNavigator({
-  SignIn: {
-    screen: SignIn,
-  },
-  SignUp: {
-    screen: SignUp,
+  Home: {
+    screen: Auth,
   },
 });
 export default function Navigator() {

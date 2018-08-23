@@ -34,14 +34,14 @@ export default StyleSheet.create({
     fontSize: 17,
     color: colors.dark,
   },
-  toSignUp: {
+  toggleModeSection: {
     width: '70%',
     flexDirection: 'row',
   },
-  toSignUpText: {
+  toggleModeText: {
     color: colors.white30,
   },
-  toSignUpLink: {
+  toggleModeButton: {
     color: colors.sky,
   },
 });

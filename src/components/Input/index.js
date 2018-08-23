@@ -13,7 +13,7 @@ type Props = {
 };
 
 function Input({
-  type, onInput, hidePassword, handleShowPassword,
+  type, onInput, hidePassword, handleShowPassword, value
 }: Props) {
   return (
     <View style={styles.inputSection}>
@@ -30,6 +30,7 @@ function Input({
         secureTextEntry={hidePassword}
         onChangeText={onInput}
         style={styles.input}
+        value={value}
       />
     </View>
   );
