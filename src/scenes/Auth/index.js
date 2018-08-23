@@ -59,7 +59,7 @@ class Auth extends Component<Props> {
   }));
 
   render() {
-    const { navigation, loading } = this.props;
+    const { loading } = this.props;
     const {
       hidePassword, isSingUp, username, email, password,
     } = this.state;
