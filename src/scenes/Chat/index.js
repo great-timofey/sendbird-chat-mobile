@@ -23,15 +23,18 @@ class Chat extends Component<Props> {
   static navigationOptions = {
     title: 'Chat',
     headerStyle: {
-      backgroundColor: colors.white20,
+      backgroundColor: colors.darkSky,
     },
     headerTintColor: colors.darkSkyBlue,
     headerTitleStyle: {
       fontWeight: 'bold',
     },
     headerLeft: (
-      <TouchableOpacity onPress={() => store.dispatch(toggleMenu())}>
-        <Text>Hello</Text>
+      <TouchableOpacity
+        style={{ marginLeft: 10 }}
+        onPress={() => store.dispatch(toggleMenu())}
+      >
+        <Text style={{ color: 'white' }}>Menu</Text>
       </TouchableOpacity>
     ),
   };
