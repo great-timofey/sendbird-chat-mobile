@@ -7,7 +7,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: colors.darkGreyBlueTwo,
-    paddingTop: 20,
+    paddingVertical: 20,
   },
   control: {
     width: '80%',
@@ -17,18 +17,19 @@ export default StyleSheet.create({
     marginBottom: 5,
   },
   list: {
+    width: '100%',
     flex: 1,
-    width: '80%',
   },
   button: {
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: colors.black,
-    marginBottom: 2,
-    paddingVertical: 5,
     backgroundColor: colors.darkSky,
   },
   text: {
-    textAlign: 'center',
+    textAlign: 'left',
+    fontWeight: 'bold',
     color: colors.white,
   },
 });

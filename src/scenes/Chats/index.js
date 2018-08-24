@@ -9,6 +9,7 @@ import {
   SegmentedControlIOS,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { NewChatScene } from '../../navigation/scenes';
 import { toggleMenu } from '../../redux/common/actions';
 import { enterChannel } from '../../redux/user/actions';
 import colors from '../../global/colors';
@@ -16,10 +17,12 @@ import styles from './styles';
 
 type Props = {
   channels: Array,
+  navigation: Object,
+  enterChannel: Function,
 };
 
 class Chats extends Component<Props> {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     title: 'Available Chats',
     headerStyle: {
       backgroundColor: colors.darkSky,
@@ -28,7 +31,20 @@ class Chats extends Component<Props> {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
-  };
+    headerRight: (
+      <Text
+        onPress={() => navigation.navigate(NewChatScene)}
+        style={{
+          fontSize: 30,
+          color: 'white',
+          marginRight: 10,
+          marginBottom: 10,
+        }}
+      >
+        +
+      </Text>
+    ),
+  });
 
   state = {
     showOpen: true,
@@ -42,14 +58,7 @@ class Chats extends Component<Props> {
     });
   };
 
-  handleChannelEnter = (channelUrl, channelType) => {
-    const { navigation, enterChannel, channels } = this.props;
-    enterChannel(channelUrl, channelType);
-    navigation.setParams({
-      chatName: channels.find(channel => channel.url === channelUrl).name,
-    });
-    console.log(channels.find(channel => channel.url === channelUrl).name);
-  };
+  handleToggleControl = () => this.setState(({ showOpen }) => ({ showOpen: !showOpen }));
 
   render() {
     const { showOpen } = this.state;
@@ -62,8 +71,7 @@ class Chats extends Component<Props> {
           selectedIndex={0}
           values={['Open', 'Group']}
           tintColor={colors.darkSkyBlue}
-          onChange={() => this.setState(({ showOpen }) => ({ showOpen: !showOpen }))
-          }
+          onChange={this.handleToggleControl}
         />
         <FlatList
           style={styles.list}

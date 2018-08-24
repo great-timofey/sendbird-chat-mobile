@@ -28,10 +28,9 @@ function* fetchUserWorker(action) {
     yield put(toggleLoading());
     yield call(navigate, ChatsScene);
   } catch (err) {
-    const { error } = err.response.data;
     yield put(toggleLoading());
-    yield put(setError(error));
-    console.log(error);
+    yield put(setError(err));
+    console.log(err);
   }
 }
 
@@ -68,6 +67,32 @@ function* enterChannelWorker(action) {
     yield put(loadMessagesStart());
   } catch (err) {
     yield put(toggleLoading());
+    console.log(err);
+  }
+}
+
+function* createChannelWorker(action) {
+  try {
+    const {
+      roomType,
+      roomName,
+      coverUrl,
+      inviterId,
+      inviteeId,
+    } = action.payload;
+    let channel;
+    if (roomType === 'open') {
+      // channel = yield call(createOpenChannel, roomName, coverUrl);
+    } else {
+      channel = yield call(
+        // createGroupChannel,
+        [inviterId, inviteeId],
+        roomName,
+        coverUrl,
+      );
+    }
+    // yield put(setChannel(channel));
+  } catch (err) {
     console.log(err);
   }
 }

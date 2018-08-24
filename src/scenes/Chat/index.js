@@ -14,7 +14,6 @@ import colors from '../../global/colors';
 import styles from './styles';
 
 type Props = {
-  navigation: Object,
   messages: Array,
   userId?: String,
 };
@@ -65,8 +64,7 @@ Chat.defaultProps = {
 };
 
 export default connect(
-  ({ common, user, chat }) => ({
-    isMenuOpen: common.isMenuOpen,
+  ({ user, chat }) => ({
     messages: chat.messages,
     userId: user.user.sbUserId,
   }),

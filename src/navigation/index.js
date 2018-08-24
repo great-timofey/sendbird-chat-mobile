@@ -3,7 +3,10 @@ import { createStackNavigator, NavigationActions } from 'react-navigation';
 import Auth from '../scenes/Auth';
 import Chat from '../scenes/Chat';
 import Chats from '../scenes/Chats';
-import { HomeScene, ChatsScene, ChatScene } from './scenes';
+import NewChat from '../scenes/NewChat';
+import {
+  HomeScene, ChatsScene, ChatScene, NewChatScene,
+} from './scenes';
 
 export const AppNavigator = createStackNavigator({
   [HomeScene]: {
@@ -18,6 +21,9 @@ export const AppNavigator = createStackNavigator({
   },
   [ChatScene]: {
     screen: Chat,
+  },
+  [NewChatScene]: {
+    screen: NewChat,
   },
 });
 

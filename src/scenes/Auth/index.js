@@ -21,10 +21,13 @@ class Auth extends Component<Props> {
 
   state = {
     isSingUp: false,
-    username: 'tim',
-    email: '121212',
-    password: '121212',
+    // username: 'tim',
+    // email: '121212',
+    // password: '121212',
     hidePassword: true,
+    username: 'Asdf',
+    email: 'asdfasdf',
+    password: 'asdfasdf',
   };
 
   toggleMode = () => this.setState(({ isSingUp }) => ({
