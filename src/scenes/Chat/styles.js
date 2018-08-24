@@ -8,20 +8,6 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: colors.darkGreyBlueTwo,
   },
-  message: {
-    width: 200,
-    height: 100,
-    padding: 10,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: colors.black,
-    backgroundColor: colors.darkSkyBlue,
-  },
-  chatZone: {
-    backgroundColor: colors.darkGreyBlueTwo,
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
   bottomBar: {
     padding: 5,
     overflow: 'hidden',

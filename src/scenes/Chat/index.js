@@ -13,6 +13,7 @@ import { toggleMenu } from '../../redux/common/actions';
 import { enterChannel } from '../../redux/user/actions';
 import store from '../../redux/store';
 import SideMenu from '../../components/SideMenu';
+import MessagesList from '../../components/MessagesList';
 import colors from '../../global/colors';
 import styles from './styles';
 
@@ -20,6 +21,8 @@ type Props = {
   isMenuOpen: Boolean,
   enterChannel: Function,
   channels: Array,
+  messages: Array,
+  userId?: String
 };
 
 class Chat extends Component<Props> {
@@ -45,7 +48,7 @@ class Chat extends Component<Props> {
   handleChannelEnter = (channelUrl, channelType) => this.props.enterChannel(channelUrl, channelType);
 
   render() {
-    const { isMenuOpen, channels } = this.props;
+    const { isMenuOpen, channels, messages, userId } = this.props;
     return (
       <SideMenu
         channels={channels}
@@ -58,11 +61,7 @@ class Chat extends Component<Props> {
           keyboardVerticalOffset={65}
         >
           <StatusBar barStyle="light-content" />
-          <View style={styles.chatZone}>
-            <View style={styles.message}>
-              <Text>I am a message</Text>
-            </View>
-          </View>
+          <MessagesList userId={userId} messages={messages} />
           <View style={styles.bottomBar}>
             <TextInput style={styles.messageInput} />
             <TouchableOpacity style={styles.sendButton}>
@@ -75,10 +74,16 @@ class Chat extends Component<Props> {
   }
 }
 
+Chat.defaultProps = {
+  userId: ''
+}
+
 export default connect(
-  ({ common, user }) => ({
+  ({ common, user, chat }) => ({
     isMenuOpen: common.isMenuOpen,
     channels: user.channels,
+    messages: chat.messages,
+    userId: user.user.sbUserId
   }),
   { enterChannel },
 )(Chat);

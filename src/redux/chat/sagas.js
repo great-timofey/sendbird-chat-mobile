@@ -2,9 +2,8 @@ import {
   call, put, select, takeEvery,
 } from 'redux-saga/effects';
 import { loadMessages } from '../../services/SendBird';
-// import { loginUser, registerUser } from './requests';
 import * as TYPES from './types';
-import { toggleLoading } from '../common/actions';
+import { toggleLoading, setError } from '../common/actions';
 import { loadMessagesFinish } from './actions';
 import { currentChannelSelector } from '../selectors';
 
@@ -15,7 +14,10 @@ function* loadMessagesWorker() {
     yield put(loadMessagesFinish(messages));
     yield put(toggleLoading());
   } catch (err) {
-    console.log(err);
+    const { error } = err.response.data;
+    yield put(toggleLoading());
+    yield put(setError(error));
+    console.log(error);
   }
 }
 
