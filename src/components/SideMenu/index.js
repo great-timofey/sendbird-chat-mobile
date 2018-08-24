@@ -14,10 +14,14 @@ type Props = {
 
 const renderMenu = (channels, enterChannelCallback, type) => (
   <FlatList
+    style={styles.list}
     data={channels.filter(channel => channel.channelType === type)}
     renderItem={({ item: { channelType, name, url } }) => (
-      <TouchableOpacity onPress={() => enterChannelCallback(url, channelType)}>
-        <Text style={styles.text}>{`${channelType}: ${name}`}</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => enterChannelCallback(url, channelType)}
+      >
+        <Text style={styles.text}>{name}</Text>
       </TouchableOpacity>
     )}
     keyExtractor={item => item.url}
@@ -33,9 +37,9 @@ const SideMenuWrapper = ({
   <SideMenu
     menu={(
       <View style={styles.container}>
-        <Text>Open Channels</Text>
+        <Text style={styles.sectionHeader}>Open Channels</Text>
         {renderMenu(channels, enterChannelCallback, 'open')}
-        <Text>Group Channels</Text>
+        <Text style={styles.sectionHeader}>Group Channels</Text>
         {renderMenu(channels, enterChannelCallback, 'group')}
       </View>
 )}

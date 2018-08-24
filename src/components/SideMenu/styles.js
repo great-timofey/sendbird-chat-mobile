@@ -8,7 +8,21 @@ export default StyleSheet.create({
     paddingTop: 10,
     paddingHorizontal: 10,
   },
+  sectionHeader: {
+    marginBottom: 5,
+  },
+  list: {
+    flex: 1,
+  },
+  button: {
+    borderWidth: 1,
+    borderColor: colors.black,
+    marginBottom: 2,
+    paddingVertical: 5,
+    backgroundColor: colors.darkSky,
+  },
   text: {
-    color: 'white',
+    textAlign: 'center',
+    color: colors.white,
   },
 });
