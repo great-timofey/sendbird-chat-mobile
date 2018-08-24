@@ -1,39 +1,34 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import SideMenu from 'react-native-side-menu';
-import { connect } from 'react-redux';
 import styles from './styles';
 
-type Props = {
-  channels?: Array,
+type MenuProps = {
+  channels: Array,
 };
 
-const MockChannels = [
-  { key: '1', text: 'mock channel', header: 'channel' },
-  { key: '2', text: 'mock channel', header: 'channel' },
-  { key: '3', text: 'mock channel', header: 'channel' },
-  { key: '4', text: 'mock channel', header: 'channel' },
-];
-
-const Menu = ({ channels }: Props) => (
+const Menu = ({ channels }: MenuProps) => (
   <View style={styles.container}>
     <FlatList
-      data={MockChannels}
-      renderItem={({ item: { key, text } }) => (
-        <Text style={styles.text}>{`${key}: ${text}`}</Text>
+      data={channels}
+      renderItem={({ item: { channelType, name } }) => (
+        <Text style={styles.text}>{`${channelType}: ${name}`}</Text>
       )}
+      keyExtractor={item => item.url}
     />
   </View>
 );
 
-Menu.defaultProps = {
-  channels: [],
+type SideMenuProps = {
+  isOpen: Boolean,
+  children: Function,
+  channels: Array,
 };
 
-// const ConnectedMenu = connect(({ channels }) => ({ channels }))(Menu)
-
-export default ({ isOpen, children }) => (
-  <SideMenu menu={<Menu />} isOpen={isOpen}>
+const SideMenuWrapper = ({ isOpen, children, channels }: SideMenuProps) => (
+  <SideMenu menu={<Menu channels={channels} />} isOpen={isOpen}>
     {children}
   </SideMenu>
 );
+
+export default SideMenuWrapper;

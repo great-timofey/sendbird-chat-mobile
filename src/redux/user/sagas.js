@@ -1,10 +1,10 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { SBconnect } from '../../services/SendBird';
+import { SBconnect, getChannelsList } from '../../services/SendBird';
 import { loginUser, registerUser } from './requests';
 import { navigate } from '../../navigation';
 import { ChatScene } from '../../navigation/scenes';
 import * as TYPES from './types';
-import { setUser } from './actions';
+import { setUser, setChannels } from './actions';
 import { toggleLoading, setError } from '../common/actions';
 
 function* fetchUserWorker(action) {
@@ -15,6 +15,8 @@ function* fetchUserWorker(action) {
     const { sbUserId, sbAccessToken } = data;
     yield call(SBconnect, sbUserId, sbAccessToken);
     yield put(setUser({ ...data }));
+    const channels = yield call(getChannelsList);
+    yield put(setChannels(channels));
     yield put(toggleLoading());
     yield call(navigate, ChatScene);
   } catch (err) {

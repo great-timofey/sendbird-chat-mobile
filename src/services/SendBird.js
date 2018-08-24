@@ -15,3 +15,34 @@ export const SBconnect = (sbUserId, sbAccessToken) => new Promise((res, rej) => 
     }
   },
 ));
+
+const getOpenChannels = () => new Promise((res, rej) => {
+  const openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
+  openChannelListQuery.next((channels, error) => {
+    if (error) {
+      rej(error);
+    }
+    res(channels);
+  });
+});
+
+const getGroupChannels = () => new Promise((res, rej) => {
+  const channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
+  channelListQuery.includeEmpty = true;
+  channelListQuery.limit = 50;
+
+  if (channelListQuery.hasNext) {
+    channelListQuery.next((channelList, error) => {
+      if (error) {
+        rej(error);
+      }
+      res(channelList);
+    });
+  }
+});
+
+export async function getChannelsList() {
+  const openChannels = await getOpenChannels();
+  const groupChannels = await getGroupChannels();
+  return [...openChannels, ...groupChannels];
+}

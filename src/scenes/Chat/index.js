@@ -17,6 +17,7 @@ import styles from './styles';
 
 type Props = {
   isMenuOpen: Boolean,
+  channels: Array,
 };
 
 class Chat extends Component<Props> {
@@ -39,12 +40,10 @@ class Chat extends Component<Props> {
     ),
   };
 
-  const;
-
   render() {
-    const { isMenuOpen } = this.props;
+    const { isMenuOpen, channels } = this.props;
     return (
-      <SideMenu isOpen={isMenuOpen}>
+      <SideMenu channels={channels} isOpen={isMenuOpen}>
         <KeyboardAvoidingView
           style={styles.container}
           behavior="padding"
@@ -68,6 +67,7 @@ class Chat extends Component<Props> {
   }
 }
 
-export default connect(({ common }) => ({ isMenuOpen: common.isMenuOpen }))(
-  Chat,
-);
+export default connect(({ common, user }) => ({
+  isMenuOpen: common.isMenuOpen,
+  channels: user.channels,
+}))(Chat);
