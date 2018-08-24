@@ -9,14 +9,18 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { toggleMenu } from '../../redux/common/actions';
+import store from '../../redux/store';
 import SideMenu from '../../components/SideMenu';
 import colors from '../../global/colors';
 import styles from './styles';
 
-type Props = {};
+type Props = {
+  isMenuOpen: Boolean,
+};
 
-export default class Chat extends Component<Props> {
-  static navigationOptions = ({ state }) => ({
+class Chat extends Component<Props> {
+  static navigationOptions = {
     title: 'Chat',
     headerStyle: {
       backgroundColor: colors.white20,
@@ -26,26 +30,18 @@ export default class Chat extends Component<Props> {
       fontWeight: 'bold',
     },
     headerLeft: (
-      <TouchableOpacity onPress={state.params.handleMenuOpen}>
+      <TouchableOpacity onPress={() => store.dispatch(toggleMenu())}>
         <Text>Hello</Text>
       </TouchableOpacity>
     ),
-  });
-
-  state = {
-    isSideMenuOpen: false,
   };
 
-  componentDidMount() {
-    this.props.navigation.setParams({ handleMenuOpen: this.handleMenuOpen });
-  }
-
-  handleMenuOpen = () => this.setState({ isSideMenuOpen: !this.state.isSideMenuOpen });
+  const;
 
   render() {
-    const { isSideMenuOpen } = this.state;
+    const { isMenuOpen } = this.props;
     return (
-      <SideMenu isOpen={isSideMenuOpen}>
+      <SideMenu isOpen={isMenuOpen}>
         <KeyboardAvoidingView
           style={styles.container}
           behavior="padding"
@@ -68,3 +64,7 @@ export default class Chat extends Component<Props> {
     );
   }
 }
+
+export default connect(({ common }) => ({ isMenuOpen: common.isMenuOpen }))(
+  Chat,
+);
