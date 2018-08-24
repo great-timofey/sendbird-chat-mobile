@@ -14,18 +14,15 @@ const Message = ({
   message, type, sender, userId, senderId,
 }: Props) => (
   <View
-    style={
-      userId === senderId
-        ? [styles.container, styles.rightSide]
-        : [styles.container, styles.leftSide]
-    }
+    style={[
+      styles.container,
+      userId === senderId ? styles.rightSide : styles.leftSide,
+    ]}
   >
     <Text style={styles.sender}>{sender}</Text>
-    {type === 'user' ? (
-      <Text style={styles.message}>{message}</Text>
-    ) : (
-      <Text style={styles.message}>User sent a file message</Text>
-    )}
+    <Text style={styles.message}>
+      {type === 'user' ? message : 'User sent a file message'}
+    </Text>
   </View>
 );
 

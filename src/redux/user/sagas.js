@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import {
   SBconnect,
   getChannelsList,
@@ -73,5 +73,5 @@ function* enterChannelWorker(action) {
 export default function* sagas() {
   yield takeEvery(TYPES.FETCH_USER, fetchUserWorker);
   yield takeEvery(TYPES.CREATE_USER, addUserWorker);
-  yield takeEvery(TYPES.ENTER_CHANNEL, enterChannelWorker);
+  yield takeLatest(TYPES.ENTER_CHANNEL, enterChannelWorker);
 }

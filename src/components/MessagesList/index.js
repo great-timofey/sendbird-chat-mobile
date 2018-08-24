@@ -12,6 +12,7 @@ type Props = {
 const MessagesList = ({ messages, userId }: Props) => (
   <View style={styles.chatZone}>
     <FlatList
+      inverted
       data={messages}
       renderItem={({ item }) => (
         <Message
