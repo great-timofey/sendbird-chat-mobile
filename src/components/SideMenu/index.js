@@ -3,11 +3,13 @@ import { View, Text, FlatList } from 'react-native';
 import SideMenu from 'react-native-side-menu';
 import styles from './styles';
 
-type MenuProps = {
+type Props = {
+  isOpen: Boolean,
+  children: Function,
   channels: Array,
 };
 
-const Menu = ({ channels }: MenuProps) => (
+const renderMenu = channels => (
   <View style={styles.container}>
     <FlatList
       data={channels}
@@ -19,14 +21,8 @@ const Menu = ({ channels }: MenuProps) => (
   </View>
 );
 
-type SideMenuProps = {
-  isOpen: Boolean,
-  children: Function,
-  channels: Array,
-};
-
-const SideMenuWrapper = ({ isOpen, children, channels }: SideMenuProps) => (
-  <SideMenu menu={<Menu channels={channels} />} isOpen={isOpen}>
+const SideMenuWrapper = ({ isOpen, children, channels }: Props) => (
+  <SideMenu menu={renderMenu(channels)} isOpen={isOpen}>
     {children}
   </SideMenu>
 );
