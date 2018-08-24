@@ -2,17 +2,22 @@ import React from 'react';
 import { createStackNavigator, NavigationActions } from 'react-navigation';
 import Auth from '../scenes/Auth';
 import Chat from '../scenes/Chat';
-import { HomeScene, ChatScene } from './scenes';
+import Chats from '../scenes/Chats';
+import { HomeScene, ChatsScene, ChatScene } from './scenes';
 
 export const AppNavigator = createStackNavigator({
   [HomeScene]: {
     screen: Auth,
   },
-  [ChatScene]: {
-    screen: Chat,
+  [ChatsScene]: {
+    screen: Chats,
     navigationOptions: {
       gesturesEnabled: false,
+      headerLeft: null,
     },
+  },
+  [ChatScene]: {
+    screen: Chat,
   },
 });
 
