@@ -22,7 +22,7 @@ type Props = {
   enterChannel: Function,
   channels: Array,
   messages: Array,
-  userId?: String
+  userId?: String,
 };
 
 class Chat extends Component<Props> {
@@ -48,7 +48,9 @@ class Chat extends Component<Props> {
   handleChannelEnter = (channelUrl, channelType) => this.props.enterChannel(channelUrl, channelType);
 
   render() {
-    const { isMenuOpen, channels, messages, userId } = this.props;
+    const {
+      isMenuOpen, channels, messages, userId,
+    } = this.props;
     return (
       <SideMenu
         channels={channels}
@@ -75,15 +77,15 @@ class Chat extends Component<Props> {
 }
 
 Chat.defaultProps = {
-  userId: ''
-}
+  userId: '',
+};
 
 export default connect(
   ({ common, user, chat }) => ({
     isMenuOpen: common.isMenuOpen,
     channels: user.channels,
     messages: chat.messages,
-    userId: user.user.sbUserId
+    userId: user.user.sbUserId,
   }),
-  { enterChannel },
+  { enterChannel, toggleMenu },
 )(Chat);
