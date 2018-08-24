@@ -11,6 +11,7 @@ import { ChatScene } from '../../navigation/scenes';
 import * as TYPES from './types';
 import { setUser, setChannels, setCurrentChannel } from './actions';
 import { toggleLoading, setError } from '../common/actions';
+import { loadMessagesStart } from '../chat/actions';
 
 function* fetchUserWorker(action) {
   try {
@@ -62,15 +63,14 @@ function* enterChannelWorker(action) {
     }
     console.log(channel);
     yield put(setCurrentChannel(channel));
-    yield put(toggleLoading());
-    // yield put(loadMessagesStart());
+    yield put(loadMessagesStart());
   } catch (err) {
     yield put(toggleLoading());
     console.log(err);
   }
 }
 
-export function* sagas() {
+export default function* sagas() {
   yield takeEvery(TYPES.FETCH_USER, fetchUserWorker);
   yield takeEvery(TYPES.CREATE_USER, addUserWorker);
   yield takeEvery(TYPES.ENTER_CHANNEL, enterChannelWorker);
