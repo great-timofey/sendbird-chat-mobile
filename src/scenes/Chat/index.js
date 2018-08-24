@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { toggleMenu } from '../../redux/common/actions';
+import { enterChannel } from '../../redux/user/actions';
 import store from '../../redux/store';
 import SideMenu from '../../components/SideMenu';
 import colors from '../../global/colors';
@@ -17,6 +18,7 @@ import styles from './styles';
 
 type Props = {
   isMenuOpen: Boolean,
+  enterChannel: Function,
   channels: Array,
 };
 
@@ -40,10 +42,16 @@ class Chat extends Component<Props> {
     ),
   };
 
+  handleChannelEnter = (channelUrl, channelType) => this.props.enterChannel(channelUrl, channelType);
+
   render() {
     const { isMenuOpen, channels } = this.props;
     return (
-      <SideMenu channels={channels} isOpen={isMenuOpen}>
+      <SideMenu
+        channels={channels}
+        isOpen={isMenuOpen}
+        enterChannelCallback={this.handleChannelEnter}
+      >
         <KeyboardAvoidingView
           style={styles.container}
           behavior="padding"
@@ -67,7 +75,10 @@ class Chat extends Component<Props> {
   }
 }
 
-export default connect(({ common, user }) => ({
-  isMenuOpen: common.isMenuOpen,
-  channels: user.channels,
-}))(Chat);
+export default connect(
+  ({ common, user }) => ({
+    isMenuOpen: common.isMenuOpen,
+    channels: user.channels,
+  }),
+  { enterChannel },
+)(Chat);

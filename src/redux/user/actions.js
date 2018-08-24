@@ -17,5 +17,15 @@ export const setUser = user => ({
 
 export const setChannels = channels => ({
   type: TYPES.SET_CHANNELS,
-  payload: channels
+  payload: channels,
+});
+
+export const setCurrentChannel = channel => ({
+  type: TYPES.SET_CURRENT_CHANNEL,
+  payload: channel,
+});
+
+export const enterChannel = (url, type) => ({
+  type: TYPES.ENTER_CHANNEL,
+  payload: { url, type },
 });

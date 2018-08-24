@@ -46,3 +46,29 @@ export async function getChannelsList() {
   const groupChannels = await getGroupChannels();
   return [...openChannels, ...groupChannels];
 }
+
+export const enterOpenChannel = channelUrl => new Promise((res, rej) => {
+  sb.OpenChannel.getChannel(channelUrl, (channel, error) => {
+    if (error) {
+      rej(error);
+    }
+
+    channel.enter((response, err) => {
+      if (err) {
+        rej(err);
+      }
+
+      res(channel);
+    });
+  });
+});
+
+export const getGroupChannel = channelUrl => new Promise((res, rej) => {
+  sb.GroupChannel.getChannel(channelUrl, (channel, error) => {
+    if (error) {
+      rej(error);
+    }
+
+    res(channel);
+  });
+});
