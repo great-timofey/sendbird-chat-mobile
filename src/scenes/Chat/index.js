@@ -19,6 +19,7 @@ import styles from './styles';
 
 type Props = {
   isMenuOpen: Boolean,
+  navigation: Object,
   enterChannel: Function,
   channels: Array,
   messages: Array,
@@ -26,8 +27,8 @@ type Props = {
 };
 
 class Chat extends Component<Props> {
-  static navigationOptions = {
-    title: 'Chat',
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.getParam('chatName', 'Chat'),
     headerStyle: {
       backgroundColor: colors.darkSky,
     },
@@ -43,9 +44,15 @@ class Chat extends Component<Props> {
         <Text style={{ color: 'white' }}>Menu</Text>
       </TouchableOpacity>
     ),
-  };
+  });
 
-  handleChannelEnter = (channelUrl, channelType) => this.props.enterChannel(channelUrl, channelType);
+  handleChannelEnter = (channelUrl, channelType) => {
+    const { navigation, enterChannel, channels } = this.props;
+    enterChannel(channelUrl, channelType);
+    navigation.setParams({
+      chatName: channels.find(channel => channel.url === channelUrl).name,
+    });
+  };
 
   render() {
     const {
