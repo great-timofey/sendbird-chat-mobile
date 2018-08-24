@@ -10,6 +10,9 @@ export const AppNavigator = createStackNavigator({
   },
   [ChatScene]: {
     screen: Chat,
+    navigationOptions: {
+      gesturesEnabled: false,
+    },
   },
 });
 

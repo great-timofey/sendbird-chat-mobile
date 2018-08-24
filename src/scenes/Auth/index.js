@@ -10,7 +10,6 @@ import styles from './styles';
 
 type Props = {
   loading: Boolean,
-  navigation: Object,
   createUser: Function,
   fetchUser: Function,
 };
@@ -22,9 +21,9 @@ class Auth extends Component<Props> {
 
   state = {
     isSingUp: false,
-    username: '',
-    email: '',
-    password: '',
+    username: 'tim',
+    email: '121212',
+    password: '121212',
     hidePassword: true,
   };
 

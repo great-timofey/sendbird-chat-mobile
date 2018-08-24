@@ -15,19 +15,17 @@ export const setUser = user => ({
   payload: { user },
 });
 
-export const connectionCheckingStart = () => ({
-  type: TYPES.CONNECTION_CHECKING_START,
+export const setChannels = channels => ({
+  type: TYPES.SET_CHANNELS,
+  payload: channels,
 });
 
-export const connectionCheckingSuccess = () => ({
-  type: TYPES.CONNECTION_CHECKING_SUCCESS,
+export const setCurrentChannel = channel => ({
+  type: TYPES.SET_CURRENT_CHANNEL,
+  payload: channel,
 });
 
-export const connectionCheckingFailure = error => ({
-  type: TYPES.CONNECTION_CHECKING_FAILURE,
-  payload: error,
-});
-
-export const connectionCheckingFinish = () => ({
-  type: TYPES.CONNECTION_CHECKING_FINISH,
+export const enterChannel = (url, type) => ({
+  type: TYPES.ENTER_CHANNEL,
+  payload: { url, type },
 });
