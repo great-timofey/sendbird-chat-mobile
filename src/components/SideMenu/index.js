@@ -12,20 +12,16 @@ type Props = {
   channels: Array,
 };
 
-const renderMenu = (channels, enterChannelCallback) => (
-  <View style={styles.container}>
-    <FlatList
-      data={channels}
-      renderItem={({ item: { channelType, name, url } }) => (
-        <TouchableOpacity
-          onPress={() => enterChannelCallback(url, channelType)}
-        >
-          <Text style={styles.text}>{`${channelType}: ${name}`}</Text>
-        </TouchableOpacity>
-      )}
-      keyExtractor={item => item.url}
-    />
-  </View>
+const renderMenu = (channels, enterChannelCallback, type) => (
+  <FlatList
+    data={channels.filter(channel => channel.channelType === type)}
+    renderItem={({ item: { channelType, name, url } }) => (
+      <TouchableOpacity onPress={() => enterChannelCallback(url, channelType)}>
+        <Text style={styles.text}>{`${channelType}: ${name}`}</Text>
+      </TouchableOpacity>
+    )}
+    keyExtractor={item => item.url}
+  />
 );
 
 const SideMenuWrapper = ({
@@ -34,7 +30,17 @@ const SideMenuWrapper = ({
   channels,
   enterChannelCallback,
 }: Props) => (
-  <SideMenu menu={renderMenu(channels, enterChannelCallback)} isOpen={isOpen}>
+  <SideMenu
+    menu={(
+      <View style={styles.container}>
+        <Text>Open Channels</Text>
+        {renderMenu(channels, enterChannelCallback, 'open')}
+        <Text>Group Channels</Text>
+        {renderMenu(channels, enterChannelCallback, 'group')}
+      </View>
+)}
+    isOpen={isOpen}
+  >
     {children}
   </SideMenu>
 );
