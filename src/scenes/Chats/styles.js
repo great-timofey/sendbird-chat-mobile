@@ -10,7 +10,7 @@ export default StyleSheet.create({
     paddingVertical: 20,
   },
   control: {
-    width: '80%',
+    width: 300,
     marginBottom: 20,
   },
   sectionHeader: {

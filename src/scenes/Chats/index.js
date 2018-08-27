@@ -60,6 +60,15 @@ class Chats extends Component<Props> {
 
   handleToggleControl = () => this.setState(({ showOpen }) => ({ showOpen: !showOpen }));
 
+  renderChat = ({ item: { channelType, name, url } }) => (
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => this.handleChannelEnter(url, channelType)}
+    >
+      <Text style={styles.text}>{name}</Text>
+    </TouchableOpacity>
+  );
+
   render() {
     const { showOpen } = this.state;
     const { channels } = this.props;
@@ -78,14 +87,7 @@ class Chats extends Component<Props> {
           data={channels.filter(
             channel => channel.channelType === (showOpen ? 'open' : 'group'),
           )}
-          renderItem={({ item: { channelType, name, url } }) => (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.handleChannelEnter(url, channelType)}
-            >
-              <Text style={styles.text}>{name}</Text>
-            </TouchableOpacity>
-          )}
+          renderItem={this.renderChat}
           keyExtractor={item => item.url}
         />
       </View>
