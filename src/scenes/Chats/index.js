@@ -36,7 +36,7 @@ class Chats extends Component<Props> {
         onPress={() => navigation.navigate(NewChatScene)}
         style={{
           fontSize: 30,
-          color: 'white',
+          color: colors.darkSkyBlue,
           marginRight: 10,
           marginBottom: 10,
         }}
