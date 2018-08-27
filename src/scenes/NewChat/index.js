@@ -10,6 +10,8 @@ import {
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 import { createChannel } from '../../redux/user/actions';
+import { findUsers, unsetUsers } from '../../redux/search/actions';
+import Combobox from '../../components/Combobox';
 import Input from '../../components/Input';
 import colors from '../../global/colors';
 import styles from './styles';
@@ -17,6 +19,10 @@ import styles from './styles';
 type Props = {
   inviterId: String,
   createChannel: Function,
+  findUsers: Function,
+  foundUsers: Array,
+  searching: Boolean,
+  successful: Boolean,
 };
 
 class NewChat extends Component<Props> {
@@ -34,19 +40,35 @@ class NewChat extends Component<Props> {
   state = {
     channelType: '',
     channelName: '',
-    inviteeId: '',
+    query: '',
+    inviteeData: '',
   };
 
+  clearCallback = () => this.setState({ query: '' }, () => this.props.unsetUsers());
+
+  choosePositionCallback = e => console.log(this.ref);
+
+  inputChangeCallback = value => this.setState({ query: value }, () => this.props.findUsers(this.state.query));
+
+  handleChangeData = param => value => this.setState({ [param]: value });
+
   handleCreateChannel = () => {
-    const { channelType, channelName, inviteeId } = this.state;
+    const { channelType, channelName, inviteeData } = this.state;
     const { inviterId, createChannel } = this.props;
-    createChannel(channelType, channelName, inviterId, inviteeId);
+    console.log(this.state);
+    // here we are going to extract inviteeId from inviteeData gotten from Combobox
+    // createChannel(channelType, channelName, inviterId, ?);
   };
 
   handleChangeData = param => value => this.setState({ [param]: value });
 
+  handleBindListElement = item => this.setState({ item });
+
   render() {
-    const { channelType, channelName, inviteeId } = this.state;
+    const {
+      channelType, channelName, inviteeData, query,
+    } = this.state;
+    const { foundUsers, searching, successful } = this.props;
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <Text style={styles.header}>Please choose new chat parameters</Text>
@@ -66,14 +88,18 @@ class NewChat extends Component<Props> {
             />
           </View>
           {channelType === 'group' && (
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>User Id</Text>
-              <Input
-                onInput={this.handleChangeData('inviteeId')}
-                value={inviteeId}
-                customStyles={styles}
-              />
-            </View>
+            <Combobox
+              value={query}
+              options={foundUsers}
+              searching={searching}
+              inputChangeCallback={this.inputChangeCallback}
+              choosePositionCallback={this.choosePositionCallback}
+              clearCallback={this.clearCallback}
+              successful={successful}
+              displayValue="username"
+              customKey="_id"
+              bindFunction={this.handleBindListElement}
+            />
           )}
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Chat Name</Text>
@@ -100,6 +126,11 @@ class NewChat extends Component<Props> {
 }
 
 export default connect(
-  ({ user }) => ({ inviterId: user.user.sbUserId }),
-  { createChannel },
+  ({ user, search }) => ({
+    foundUsers: search.users,
+    inviterId: user.user.sbUserId,
+    searching: search.searching,
+    successful: search.successful,
+  }),
+  { createChannel, findUsers, unsetUsers },
 )(NewChat);

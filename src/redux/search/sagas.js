@@ -9,7 +9,7 @@ import {
   searchFailure,
   setUsers,
 } from './actions';
-import { userSelector } from '../selectors';
+import { currentUserSelector } from '../selectors';
 import { searchUser } from './requests';
 import * as TYPES from './types';
 
@@ -17,7 +17,7 @@ function* searchUserWorker(action) {
   try {
     yield delay(500);
     yield put(searchStart());
-    const { token } = yield select(userSelector);
+    const { token } = yield select(currentUserSelector);
     const { data } = yield call(searchUser, action.payload, token);
     console.log(data);
     if (Array.isArray(data) && data.length === 0) {
