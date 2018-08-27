@@ -21,13 +21,13 @@ class Auth extends Component<Props> {
 
   state = {
     isSingUp: false,
-    // username: 'tim',
-    // email: '121212',
-    // password: '121212',
+    username: 'tim',
+    email: '121212',
+    password: '121212',
     hidePassword: true,
-    username: 'Asdf',
-    email: 'asdfasdf',
-    password: 'asdfasdf',
+    // username: 'Asdf',
+    // email: 'asdfasdf',
+    // password: 'asdfasdf',
   };
 
   toggleMode = () => this.setState(({ isSingUp }) => ({
@@ -75,11 +75,13 @@ class Auth extends Component<Props> {
             onInput={this.handleChange('username')}
             type="login"
             value={username}
+            withImage
           />
           <Input
             onInput={this.handleChange('email')}
             type="mail"
             value={email}
+            withImage
           />
           <Input
             onInput={this.handleChange('password')}
@@ -87,6 +89,7 @@ class Auth extends Component<Props> {
             hidePassword={hidePassword}
             type="password"
             value={password}
+            withImage
           />
         </View>
         <TouchableOpacity
