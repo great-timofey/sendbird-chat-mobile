@@ -6,12 +6,20 @@ import {
   getChannelsList,
   enterOpenChannel,
   getGroupChannel,
+  createOpenChannel,
+  createGroupChannel,
 } from '../../services/SendBird';
 import { loginUser, registerUser } from './requests';
 import { navigate } from '../../navigation';
 import { ChatsScene } from '../../navigation/scenes';
 import * as TYPES from './types';
-import { setUser, setChannels, setCurrentChannel } from './actions';
+import {
+  setUser,
+  setChannels,
+  setCurrentChannel,
+  enterChannel,
+  addChannel,
+} from './actions';
 import { toggleLoading, setError } from '../common/actions';
 import { loadMessagesStart } from '../chat/actions';
 
@@ -73,25 +81,25 @@ function* enterChannelWorker(action) {
 
 function* createChannelWorker(action) {
   try {
+    yield put(toggleLoading());
     const {
-      roomType,
-      roomName,
-      coverUrl,
-      inviterId,
-      inviteeId,
+      channelType, channelName, inviterId, inviteeId,
     } = action.payload;
     let channel;
-    if (roomType === 'open') {
-      // channel = yield call(createOpenChannel, roomName, coverUrl);
+    if (channelType === 'open') {
+      channel = yield call(createOpenChannel, channelName);
     } else {
       channel = yield call(
-        // createGroupChannel,
+        createGroupChannel,
         [inviterId, inviteeId],
-        roomName,
-        coverUrl,
+        channelName,
       );
     }
-    // yield put(setChannel(channel));
+    const { url } = channel;
+    yield put(addChannel(channel));
+    yield put(setCurrentChannel(channel));
+    yield put(toggleLoading());
+    yield put(enterChannel(url, channelType));
   } catch (err) {
     console.log(err);
   }
@@ -101,4 +109,5 @@ export default function* sagas() {
   yield takeEvery(TYPES.FETCH_USER, fetchUserWorker);
   yield takeEvery(TYPES.CREATE_USER, addUserWorker);
   yield takeLatest(TYPES.ENTER_CHANNEL, enterChannelWorker);
+  yield takeEvery(TYPES.CREATE_CHANNEL, createChannelWorker);
 }

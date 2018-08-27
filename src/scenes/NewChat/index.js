@@ -5,19 +5,20 @@ import {
   TouchableOpacity,
   StatusBar,
   TextInput,
-  Picker,
   Image,
   Text,
 } from 'react-native';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
-import { toggleMenu } from '../../redux/common/actions';
-import { enterChannel } from '../../redux/user/actions';
+import { createChannel } from '../../redux/user/actions';
 import Input from '../../components/Input';
 import colors from '../../global/colors';
 import styles from './styles';
 
-type Props = {};
+type Props = {
+  inviterId: String,
+  createChannel: Function,
+};
 
 class NewChat extends Component<Props> {
   static navigationOptions = {
@@ -34,24 +35,20 @@ class NewChat extends Component<Props> {
   state = {
     channelType: '',
     channelName: '',
-    inviterId: '',
     inviteeId: '',
   };
 
   handleCreateChannel = () => {
-    console.log(this.state);
+    const { channelType, channelName, inviteeId } = this.state;
+    const { inviterId, createChannel } = this.props;
+    createChannel(channelType, channelName, inviterId, inviteeId);
   };
 
   render() {
-    const {
-      channelType, channelName, inviterId, inviteeId,
-    } = this.state;
+    const { channelType, channelName, inviteeId } = this.state;
+    const { inviterId } = this.props;
     return (
-      <KeyboardAvoidingView
-        behavior="padding"
-        keyboardVerticalOffset={65}
-        style={styles.container}
-      >
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Text style={styles.header}>Please define new chat parameters</Text>
         <View>
@@ -62,30 +59,28 @@ class NewChat extends Component<Props> {
                 { label: 'Group', value: 'group' },
                 { label: 'Open', value: 'open' },
               ]}
-              onValueChange={itemValue => this.setState({ channelType: itemValue })
-              }
+              onValueChange={value => this.setState({ channelType: value })}
               style={styles}
               hideIcon
               placeholder={{ label: 'Chat Type...', value: null }}
               value={channelType}
             />
-            {null && (
-              <Picker
-                style={{ ...styles.input, ...styles.typePicker }}
-                selectedValue={channelType}
-                itemStyle={styles.typeItem}
-              >
-                <Picker.Item label="Group" value="group" />
-                <Picker.Item label="Open" value="Open" />
-              </Picker>
-            )}
           </View>
+          {channelType === 'group' && (
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>User Id</Text>
+              <Input
+                onInput={text => this.setState({ inviteeId: text })}
+                value={inviteeId}
+                customStyles={styles}
+              />
+            </View>
+          )}
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Chat Name</Text>
             <Input
               onInput={text => this.setState({ channelName: text })}
               value={channelName}
-              withImage
               customStyles={styles}
             />
           </View>
@@ -105,4 +100,7 @@ class NewChat extends Component<Props> {
   }
 }
 
-export default connect()(NewChat);
+export default connect(
+  ({ user }) => ({ inviterId: user.user.sbUserId }),
+  { createChannel },
+)(NewChat);

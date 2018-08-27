@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { toggleMenu } from '../../redux/common/actions';
+import { ChatsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
 import colors from '../../global/colors';
 import styles from './styles';
@@ -28,14 +29,16 @@ class Chat extends Component<Props> {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
-    // headerLeft: (
-    // <TouchableOpacity
-    // style={{ marginLeft: 10 }}
-    // onPress={() => store.dispatch(toggleMenu())}
-    // >
-    // <Text style={{ color: 'white' }}>Menu</Text>
-    // </TouchableOpacity>
-    // ),
+    headerLeft: (
+      <TouchableOpacity
+        style={{ marginLeft: 10 }}
+        onPress={() => navigation.navigate(ChatsScene)}
+      >
+        <Text style={{ color: colors.darkSkyBlue, fontSize: 18 }}>
+          To Chats
+        </Text>
+      </TouchableOpacity>
+    ),
   });
 
   render() {
