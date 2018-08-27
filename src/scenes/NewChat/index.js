@@ -43,12 +43,13 @@ class NewChat extends Component<Props> {
     createChannel(channelType, channelName, inviterId, inviteeId);
   };
 
+  handleChangeData = param => value => this.setState({ [param]: value });
+
   render() {
     const { channelType, channelName, inviteeId } = this.state;
-    const { inviterId } = this.props;
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <Text style={styles.header}>Please define new chat parameters</Text>
+        <Text style={styles.header}>Please choose new chat parameters</Text>
         <View>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Chat Type</Text>
@@ -57,7 +58,7 @@ class NewChat extends Component<Props> {
                 { label: 'Group', value: 'group' },
                 { label: 'Open', value: 'open' },
               ]}
-              onValueChange={value => this.setState({ channelType: value })}
+              onValueChange={this.handleChangeData('channelType')}
               style={styles}
               hideIcon
               placeholder={{ label: 'Chat Type...', value: null }}
@@ -68,7 +69,7 @@ class NewChat extends Component<Props> {
             <View style={styles.inputContainer}>
               <Text style={styles.label}>User Id</Text>
               <Input
-                onInput={text => this.setState({ inviteeId: text })}
+                onInput={this.handleChangeData('inviteeId')}
                 value={inviteeId}
                 customStyles={styles}
               />
@@ -77,7 +78,7 @@ class NewChat extends Component<Props> {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Chat Name</Text>
             <Input
-              onInput={text => this.setState({ channelName: text })}
+              onInput={this.handleChangeData('channelName')}
               value={channelName}
               customStyles={styles}
             />
@@ -88,7 +89,7 @@ class NewChat extends Component<Props> {
           </View>
           <TouchableOpacity
             style={styles.createButton}
-            onPress={() => this.handleCreateChannel()}
+            onPress={this.handleCreateChannel}
           >
             <Text style={[styles.label, styles.createButtonText]}>Create</Text>
           </TouchableOpacity>
