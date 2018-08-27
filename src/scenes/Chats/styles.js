@@ -4,25 +4,32 @@ import colors from '../../global/colors';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.darkSkyBlue,
-    paddingTop: 10,
-    paddingHorizontal: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: colors.darkGreyBlueTwo,
+    paddingVertical: 20,
+  },
+  control: {
+    width: 300,
+    marginBottom: 20,
   },
   sectionHeader: {
     marginBottom: 5,
   },
   list: {
+    width: '100%',
     flex: 1,
   },
   button: {
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: colors.black,
-    marginBottom: 2,
-    paddingVertical: 5,
     backgroundColor: colors.darkSky,
   },
   text: {
-    textAlign: 'center',
+    textAlign: 'left',
+    fontWeight: 'bold',
     color: colors.white,
   },
 });

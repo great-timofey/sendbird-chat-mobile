@@ -49,6 +49,15 @@
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
+      <key>c379ea36.ngrok.io</key>
+      <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+        <key>NSAllowsArbitraryLoadsInWebContent</key>
+        <true/>
+        <key>NSAllowsLocalNetworking</key>
+        <true/>
+      </dict>
 		</dict>
 	</dict>
 	<key>UIAppFonts</key>

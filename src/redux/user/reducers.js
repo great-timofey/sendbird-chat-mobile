@@ -13,9 +13,14 @@ const setCurrentChannel = (state, channel) => ({
   ...state,
   currentChannel: channel,
 });
+const addChannel = (state, channel) => ({
+  ...state,
+  channels: [...state.channels, channel],
+});
 
 const handlers = {
   [TYPES.SET_USER]: setUser,
+  [TYPES.ADD_CHANNEL]: addChannel,
   [TYPES.SET_CHANNELS]: setChannels,
   [TYPES.SET_CURRENT_CHANNEL]: setCurrentChannel,
 };

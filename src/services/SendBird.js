@@ -73,15 +73,52 @@ export const getGroupChannel = channelUrl => new Promise((res, rej) => {
   });
 });
 
-export const loadMessages = channel =>
-  new Promise((res, rej) => {
-    const messageListQuery = channel.createPreviousMessageListQuery();
-    messageListQuery.load(30, true, (messageList, error) => {
+export const loadMessages = channel => new Promise((res, rej) => {
+  const messageListQuery = channel.createPreviousMessageListQuery();
+  messageListQuery.load(30, true, (messageList, error) => {
+    if (error) {
+      rej(error);
+    }
+
+    res(messageList);
+  });
+});
+
+export const createOpenChannel = (name, coverUrl = null, data = null) => new Promise((res, rej) => {
+  sb.OpenChannel.createChannel(
+    name,
+    coverUrl,
+    data,
+    (createdChannel, error) => {
       if (error) {
-        rej(error);
+        console.error(error);
+        rej();
       }
 
-      res(messageList);
-    });
-  });
+      res(createdChannel);
+    },
+  );
+});
 
+export const createGroupChannel = (
+  userIds,
+  name,
+  coverUrl = null,
+  data = null,
+) => new Promise((res, rej) => {
+  sb.GroupChannel.createChannelWithUserIds(
+    userIds,
+    false,
+    name,
+    coverUrl,
+    data,
+    (createdChannel, error) => {
+      if (error) {
+        console.error(error);
+        rej();
+      }
+
+      res(createdChannel);
+    },
+  );
+});

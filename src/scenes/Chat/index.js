@@ -3,25 +3,17 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StatusBar,
-  Image,
   TextInput,
   KeyboardAvoidingView,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { toggleMenu } from '../../redux/common/actions';
-import { enterChannel } from '../../redux/user/actions';
-import store from '../../redux/store';
-import SideMenu from '../../components/SideMenu';
+import { ChatsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
 import colors from '../../global/colors';
 import styles from './styles';
 
 type Props = {
-  isMenuOpen: Boolean,
-  navigation: Object,
-  enterChannel: Function,
-  channels: Array,
   messages: Array,
   userId?: String,
 };
@@ -39,46 +31,31 @@ class Chat extends Component<Props> {
     headerLeft: (
       <TouchableOpacity
         style={{ marginLeft: 10 }}
-        onPress={() => store.dispatch(toggleMenu())}
+        onPress={() => navigation.navigate(ChatsScene)}
       >
-        <Text style={{ color: 'white' }}>Menu</Text>
+        <Text style={{ color: colors.darkSkyBlue, fontSize: 18 }}>
+          To Chats
+        </Text>
       </TouchableOpacity>
     ),
   });
 
-  handleChannelEnter = (channelUrl, channelType) => {
-    const { navigation, enterChannel, channels } = this.props;
-    enterChannel(channelUrl, channelType);
-    navigation.setParams({
-      chatName: channels.find(channel => channel.url === channelUrl).name,
-    });
-  };
-
   render() {
-    const {
-      isMenuOpen, channels, messages, userId,
-    } = this.props;
+    const { messages, userId } = this.props;
     return (
-      <SideMenu
-        channels={channels}
-        isOpen={isMenuOpen}
-        enterChannelCallback={this.handleChannelEnter}
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding"
+        keyboardVerticalOffset={65}
       >
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior="padding"
-          keyboardVerticalOffset={65}
-        >
-          <StatusBar barStyle="light-content" />
-          <MessagesList userId={userId} messages={messages} />
-          <View style={styles.bottomBar}>
-            <TextInput style={styles.messageInput} />
-            <TouchableOpacity style={styles.sendButton}>
-              <Text style={styles.sendText}>></Text>
-            </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
-      </SideMenu>
+        <MessagesList userId={userId} messages={messages} />
+        <View style={styles.bottomBar}>
+          <TextInput style={styles.messageInput} />
+          <TouchableOpacity style={styles.sendButton}>
+            <Text style={styles.sendText}>></Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -88,11 +65,9 @@ Chat.defaultProps = {
 };
 
 export default connect(
-  ({ common, user, chat }) => ({
-    isMenuOpen: common.isMenuOpen,
-    channels: user.channels,
+  ({ user, chat }) => ({
     messages: chat.messages,
     userId: user.user.sbUserId,
   }),
-  { enterChannel, toggleMenu },
+  { toggleMenu },
 )(Chat);

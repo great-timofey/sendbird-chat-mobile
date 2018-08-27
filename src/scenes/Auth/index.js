@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Text, TouchableOpacity, StatusBar,
+  View, Text, TouchableOpacity, 
 } from 'react-native';
 import { connect } from 'react-redux';
 import { createUser, fetchUser } from '../../redux/user/actions';
@@ -25,6 +25,9 @@ class Auth extends Component<Props> {
     email: '121212',
     password: '121212',
     hidePassword: true,
+    // username: 'Asdf',
+    // email: 'asdfasdf',
+    // password: 'asdfasdf',
   };
 
   toggleMode = () => this.setState(({ isSingUp }) => ({
@@ -65,18 +68,19 @@ class Auth extends Component<Props> {
     return (
       <View style={styles.container}>
         {loading && <Spinner />}
-        <StatusBar barStyle="light-content" />
         <Text style={styles.header}>{isSingUp ? 'Sign Up' : 'Sign In'}</Text>
         <View style={styles.form}>
           <Input
             onInput={this.handleChange('username')}
             type="login"
             value={username}
+            withImage
           />
           <Input
             onInput={this.handleChange('email')}
             type="mail"
             value={email}
+            withImage
           />
           <Input
             onInput={this.handleChange('password')}
@@ -84,6 +88,7 @@ class Auth extends Component<Props> {
             hidePassword={hidePassword}
             type="password"
             value={password}
+            withImage
           />
         </View>
         <TouchableOpacity
