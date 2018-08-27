@@ -6,11 +6,13 @@ import styles from './styles';
 import images from '../../global/images';
 
 type Props = {
-  type: String,
+  type?: String,
   onInput: Function,
   hidePassword?: Boolean,
   handleShowPassword?: Function,
   value: String,
+  withImage?: Boolean,
+  customStyles?: Object,
 };
 
 function Input({
@@ -19,23 +21,26 @@ function Input({
   hidePassword,
   handleShowPassword,
   value,
+  withImage = false,
+  customStyles = null,
 }: Props) {
+  const innerStyles = customStyles || styles;
   return (
-    <View style={styles.inputSection}>
-      <Image source={images[type]} style={styles.image} />
+    <View style={innerStyles.inputSection}>
+      {withImage && <Image source={images[type]} style={innerStyles.image} />}
       <TextInput
         secureTextEntry={hidePassword}
         onChangeText={onInput}
-        style={styles.input}
+        style={innerStyles.input}
         value={value}
         placeholder={type}
       />
       {type === 'password' && (
         <TouchableOpacity
-          style={styles.showPasswordButton}
+          style={innerStyles.showPasswordButton}
           onPress={handleShowPassword}
         >
-          <Image source={images.eye} style={styles.eyeImage} />
+          <Image source={images.eye} style={innerStyles.eyeImage} />
         </TouchableOpacity>
       )}
     </View>
@@ -43,8 +48,11 @@ function Input({
 }
 
 Input.defaultProps = {
+  type: '',
   hidePassword: false,
   handleShowPassword: false,
+  withImage: false,
+  customStyles: null,
 };
 
 export default Input;
