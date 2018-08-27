@@ -4,8 +4,8 @@ import colors from '../../global/colors';
 export default StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 20,
     alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: colors.darkGreyBlueTwo,
   },
   header: {
@@ -25,7 +25,6 @@ export default StyleSheet.create({
     width: 180,
     height: 40,
     paddingLeft: 10,
-    fontSize: 18,
   },
   typePicker: {
     paddingLeft: 0,
@@ -55,5 +54,14 @@ export default StyleSheet.create({
   },
   createButtonText: {
     marginRight: 0,
+  },
+  inputIOS: {
+    backgroundColor: 'white',
+    width: 180,
+    height: 40,
+    textAlign: 'center',
+    paddingLeft: 10,
+    fontSize: 18,
+    color: colors.black,
   },
 });

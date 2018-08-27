@@ -10,8 +10,10 @@ import {
   Text,
 } from 'react-native';
 import { connect } from 'react-redux';
+import RNPickerSelect from 'react-native-picker-select';
 import { toggleMenu } from '../../redux/common/actions';
 import { enterChannel } from '../../redux/user/actions';
+import Input from '../../components/Input';
 import colors from '../../global/colors';
 import styles from './styles';
 
@@ -30,11 +32,20 @@ class NewChat extends Component<Props> {
   };
 
   state = {
-    type: 'group',
+    channelType: '',
+    channelName: '',
+    inviterId: '',
+    inviteeId: '',
+  };
+
+  handleCreateChannel = () => {
+    console.log(this.state);
   };
 
   render() {
-    const { type } = this.state;
+    const {
+      channelType, channelName, inviterId, inviteeId,
+    } = this.state;
     return (
       <KeyboardAvoidingView
         behavior="padding"
@@ -46,25 +57,46 @@ class NewChat extends Component<Props> {
         <View>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Chat Type</Text>
-            <Picker
-              style={[styles.input, styles.typePicker]}
-              selectedValue={type}
-              onValueChange={itemValue => this.setState({ type: itemValue })}
-              itemStyle={styles.typeItem}
-            >
-              <Picker.Item label="Group" value="group" />
-              <Picker.Item label="Open" value="Open" />
-            </Picker>
+            <RNPickerSelect
+              items={[
+                { label: 'Group', value: 'group' },
+                { label: 'Open', value: 'open' },
+              ]}
+              onValueChange={itemValue => this.setState({ channelType: itemValue })
+              }
+              style={styles}
+              hideIcon
+              placeholder={{ label: 'Chat Type...', value: null }}
+              value={channelType}
+            />
+            {null && (
+              <Picker
+                style={{ ...styles.input, ...styles.typePicker }}
+                selectedValue={channelType}
+                itemStyle={styles.typeItem}
+              >
+                <Picker.Item label="Group" value="group" />
+                <Picker.Item label="Open" value="Open" />
+              </Picker>
+            )}
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Chat Name</Text>
-            <TextInput style={styles.input} />
+            <Input
+              onInput={text => this.setState({ channelName: text })}
+              value={channelName}
+              withImage
+              customStyles={styles}
+            />
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Chat Cover (Optional)</Text>
             <TextInput style={styles.input} />
           </View>
-          <TouchableOpacity style={styles.createButton}>
+          <TouchableOpacity
+            style={styles.createButton}
+            onPress={() => this.handleCreateChannel()}
+          >
             <Text style={[styles.label, styles.createButtonText]}>Create</Text>
           </TouchableOpacity>
         </View>
