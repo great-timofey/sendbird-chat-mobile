@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   View,
   TouchableOpacity,
-  StatusBar,
   Image,
   FlatList,
   Text,
@@ -74,7 +73,6 @@ class Chats extends Component<Props> {
     const { channels } = this.props;
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" />
         <SegmentedControlIOS
           style={styles.control}
           selectedIndex={0}

@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StatusBar,
   TextInput,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -49,7 +48,6 @@ class Chat extends Component<Props> {
         behavior="padding"
         keyboardVerticalOffset={65}
       >
-        <StatusBar barStyle="light-content" />
         <MessagesList userId={userId} messages={messages} />
         <View style={styles.bottomBar}>
           <TextInput style={styles.messageInput} />

@@ -3,7 +3,6 @@ import {
   KeyboardAvoidingView,
   View,
   TouchableOpacity,
-  StatusBar,
   TextInput,
   Image,
   Text,
@@ -49,7 +48,6 @@ class NewChat extends Component<Props> {
     const { inviterId } = this.props;
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <StatusBar barStyle="light-content" />
         <Text style={styles.header}>Please define new chat parameters</Text>
         <View>
           <View style={styles.inputContainer}>
