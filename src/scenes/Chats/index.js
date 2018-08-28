@@ -68,9 +68,7 @@ class Chats extends Component<Props> {
         style={[styles.onlineText, lastSeenStyle ? styles.lastSeenText : {}]}
       >
         {lastSeenStyle
-          ? `Last seen ${new Date(lastSeenStatuses[index])
-            .toISOString()
-            .substring(0, 10)}`
+          ? `Last seen ${new Date(lastSeenStatuses[index])}`
           : `Online:${
             onlineStatuses[index] === 1
               ? ' one user'

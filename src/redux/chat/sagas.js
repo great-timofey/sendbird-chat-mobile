@@ -12,16 +12,15 @@ import { currentChannelSelector } from '../selectors';
 function* loadMessagesWorker() {
   try {
     const channel = yield select(currentChannelSelector);
-    const { name } = channel;
+    const { name, coverUrl } = channel;
     const messages = yield call(loadMessages, channel);
     yield put(loadMessagesFinish(messages));
     yield put(toggleLoading());
-    yield call(navigate, ChatScene, { chatName: name });
+    yield call(navigate, ChatScene, { chatName: name, chatCoverUrl: coverUrl });
   } catch (err) {
-    const { error } = err.response.data;
     yield put(toggleLoading());
-    yield put(setError(error));
-    console.log(error);
+    yield put(setError(err));
+    console.log(err);
   }
 }
 
