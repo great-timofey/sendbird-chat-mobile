@@ -1,3 +1,2 @@
 export const TOGGLE_LOADING = 'COMMON/TOGGLE_LOADING';
-export const TOGGLE_MENU = 'COMMON/TOGGLE_MENU';
 export const SET_ERROR = 'COMMON/SET_ERROR';

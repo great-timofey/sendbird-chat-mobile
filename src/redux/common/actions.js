@@ -8,7 +8,3 @@ export const setError = error => ({
   type: TYPES.SET_ERROR,
   payload: error,
 });
-
-export const toggleMenu = () => ({
-  type: TYPES.TOGGLE_MENU
-})
