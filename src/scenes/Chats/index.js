@@ -18,6 +18,7 @@ type Props = {
   navigation: Object,
   enterChannel: Function,
   onlineStatuses: Array,
+  lastSeenStatuses: Array,
 };
 
 class Chats extends Component<Props> {
@@ -59,42 +60,44 @@ class Chats extends Component<Props> {
 
   handleToggleControl = () => this.setState(({ showOpenChats }) => ({ showOpenChats: !showOpenChats }));
 
+  renderUserSeenData = (index) => {
+    const { onlineStatuses, lastSeenStatuses } = this.props;
+    const lastSeenStyle = onlineStatuses[index] === 0;
+    return (
+      <Text
+        style={[styles.onlineText, lastSeenStyle ? styles.lastSeenText : {}]}
+      >
+        {lastSeenStyle
+          ? `Last seen ${lastSeenStatuses[index]}`
+          : `Online:${
+            onlineStatuses[index] === 1
+              ? ' one user'
+              : ` ${onlineStatuses[index]}users`
+          }`}
+      </Text>
+    );
+  };
+
   renderChat = ({
     item: {
       channelType, name, url, coverUrl,
     }, index,
-  }) => {
-    const { onlineStatuses } = this.props;
-    return (
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => this.handleChannelEnter(url, channelType)}
-      >
-        <View style={styles.coverContainer}>
-          {coverUrl.length > 0 && (
-            <Image style={styles.cover} source={{ uri: coverUrl }} />
-          )}
-        </View>
-        <Text style={styles.text}>{name}</Text>
-        {channelType === 'group' && (
-          <Text
-            style={[
-              styles.onlineText,
-              {
-                display: onlineStatuses[index] > 0 ? 'flex' : 'none',
-              },
-            ]}
-          >
-            {`Online:${
-              onlineStatuses[index] === 1
-                ? ' one user'
-                : ` ${onlineStatuses[index]}users`
-            }`}
-          </Text>
+  }) => (
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => this.handleChannelEnter(url, channelType)}
+    >
+      <View style={styles.coverContainer}>
+        {coverUrl.length > 0 && (
+        <Image style={styles.cover} source={{ uri: coverUrl }} />
         )}
-      </TouchableOpacity>
-    );
-  };
+      </View>
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>{name}</Text>
+        {channelType === 'group' && this.renderUserSeenData(index)}
+      </View>
+    </TouchableOpacity>
+  );
 
   render() {
     const { showOpenChats } = this.state;
@@ -137,12 +140,29 @@ const getUsersOnlineStatuses = (channels, currentUserId) => channels
     return acc;
   }, []);
 
+const getLastSeenAt = (channels, currentUserId) => channels
+  .map(channel => channel.members
+    .filter(member => member.userId !== currentUserId)
+    .map(member => member.lastSeenAt))
+  .reduce((acc, item, index) => {
+    if (item[0] !== 0) {
+      acc[index] = item[0];
+    }
+    return acc;
+  }, {});
+
 export default connect(
   ({ common, user }) => ({
     isMenuOpen: common.isMenuOpen,
     channels: user.channels,
     onlineStatuses: getUsersOnlineStatuses(
       user.channels.filter(channel => channel.channelType === 'group'),
+      user.user.sbUserId,
+    ),
+    lastSeenStatuses: getLastSeenAt(
+      user.channels.filter(
+        channel => channel.channelType === 'group' && channel.memberCount === 2,
+      ),
       user.user.sbUserId,
     ),
   }),

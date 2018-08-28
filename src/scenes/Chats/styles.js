@@ -41,13 +41,20 @@ export default StyleSheet.create({
     height: 40,
     borderRadius: 20,
   },
-  onlineText: {
-    color: colors.darkSkyBlue,
-    marginLeft: 'auto',
+  textContainer: {
+    flex: 1,
   },
   text: {
     textAlign: 'left',
     fontWeight: 'bold',
+    color: colors.white,
+    marginBottom: 10,
+  },
+  onlineText: {
+    color: colors.darkSkyBlue,
+    fontSize: 12,
+  },
+  lastSeenText: {
     color: colors.white,
   },
 });
