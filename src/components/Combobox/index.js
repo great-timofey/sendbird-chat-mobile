@@ -4,7 +4,6 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   TextInput,
-  Image,
   Text,
   FlatList,
 } from 'react-native';
@@ -22,17 +21,6 @@ type Props = {
   customKey: String,
   value: String,
 };
-
-// const Loader = active => (
-// <View
-// style={[
-// styles.loaderView,
-// active ? { display: 'flex' } : { display: 'none' },
-// ]}
-// >
-// <ActivityIndicator size="small" color="grey" />
-// </View>
-// );
 
 const Combobox = ({
   options,
@@ -76,10 +64,7 @@ const Combobox = ({
           onChangeText={inputChangeCallback}
         />
         <ActivityIndicator
-          style={[
-            styles.loaderView,
-            searching ? { display: 'flex' } : { display: 'none' },
-          ]}
+          style={[styles.loaderView, { display: searching ? 'flex' : 'none' }]}
           animating={searching}
           color={colors.darkGreyBlueTwo}
         />
