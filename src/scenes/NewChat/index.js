@@ -62,7 +62,7 @@ class NewChat extends Component<Props> {
   };
 
   inputChangeCallback = (value) => {
-    const { unsetUsers, findUsers } = this.props;
+    const { findUsers } = this.props;
     this.setState({ query: value }, () => findUsers(this.state.query));
   };
 
@@ -81,6 +81,7 @@ class NewChat extends Component<Props> {
   handleCreateChannel = () => {
     const { channelType, channelName, inviteeId } = this.state;
     const { inviterId, createChannel } = this.props;
+    // console.log(channelType, channelName, inviterId, inviteeId);
     createChannel(channelType, channelName, inviterId, inviteeId);
   };
 
