@@ -1,7 +1,7 @@
 import { createReducer } from '../../utils/createReducer';
 import * as TYPES from './types';
 
-const initState = {
+const initialState = {
   users: [],
   searching: false,
   successful: false,
@@ -10,26 +10,23 @@ const initState = {
 const setUsers = (state, users) => ({ ...state, users });
 
 const startSearching = () => ({
-  users: [],
+  ...initialState,
   searching: true,
-  successful: false,
 });
 
-const successfulSearch = state => ({ ...state, successful: true });
+const unsetUsers = () => initialState;
 
-const failureSearch = state => ({ ...state, successful: false });
-
-const finishSearching = state => ({ ...state, searching: false });
-
-const unsetUsers = () => initState;
+const setSearchResult = (state, result) => ({
+  ...state,
+  searching: false,
+  successful: result === 'success',
+});
 
 const handlers = {
   [TYPES.SEARCH_START]: startSearching,
-  [TYPES.SEARCH_FINISH]: finishSearching,
   [TYPES.SET_USERS]: setUsers,
   [TYPES.UNSET_USERS]: unsetUsers,
-  [TYPES.SEARCH_SUCCESS]: successfulSearch,
-  [TYPES.SEARCH_FAILURE]: failureSearch,
+  [TYPES.SET_SEARCH_RESULT]: setSearchResult,
 };
 
-export default createReducer(initState, handlers);
+export default createReducer(initialState, handlers);

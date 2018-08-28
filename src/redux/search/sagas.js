@@ -2,13 +2,7 @@ import {
   call, put, select, takeLatest,
 } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import {
-  searchStart,
-  searchSuccess,
-  searchFinish,
-  searchFailure,
-  setUsers,
-} from './actions';
+import { searchStart, setSearchResult, setUsers } from './actions';
 import { currentUserSelector } from '../selectors';
 import { searchUser } from './requests';
 import * as TYPES from './types';
@@ -20,19 +14,15 @@ function* searchUserWorker(action) {
     const { token } = yield select(currentUserSelector);
     if (action.payload) {
       const { data } = yield call(searchUser, action.payload, token);
-      console.log(data);
       if (Array.isArray(data) && data.length === 0) {
-        yield put(setUsers([]));
-        yield put(searchFailure());
+        yield put(setSearchResult('failure'));
       } else {
         yield put(setUsers(data));
-        yield put(searchSuccess());
+        yield put(setSearchResult('success'));
       }
     }
-    yield put(searchFinish());
   } catch (err) {
-    yield put(searchFailure());
-    yield put(searchFinish());
+    yield put(setSearchResult('failure'));
     console.log(err);
   }
 }

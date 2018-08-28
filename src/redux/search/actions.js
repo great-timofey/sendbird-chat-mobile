@@ -18,15 +18,7 @@ export const searchStart = () => ({
   type: TYPES.SEARCH_START,
 });
 
-export const searchFailure = () => ({
-  type: TYPES.SEARCH_FAILURE,
+export const setSearchResult = result => ({
+  type: TYPES.SET_SEARCH_RESULT,
+  payload: result,
 });
-
-export const searchSuccess = () => ({
-  type: TYPES.SEARCH_SUCCESS,
-});
-
-export const searchFinish = () => ({
-  type: TYPES.SEARCH_FINISH,
-});
-
