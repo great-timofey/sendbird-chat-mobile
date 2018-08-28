@@ -61,24 +61,9 @@ class NewChat extends Component<Props> {
     );
   };
 
-  componentDidUpdate = (_, prevState) => {
-    const { unsetUsers } = this.props;
-    if (prevState.query.length > 0 && this.state.query.length === 0) {
-      unsetUsers();
-    }
-  };
-
   inputChangeCallback = (value) => {
     const { unsetUsers, findUsers } = this.props;
-    this.setState({ query: value }, () => {
-      console.log(this.state.query);
-      console.log(this.state.query.length);
-      if (this.state.query.length > 0) {
-        findUsers(this.state.query);
-      } else {
-        unsetUsers();
-      }
-    });
+    this.setState({ query: value }, () => findUsers(this.state.query));
   };
 
   getChosenUserId = (index) => {

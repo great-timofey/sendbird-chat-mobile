@@ -18,14 +18,16 @@ function* searchUserWorker(action) {
     yield delay(500);
     yield put(searchStart());
     const { token } = yield select(currentUserSelector);
-    const { data } = yield call(searchUser, action.payload, token);
-    console.log(data);
-    if (Array.isArray(data) && data.length === 0) {
-      yield put(setUsers([]));
-      yield put(searchFailure());
-    } else {
-      yield put(setUsers(data));
-      yield put(searchSuccess());
+    if (action.payload) {
+      const { data } = yield call(searchUser, action.payload, token);
+      console.log(data);
+      if (Array.isArray(data) && data.length === 0) {
+        yield put(setUsers([]));
+        yield put(searchFailure());
+      } else {
+        yield put(setUsers(data));
+        yield put(searchSuccess());
+      }
     }
     yield put(searchFinish());
   } catch (err) {

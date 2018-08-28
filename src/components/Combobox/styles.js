@@ -17,7 +17,7 @@ export default StyleSheet.create({
   },
   loaderView: {
     position: 'absolute',
-    backgroundColor: 'rgba(123, 153, 196, 0.9)',
+    backgroundColor: colors.darkGreyTransparent,
     top: 0,
     left: 0,
     right: 0,
@@ -32,6 +32,8 @@ export default StyleSheet.create({
   },
   label: {
     color: colors.darkSkyBlue,
+    paddingLeft: 0,
+    marginLeft: 0,
     fontSize: 15,
   },
   optionsList: {
