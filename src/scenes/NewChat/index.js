@@ -10,6 +10,8 @@ import {
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 import { createChannel } from '../../redux/user/actions';
+import { findUsers, unsetUsers } from '../../redux/search/actions';
+import Combobox from '../../components/Combobox';
 import Input from '../../components/Input';
 import colors from '../../global/colors';
 import styles from './styles';
@@ -17,6 +19,11 @@ import styles from './styles';
 type Props = {
   inviterId: String,
   createChannel: Function,
+  findUsers: Function,
+  unsetUsers: Function,
+  foundUsers: Array,
+  searching: Boolean,
+  successful: Boolean,
 };
 
 class NewChat extends Component<Props> {
@@ -34,23 +41,57 @@ class NewChat extends Component<Props> {
   state = {
     channelType: '',
     channelName: '',
+    query: '',
     inviteeId: '',
   };
 
-  handleCreateChannel = () => {
-    const { channelType, channelName, inviteeId } = this.state;
-    const { inviterId, createChannel } = this.props;
-    createChannel(channelType, channelName, inviterId, inviteeId);
+  clearCallback = () => {
+    const { unsetUsers } = this.props;
+    this.setState({ query: '', inviteeId: '' }, () => unsetUsers());
+  };
+
+  choosePositionCallback = (index) => {
+    const { unsetUsers } = this.props;
+    this.setState(
+      {
+        query: this.getChosenUserName(index),
+        inviteeId: this.getChosenUserId(index),
+      },
+      () => unsetUsers(),
+    );
+  };
+
+  inputChangeCallback = (value) => {
+    const { findUsers } = this.props;
+    this.setState({ query: value }, () => findUsers(this.state.query));
+  };
+
+  getChosenUserId = (index) => {
+    const { foundUsers } = this.props;
+    return foundUsers[index].sbUserId;
+  };
+
+  getChosenUserName = (index) => {
+    const { foundUsers } = this.props;
+    return foundUsers[index].username;
   };
 
   handleChangeData = param => value => this.setState({ [param]: value });
 
-  render() {
+  handleCreateChannel = () => {
     const { channelType, channelName, inviteeId } = this.state;
+    const { inviterId, createChannel } = this.props;
+    // console.log(channelType, channelName, inviterId, inviteeId);
+    createChannel(channelType, channelName, inviterId, inviteeId);
+  };
+
+  render() {
+    const { channelType, channelName, query } = this.state;
+    const { foundUsers, searching, successful } = this.props;
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <Text style={styles.header}>Please choose new chat parameters</Text>
-        <View>
+        <View style={styles.form}>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Chat Type</Text>
             <RNPickerSelect
@@ -66,14 +107,17 @@ class NewChat extends Component<Props> {
             />
           </View>
           {channelType === 'group' && (
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>User Id</Text>
-              <Input
-                onInput={this.handleChangeData('inviteeId')}
-                value={inviteeId}
-                customStyles={styles}
-              />
-            </View>
+            <Combobox
+              value={query}
+              options={foundUsers}
+              searching={searching}
+              inputChangeCallback={this.inputChangeCallback}
+              choosePositionCallback={this.choosePositionCallback}
+              clearCallback={this.clearCallback}
+              successful={successful}
+              displayValue="username"
+              customKey="_id"
+            />
           )}
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Chat Name</Text>
@@ -100,6 +144,11 @@ class NewChat extends Component<Props> {
 }
 
 export default connect(
-  ({ user }) => ({ inviterId: user.user.sbUserId }),
-  { createChannel },
+  ({ user, search }) => ({
+    foundUsers: search.users,
+    inviterId: user.user.sbUserId,
+    searching: search.searching,
+    successful: search.successful,
+  }),
+  { createChannel, findUsers, unsetUsers },
 )(NewChat);

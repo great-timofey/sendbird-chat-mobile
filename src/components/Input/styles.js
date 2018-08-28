@@ -14,10 +14,10 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
   },
   image: {
-    tintColor: 'white',
+    tintColor: colors.white,
   },
   eyeImage: {
-    tintColor: 'white',
+    tintColor: colors.white,
   },
   input: {
     color: colors.white,
