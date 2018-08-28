@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   View,
+  ActivityIndicator,
   TouchableOpacity,
   TextInput,
   Image,
@@ -8,6 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 import styles from './styles';
+import colors from '../../global/colors';
 
 type Props = {
   options: Array,
@@ -21,11 +23,16 @@ type Props = {
   value: String,
 };
 
-const Loader = () => (
-  <View style={styles.loader}>
-    <Text>loading...</Text>
-  </View>
-);
+// const Loader = active => (
+// <View
+// style={[
+// styles.loaderView,
+// active ? { display: 'flex' } : { display: 'none' },
+// ]}
+// >
+// <ActivityIndicator size="small" color="grey" />
+// </View>
+// );
 
 const Combobox = ({
   options,
@@ -37,7 +44,6 @@ const Combobox = ({
   successful,
   displayValue,
   customKey,
-  bindFunction,
 }: Props) => {
   const renderOptions = () => {
     if (successful) {
@@ -45,10 +51,10 @@ const Combobox = ({
         <FlatList
           style={styles.optionsList}
           data={options}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <TouchableOpacity
               style={styles.option}
-              onPress={item => bindFunction(item)}
+              onPress={() => choosePositionCallback(index)}
             >
               <Text>{item[displayValue]}</Text>
             </TouchableOpacity>
@@ -69,7 +75,14 @@ const Combobox = ({
           value={value}
           onChangeText={inputChangeCallback}
         />
-        {searching && <Loader />}
+        <ActivityIndicator
+          style={[
+            styles.loaderView,
+            searching ? { display: 'flex' } : { display: 'none' },
+          ]}
+          animating={searching}
+          color={colors.darkGreyBlueTwo}
+        />
         <TouchableOpacity style={styles.clearButton} onPress={clearCallback}>
           <Text style={styles.clearLabel}>x</Text>
         </TouchableOpacity>

@@ -20,6 +20,7 @@ type Props = {
   inviterId: String,
   createChannel: Function,
   findUsers: Function,
+  unsetUsers: Function,
   foundUsers: Array,
   searching: Boolean,
   successful: Boolean,
@@ -41,33 +42,65 @@ class NewChat extends Component<Props> {
     channelType: '',
     channelName: '',
     query: '',
-    inviteeData: '',
+    inviteeId: '',
   };
 
-  clearCallback = () => this.setState({ query: '' }, () => this.props.unsetUsers());
+  clearCallback = () => {
+    const { unsetUsers } = this.props;
+    this.setState({ query: '', inviteeId: '' }, () => unsetUsers());
+  };
 
-  choosePositionCallback = e => console.log(this.ref);
+  choosePositionCallback = (index) => {
+    const { unsetUsers } = this.props;
+    this.setState(
+      {
+        query: this.getChosenUserName(index),
+        inviteeId: this.getChosenUserId(index),
+      },
+      () => unsetUsers(),
+    );
+  };
 
-  inputChangeCallback = value => this.setState({ query: value }, () => this.props.findUsers(this.state.query));
+  componentDidUpdate = (_, prevState) => {
+    const { unsetUsers } = this.props;
+    if (prevState.query.length > 0 && this.state.query.length === 0) {
+      unsetUsers();
+    }
+  };
+
+  inputChangeCallback = (value) => {
+    const { unsetUsers, findUsers } = this.props;
+    this.setState({ query: value }, () => {
+      console.log(this.state.query);
+      console.log(this.state.query.length);
+      if (this.state.query.length > 0) {
+        findUsers(this.state.query);
+      } else {
+        unsetUsers();
+      }
+    });
+  };
+
+  getChosenUserId = (index) => {
+    const { foundUsers } = this.props;
+    return foundUsers[index].sbUserId;
+  };
+
+  getChosenUserName = (index) => {
+    const { foundUsers } = this.props;
+    return foundUsers[index].username;
+  };
 
   handleChangeData = param => value => this.setState({ [param]: value });
 
   handleCreateChannel = () => {
-    const { channelType, channelName, inviteeData } = this.state;
+    const { channelType, channelName, inviteeId } = this.state;
     const { inviterId, createChannel } = this.props;
-    console.log(this.state);
-    // here we are going to extract inviteeId from inviteeData gotten from Combobox
-    // createChannel(channelType, channelName, inviterId, ?);
+    createChannel(channelType, channelName, inviterId, inviteeId);
   };
 
-  handleChangeData = param => value => this.setState({ [param]: value });
-
-  handleBindListElement = item => this.setState({ item });
-
   render() {
-    const {
-      channelType, channelName, inviteeData, query,
-    } = this.state;
+    const { channelType, channelName, query } = this.state;
     const { foundUsers, searching, successful } = this.props;
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -98,7 +131,6 @@ class NewChat extends Component<Props> {
               successful={successful}
               displayValue="username"
               customKey="_id"
-              bindFunction={this.handleBindListElement}
             />
           )}
           <View style={styles.inputContainer}>
