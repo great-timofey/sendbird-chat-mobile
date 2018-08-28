@@ -8,11 +8,11 @@ import {
   Image,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { currentChannelSelector } from '../../redux/selectors';
 import { ChatsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
 import colors from '../../global/colors';
 import styles from './styles';
+import images from '../../global/images';
 
 type Props = {
   messages: Array,
@@ -80,7 +80,7 @@ class Chat extends Component<Props> {
         <View style={styles.bottomBar}>
           <TextInput style={styles.messageInput} />
           <TouchableOpacity style={styles.sendButton}>
-            <Text style={styles.sendText}>></Text>
+            <Image style={styles.sendText} source={images.send} />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

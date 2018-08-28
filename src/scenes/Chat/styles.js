@@ -15,12 +15,12 @@ export default StyleSheet.create({
     backgroundColor: colors.white20,
   },
   messageInput: {
-    borderRadius: 15,
+    borderRadius: 20,
     borderColor: colors.darkGreyBlueTwo,
     borderWidth: 2,
     height: 40,
     flex: 1,
-    paddingLeft: 5,
+    paddingLeft: 10,
     marginRight: 5,
     fontSize: 20,
     backgroundColor: colors.white,
@@ -28,13 +28,8 @@ export default StyleSheet.create({
   sendButton: {
     height: 40,
     width: 40,
-    borderRadius: 20,
-    backgroundColor: colors.darkSkyBlue,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  sendText: {
-    fontSize: 20,
-    textAlign: 'center',
-  },
+  sendText: {},
 });
