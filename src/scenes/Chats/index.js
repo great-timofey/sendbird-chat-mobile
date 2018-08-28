@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { NewChatScene } from '../../navigation/scenes';
-import { toggleMenu } from '../../redux/common/actions';
 import { enterChannel } from '../../redux/user/actions';
 import colors from '../../global/colors';
 import styles from './styles';
@@ -18,6 +17,7 @@ type Props = {
   channels: Array,
   navigation: Object,
   enterChannel: Function,
+  onlineStatuses: Array,
 };
 
 class Chats extends Component<Props> {
@@ -46,7 +46,7 @@ class Chats extends Component<Props> {
   });
 
   state = {
-    showOpen: true,
+    showOpenChats: true,
   };
 
   handleChannelEnter = (channelUrl, channelType) => {
@@ -57,34 +57,47 @@ class Chats extends Component<Props> {
     });
   };
 
-  handleToggleControl = () => this.setState(({ showOpen }) => ({ showOpen: !showOpen }));
+  handleToggleControl = () => this.setState(({ showOpenChats }) => ({ showOpenChats: !showOpenChats }));
 
-  renderChat = ({ item: { channelType, name, url }, index }) => (
-    <TouchableOpacity
-      style={styles.button}
-      onPress={() => this.handleChannelEnter(url, channelType)}
-    >
-      <Text style={styles.text}>{name}</Text>
-      {channelType === 'group' && (
-        <Text
-          style={[
-            styles.onlineText,
-            {
-              display:
-                this.props.onlineStatuses[index][0] === 'online'
-                  ? 'flex'
-                  : 'none',
-            },
-          ]}
-        >
-          Online
-        </Text>
-      )}
-    </TouchableOpacity>
-  );
+  renderChat = ({
+    item: {
+      channelType, name, url, coverUrl,
+    }, index,
+  }) => {
+    const { onlineStatuses } = this.props;
+    return (
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => this.handleChannelEnter(url, channelType)}
+      >
+        <View style={styles.coverContainer}>
+          {coverUrl.length > 0 && (
+            <Image style={styles.cover} source={{ uri: coverUrl }} />
+          )}
+        </View>
+        <Text style={styles.text}>{name}</Text>
+        {channelType === 'group' && (
+          <Text
+            style={[
+              styles.onlineText,
+              {
+                display: onlineStatuses[index] > 0 ? 'flex' : 'none',
+              },
+            ]}
+          >
+            {`Online:${
+              onlineStatuses[index] === 1
+                ? ' one user'
+                : ` ${onlineStatuses[index]}users`
+            }`}
+          </Text>
+        )}
+      </TouchableOpacity>
+    );
+  };
 
   render() {
-    const { showOpen } = this.state;
+    const { showOpenChats } = this.state;
     const { channels } = this.props;
     return (
       <View style={styles.container}>
@@ -98,7 +111,7 @@ class Chats extends Component<Props> {
         <FlatList
           style={styles.list}
           data={channels.filter(
-            channel => channel.channelType === (showOpen ? 'open' : 'group'),
+            channel => channel.channelType === (showOpenChats ? 'open' : 'group'),
           )}
           renderItem={this.renderChat}
           keyExtractor={item => item.url}
@@ -108,9 +121,21 @@ class Chats extends Component<Props> {
   }
 }
 
-const getUsersOnlineStatuses = (channels, currentUserId) => channels.map(channel => channel.members
-  .filter(member => member.userId !== currentUserId)
-  .map(member => member.connectionStatus));
+//  function for getting array with values of online users count for every group channel
+
+const getUsersOnlineStatuses = (channels, currentUserId) => channels
+  .map(channel => channel.members
+    .filter(member => member.userId !== currentUserId)
+    .map(member => member.connectionStatus))
+  .reduce((acc, item, index) => {
+    if (!acc[index]) {
+      acc[index] = 0;
+    }
+    if (item[0] === 'online') {
+      acc[index]++;
+    }
+    return acc;
+  }, []);
 
 export default connect(
   ({ common, user }) => ({
@@ -121,5 +146,5 @@ export default connect(
       user.user.sbUserId,
     ),
   }),
-  { enterChannel, toggleMenu },
+  { enterChannel },
 )(Chats);

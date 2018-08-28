@@ -20,17 +20,30 @@ export default StyleSheet.create({
     width: '100%',
     flex: 1,
   },
-  onlineText: {
-    color: colors.darkSkyBlue,
-  },
   button: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: colors.black,
     backgroundColor: colors.darkSky,
+  },
+  coverContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+    backgroundColor: colors.darkGreyBlueTwo,
+  },
+  cover: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  onlineText: {
+    color: colors.darkSkyBlue,
+    marginLeft: 'auto',
   },
   text: {
     textAlign: 'left',
