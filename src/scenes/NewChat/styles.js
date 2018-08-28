@@ -12,7 +12,11 @@ export default StyleSheet.create({
     textAlign: 'center',
     marginBottom: 30,
     fontSize: 25,
-    color: 'white',
+    color: colors.white,
+  },
+  form: {
+    width: 330,
+    justifyContent: 'space-between',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -31,7 +35,6 @@ export default StyleSheet.create({
   },
   label: {
     fontSize: 18,
-    marginRight: 30,
     maxWidth: 100,
     color: colors.darkSkyBlue,
     textAlign: 'center',
@@ -41,19 +44,20 @@ export default StyleSheet.create({
     color: 'white',
     height: 40,
   },
-  inputLabel: {
-    marginRight: 10,
-  },
   createButton: {
-    backgroundColor: colors.darkSky,
-    borderWidth: 1,
-    borderRadius: 20,
-    paddingVertical: 10,
-    borderColor: colors.darkSkyBlue,
+    flex: 0,
     alignItems: 'center',
+    justifyContent: 'center',
+    width: 290,
+    height: 50,
+    borderRadius: 6,
+    backgroundColor: colors.darkSkyBlue,
+    alignSelf: 'center',
   },
   createButtonText: {
-    marginRight: 0,
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: colors.dark,
   },
   inputIOS: {
     backgroundColor: 'white',

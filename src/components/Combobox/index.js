@@ -56,7 +56,7 @@ const Combobox = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}> Username / Mail </Text>
+      <Text style={styles.label}>Username / Mail</Text>
       <View style={styles.comboboxContainer}>
         <TextInput
           style={styles.input}

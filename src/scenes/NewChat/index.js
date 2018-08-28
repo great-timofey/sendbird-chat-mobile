@@ -91,7 +91,7 @@ class NewChat extends Component<Props> {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <Text style={styles.header}>Please choose new chat parameters</Text>
-        <View>
+        <View style={styles.form}>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Chat Type</Text>
             <RNPickerSelect
