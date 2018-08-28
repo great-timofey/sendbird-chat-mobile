@@ -59,12 +59,27 @@ class Chats extends Component<Props> {
 
   handleToggleControl = () => this.setState(({ showOpen }) => ({ showOpen: !showOpen }));
 
-  renderChat = ({ item: { channelType, name, url } }) => (
+  renderChat = ({ item: { channelType, name, url }, index }) => (
     <TouchableOpacity
       style={styles.button}
       onPress={() => this.handleChannelEnter(url, channelType)}
     >
       <Text style={styles.text}>{name}</Text>
+      {channelType === 'group' && (
+        <Text
+          style={[
+            styles.onlineText,
+            {
+              display:
+                this.props.onlineStatuses[index][0] === 'online'
+                  ? 'flex'
+                  : 'none',
+            },
+          ]}
+        >
+          Online
+        </Text>
+      )}
     </TouchableOpacity>
   );
 
@@ -93,10 +108,18 @@ class Chats extends Component<Props> {
   }
 }
 
+const getUsersOnlineStatuses = (channels, currentUserId) => channels.map(channel => channel.members
+  .filter(member => member.userId !== currentUserId)
+  .map(member => member.connectionStatus));
+
 export default connect(
   ({ common, user }) => ({
     isMenuOpen: common.isMenuOpen,
     channels: user.channels,
+    onlineStatuses: getUsersOnlineStatuses(
+      user.channels.filter(channel => channel.channelType === 'group'),
+      user.user.sbUserId,
+    ),
   }),
   { enterChannel, toggleMenu },
 )(Chats);

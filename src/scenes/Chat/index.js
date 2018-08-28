@@ -34,7 +34,7 @@ class Chat extends Component<Props> {
         onPress={() => navigation.navigate(ChatsScene)}
       >
         <Text style={{ color: colors.darkSkyBlue, fontSize: 18 }}>
-          To Chats
+          X
         </Text>
       </TouchableOpacity>
     ),

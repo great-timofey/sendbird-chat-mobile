@@ -20,7 +20,12 @@ export default StyleSheet.create({
     width: '100%',
     flex: 1,
   },
+  onlineText: {
+    color: colors.darkSkyBlue,
+  },
   button: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderWidth: 1,
