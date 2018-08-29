@@ -67,7 +67,7 @@ class Chat extends Component<Props> {
       >
         <MessagesList userId={userId} messages={messages} />
         <View style={styles.bottomBar}>
-          <TextInput style={styles.messageInput} />
+          <TextInput placeholder="Your message" style={styles.messageInput} />
           <TouchableOpacity style={styles.sendButton}>
             <Image style={styles.sendText} source={images.send} />
           </TouchableOpacity>

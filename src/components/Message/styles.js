@@ -8,23 +8,31 @@ export default StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: colors.black,
-    backgroundColor: colors.darkSkyBlue,
+    backgroundColor: colors.blue,
   },
   leftSide: {
     alignSelf: 'flex-start',
-    backgroundColor: 'red',
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.white20,
+    color: colors.black,
   },
   rightSide: {
     alignSelf: 'flex-end',
+    color: colors.white,
   },
-  sender: {
+  header: {
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 15,
   },
   message: {
     fontSize: 13,
+  },
+  owner: {
+    color: colors.white,
+  },
+  notOwner: {
+    color: colors.black,
   },
 });

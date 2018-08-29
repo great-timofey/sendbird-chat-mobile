@@ -12,18 +12,21 @@ type Props = {
 
 const Message = ({
   message, type, sender, userId, senderId,
-}: Props) => (
+}: Props) => { 
+  const isOwner = userId === senderId; 
+  return (
   <View
     style={[
       styles.container,
-      userId === senderId ? styles.rightSide : styles.leftSide,
+      isOwner ? styles.rightSide : styles.leftSide,
     ]}
   >
-    <Text style={styles.sender}>{sender}</Text>
-    <Text style={styles.message}>
-      {type === 'user' ? message : 'User sent a file message'}
-    </Text>
-  </View>
-);
+      <Text style={[styles.header, isOwner ? styles.owner : styles.notOwner]}>{sender}</Text>
+      <Text style={[styles.message, isOwner ? styles.owner : styles.notOwner]}>
+        {type === 'user' ? message : 'User sent a file message'}
+      </Text>
+    </View>
+  )
+  };
 
 export default Message;
