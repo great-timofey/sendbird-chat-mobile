@@ -10,10 +10,9 @@ import {
 import { connect } from 'react-redux';
 import { ChatsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
-import colors from '../../global/colors';
-import styles from './styles';
-import { currentChannelSelector } from '../../redux/selectors';
 import images from '../../global/images';
+import styles from './styles';
+import headerStyles from './headerStyles';
 
 type Props = {
   messages: Array,
@@ -23,70 +22,34 @@ type Props = {
 class Chat extends Component<Props> {
   static navigationOptions = ({ navigation }) => ({
     header: (
-      <View
-        style={{
-          height: 65,
-          paddingTop: 20,
-          paddingHorizontal: 5,
-          backgroundColor: colors.darkSky,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderBottomWidth: 2,
-          borderColor: colors.darkGreyTransparent,
-        }}
-      >
+      <View style={headerStyles.container}>
         <TouchableOpacity
-          style={{ marginLeft: 10 }}
+          style={headerStyles.leftButton}
           onPress={() => navigation.navigate(ChatsScene)}
         >
-          <Image
-            style={{ height: 20, width: 20, tintColor: colors.darkSkyBlue }}
-            source={images.close_chat}
-          />
+          <Image style={headerStyles.leftImage} source={images.close_chat} />
         </TouchableOpacity>
-        <View style={{ alignItems: 'center' }}>
-          <Text
-            style={{
-              color: colors.darkSkyBlue,
-              fontWeight: 'bold',
-              fontSize: 17,
-              marginBottom: 2,
-            }}
-          >
+        <View style={headerStyles.headerContainer}>
+          <Text style={headerStyles.chatName}>
             {navigation.getParam('name', 'Chat')}
           </Text>
           {navigation.getParam('channelType') === 'group' && (
             <Text
-              style={{
-                color: navigation.getParam('userSeenData').startsWith('Online')
-                  ? colors.darkSkyBlue
-                  : colors.darkGreyTransparent,
-                fontSize: 12,
-              }}
+              style={
+                navigation.getParam('userSeenData').startsWith('Online')
+                  ? headerStyles.userOnlineStatus
+                  : headerStyles.userSeenStatus
+              }
             >
               {navigation.getParam('userSeenData', 'Last seen long time ago')}
             </Text>
           )}
         </View>
-        <View
-          style={{
-            backgroundColor: colors.darkGreyBlueTwo,
-            width: 30,
-            height: 30,
-            borderRadius: 15,
-            marginRight: 10,
-            marginBottom: 5,
-          }}
-        >
+        <View style={headerStyles.rightButton}>
           {navigation.state.params.coverUrl !== '' && (
             <Image
               source={{ uri: `${navigation.state.params.coverUrl}` }}
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 15,
-              }}
+              style={headerStyles.rightImage}
             />
           )}
         </View>
