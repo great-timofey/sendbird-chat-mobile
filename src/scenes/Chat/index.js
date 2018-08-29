@@ -56,14 +56,16 @@ class Chat extends Component<Props> {
           marginBottom: 5,
         }}
       >
-        <Image
-          source={{ uri: `${navigation.state.params.chatCoverUrl || ''}` }}
-          style={{
-            width: 30,
-            height: 30,
-            borderRadius: 15,
-          }}
-        />
+        {navigation.state.params.chatCoverUrl !== '' && (
+          <Image
+            source={{ uri: `${navigation.state.params.chatCoverUrl}` }}
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 15,
+            }}
+          />
+        )}
       </View>
     ),
   });
