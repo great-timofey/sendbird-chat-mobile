@@ -7,6 +7,7 @@ import {
   Text,
   SegmentedControlIOS,
 } from 'react-native';
+import dayjs from 'dayjs';
 import { connect } from 'react-redux';
 import { NewChatScene } from '../../navigation/scenes';
 import { enterChannel } from '../../redux/user/actions';
@@ -63,12 +64,13 @@ class Chats extends Component<Props> {
   renderUserSeenData = (index) => {
     const { onlineStatuses, lastSeenStatuses } = this.props;
     const lastSeenStyle = onlineStatuses[index] === 0;
+    //  what to do with strange time showing?
     return (
       <Text
         style={[styles.onlineText, lastSeenStyle ? styles.lastSeenText : {}]}
       >
         {lastSeenStyle
-          ? `Last seen ${new Date(lastSeenStatuses[index])}`
+          ? `Last seen ${dayjs(lastSeenStatuses[index]).format('DD/MM/YY')}`
           : `Online:${
             onlineStatuses[index] === 1
               ? ' one user'

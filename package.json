@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "dayjs": "^1.7.5",
     "react": "^16.4.1",
     "react-native": "^0.56.0",
     "react-native-picker-select": "^4.2.0",
