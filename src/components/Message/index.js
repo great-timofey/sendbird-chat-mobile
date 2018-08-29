@@ -10,6 +10,7 @@ type Props = {
   senderId: String,
   date: String,
   time: String,
+  index: String,
 };
 
 const Message = ({
@@ -20,10 +21,11 @@ const Message = ({
   senderId,
   date,
   time,
+  isFirst,
 }: Props) => {
   const isOwner = userId === senderId;
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isFirst ? { marginTop: 40 } : {}]}>
       <View style={styles.dateContainer}>
         <Text style={styles.dateText}>{date}</Text>
       </View>

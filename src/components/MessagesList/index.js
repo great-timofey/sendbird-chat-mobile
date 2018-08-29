@@ -14,8 +14,9 @@ const MessagesList = ({ messages, userId }: Props) => (
     <FlatList
       inverted
       data={messages}
-      renderItem={({ item }) => (
+      renderItem={({ item, index }) => (
         <Message
+          isFirst={index === messages.length - 1}
           userId={userId}
           message={item.message}
           date={dayjs(item.createdAt).format('MMMM D')}
