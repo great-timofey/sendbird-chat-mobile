@@ -21,51 +21,70 @@ type Props = {
 
 class Chat extends Component<Props> {
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.getParam('chatName', 'Chat'),
-    headerStyle: {
-      backgroundColor: colors.darkSky,
-    },
-    headerTintColor: colors.darkSkyBlue,
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
-    headerLeft: (
-      <TouchableOpacity
-        style={{ marginLeft: 10 }}
-        onPress={() => navigation.navigate(ChatsScene)}
-      >
-        <Text
-          style={{
-            color: colors.darkSkyBlue,
-            fontSize: 18,
-            fontWeight: 'bold',
-          }}
-        >
-          X
-        </Text>
-      </TouchableOpacity>
-    ),
-    headerRight: (
+    header: (
       <View
         style={{
-          backgroundColor: colors.darkGreyBlueTwo,
-          width: 30,
-          height: 30,
-          borderRadius: 15,
-          marginRight: 10,
-          marginBottom: 5,
+          height: 65,
+          paddingTop: 20,
+          paddingHorizontal: 5,
+          backgroundColor: colors.darkSky,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderBottomWidth: 2,
+          borderColor: colors.darkGreyTransparent,
         }}
       >
-        {navigation.state.params.chatCoverUrl !== '' && (
+        <TouchableOpacity
+          style={{ marginLeft: 10 }}
+          onPress={() => navigation.navigate(ChatsScene)}
+        >
           <Image
-            source={{ uri: `${navigation.state.params.chatCoverUrl}` }}
-            style={{
-              width: 30,
-              height: 30,
-              borderRadius: 15,
-            }}
+            style={{ height: 20, width: 20, tintColor: colors.darkSkyBlue }}
+            source={images.close_chat}
           />
-        )}
+        </TouchableOpacity>
+        <View style={{ alignItems: 'center' }}>
+          <Text
+            style={{
+              color: colors.darkSkyBlue,
+              fontWeight: 'bold',
+              fontSize: 17,
+              marginBottom: 2,
+            }}
+          >
+            {navigation.getParam('chatName', 'Chat')}
+          </Text>
+          <Text
+            style={{
+              color: colors.darkGreyTransparent,
+              fontSize: 12,
+            }}
+          >
+            Last Seen
+          </Text>
+        </View>
+        <View
+          style={{
+            backgroundColor: colors.darkGreyBlueTwo,
+            width: 30,
+            height: 30,
+            borderRadius: 15,
+            marginRight: 10,
+            marginBottom: 5,
+          }}
+        >
+          {navigation.state.params.chatCoverUrl !== '' && (
+            <Image
+              source={{ uri: `${navigation.state.params.chatCoverUrl}` }}
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: 15,
+              }}
+            />
+          )}
+        </View>
       </View>
     ),
   });
