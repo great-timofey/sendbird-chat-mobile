@@ -10,7 +10,7 @@ type Props = {
   senderId: String,
   date: String,
   time: String,
-  index: String,
+  isFirst: Boolean,
 };
 
 const Message = ({

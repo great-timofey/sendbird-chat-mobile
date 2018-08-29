@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { NewChatScene } from '../../navigation/scenes';
 import { enterChannel } from '../../redux/user/actions';
 import { setCurrentOnlineMessage } from '../../redux/common/actions';
+import { getUsersOnlineStatuses, getLastSeenAt } from '../../utils/chatHelpers';
 import colors from '../../global/colors';
 import styles from './styles';
 
@@ -129,33 +130,6 @@ class Chats extends Component<Props> {
     );
   }
 }
-
-//  function for getting array with values of online users count for every group channel
-
-const getUsersOnlineStatuses = (channels, currentUserId) => channels
-  .map(channel => channel.members
-    .filter(member => member.userId !== currentUserId)
-    .map(member => member.connectionStatus))
-  .reduce((acc, item, index) => {
-    if (!acc[index]) {
-      acc[index] = 0;
-    }
-    if (item[0] === 'online') {
-      acc[index]++;
-    }
-    return acc;
-  }, []);
-
-const getLastSeenAt = (channels, currentUserId) => channels
-  .map(channel => channel.members
-    .filter(member => member.userId !== currentUserId)
-    .map(member => member.lastSeenAt))
-  .reduce((acc, item, index) => {
-    if (item[0] !== 0) {
-      acc[index] = item[0];
-    }
-    return acc;
-  }, {});
 
 export default connect(
   ({ common, user }) => ({
