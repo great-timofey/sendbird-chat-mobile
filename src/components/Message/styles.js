@@ -49,7 +49,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   dateText: {
-    fontSize: 9,
+    fontSize: 11,
     color: colors.darkGreyBlueTwo,
   },
 });

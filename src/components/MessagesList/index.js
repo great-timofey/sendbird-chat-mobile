@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
+import dayjs from 'dayjs';
 import Message from '../Message';
-import colors from '../../global/colors';
 import styles from './styles';
 
 type Props = {
@@ -18,6 +18,7 @@ const MessagesList = ({ messages, userId }: Props) => (
         <Message
           userId={userId}
           message={item.message}
+          date={dayjs(item.createdAt).format('MMMM D')}
           type={item.messageType}
           sender={item._sender.nickname}
           senderId={item._sender.userId}

@@ -69,7 +69,7 @@ class Chat extends Component<Props> {
         <View style={styles.bottomBar}>
           <TextInput placeholder="Your message" style={styles.messageInput} />
           <TouchableOpacity style={styles.sendButton}>
-            <Image style={styles.sendText} source={images.send} />
+            <Image source={images.send} />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

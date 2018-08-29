@@ -12,7 +12,7 @@ export default StyleSheet.create({
     padding: 5,
     overflow: 'hidden',
     flexDirection: 'row',
-    backgroundColor: colors.white20,
+    backgroundColor: colors.darkGreyTransparent,
   },
   messageInput: {
     borderRadius: 20,
@@ -22,7 +22,7 @@ export default StyleSheet.create({
     flex: 1,
     paddingLeft: 15,
     marginRight: 5,
-    fontSize: 20,
+    fontSize: 18,
     backgroundColor: colors.white,
   },
   sendButton: {
@@ -31,5 +31,4 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  sendText: {},
 });

@@ -8,16 +8,17 @@ type Props = {
   sender: String,
   userId: String,
   senderId: String,
+  date: String,
 };
 
 const Message = ({
-  message, type, sender, userId, senderId,
+  message, type, sender, userId, senderId, date,
 }: Props) => {
   const isOwner = userId === senderId;
   return (
     <View style={styles.container}>
       <View style={styles.dateContainer}>
-        <Text style={styles.dateText}>Date goes here</Text>
+        <Text style={styles.dateText}>{date}</Text>
       </View>
       <View
         style={[
