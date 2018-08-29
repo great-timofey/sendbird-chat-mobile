@@ -22,6 +22,7 @@ const MessagesList = ({ messages, userId }: Props) => (
           type={item.messageType}
           sender={item._sender.nickname}
           senderId={item._sender.userId}
+          time={dayjs(item.createdAt).format('HH:mm')}
         />
       )}
       keyExtractor={item => `${item.messageId}`}

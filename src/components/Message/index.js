@@ -9,10 +9,17 @@ type Props = {
   userId: String,
   senderId: String,
   date: String,
+  time: String,
 };
 
 const Message = ({
-  message, type, sender, userId, senderId, date,
+  message,
+  type,
+  sender,
+  userId,
+  senderId,
+  date,
+  time,
 }: Props) => {
   const isOwner = userId === senderId;
   return (
@@ -34,6 +41,7 @@ const Message = ({
         >
           {type === 'user' ? message : 'User sent a file message'}
         </Text>
+        <Text style={[styles.time, isOwner ? styles.owner : {}]}>{time}</Text>
       </View>
     </View>
   );

@@ -13,8 +13,6 @@ export default StyleSheet.create({
   },
   leftSide: {
     backgroundColor: colors.darkGreyTransparent,
-    borderWidth: 1,
-    borderColor: colors.white30,
     color: colors.black,
     alignSelf: 'flex-start',
   },
@@ -26,10 +24,10 @@ export default StyleSheet.create({
   header: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 15,
+    fontSize: 16,
   },
   message: {
-    fontSize: 13,
+    fontSize: 14,
   },
   owner: {
     color: colors.white,
@@ -51,5 +49,11 @@ export default StyleSheet.create({
   dateText: {
     fontSize: 11,
     color: colors.darkGreyBlueTwo,
+  },
+  time: {
+    fontSize: 11,
+    position: 'absolute',
+    bottom: 5,
+    right: 5,
   },
 });
