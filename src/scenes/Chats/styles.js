@@ -7,7 +7,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: colors.darkGreyBlueTwo,
-    paddingVertical: 20,
+    paddingTop: 20,
   },
   control: {
     width: 300,
