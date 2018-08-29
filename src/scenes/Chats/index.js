@@ -11,15 +11,16 @@ import dayjs from 'dayjs';
 import { connect } from 'react-redux';
 import { NewChatScene } from '../../navigation/scenes';
 import { enterChannel } from '../../redux/user/actions';
+import { setCurrentOnlineMessage } from '../../redux/common/actions';
 import colors from '../../global/colors';
 import styles from './styles';
 
 type Props = {
   channels: Array,
-  navigation: Object,
   enterChannel: Function,
   onlineStatuses: Array,
   lastSeenStatuses: Array,
+  setCurrentOnlineMessage: Function,
 };
 
 class Chats extends Component<Props> {
@@ -51,55 +52,58 @@ class Chats extends Component<Props> {
     showOpenChats: true,
   };
 
-  handleChannelEnter = (channelUrl, channelType) => {
-    const { navigation, enterChannel, channels } = this.props;
+  handleChannelEnter = (channelUrl, channelType, index, lastSeenStyle) => {
+    const { enterChannel, setCurrentOnlineMessage } = this.props;
+    setCurrentOnlineMessage(this.getUserSeenData(index, lastSeenStyle));
     enterChannel(channelUrl, channelType);
-    navigation.setParams({
-      chatName: channels.find(channel => channel.url === channelUrl).name,
-    });
   };
 
   handleToggleControl = () => this.setState(({ showOpenChats }) => ({ showOpenChats: !showOpenChats }));
 
-  renderUserSeenData = (index) => {
+  getUserSeenData = (index, lastSeenStyle) => {
     const { onlineStatuses, lastSeenStatuses } = this.props;
-    const lastSeenStyle = onlineStatuses[index] === 0;
-    //  what to do with strange time showing?
-    return (
-      <Text
-        style={[styles.onlineText, lastSeenStyle ? styles.lastSeenText : {}]}
-      >
-        {lastSeenStyle
-          ? `Last seen ${dayjs(lastSeenStatuses[index]).format('DD/MM/YY')}`
-          : `Online:${
-            onlineStatuses[index] === 1
-              ? ' one user'
-              : ` ${onlineStatuses[index]}users`
-          }`}
-      </Text>
-    );
+    if (lastSeenStyle) {
+      return `Last seen ${dayjs(lastSeenStatuses[index]).format('DD/MM/YY')}`;
+    }
+    return `Online:${
+      onlineStatuses[index] === 1
+        ? ' one user'
+        : ` ${onlineStatuses[index]} users`
+    }`;
   };
+
+  renderUserSeenData = (index, lastSeenStyle) => (
+    <Text style={[styles.onlineText, lastSeenStyle ? styles.lastSeenText : {}]}>
+      {this.getUserSeenData(index, lastSeenStyle)}
+    </Text>
+  );
 
   renderChat = ({
     item: {
       channelType, name, url, coverUrl,
     }, index,
-  }) => (
-    <TouchableOpacity
-      style={styles.button}
-      onPress={() => this.handleChannelEnter(url, channelType)}
-    >
-      <View style={styles.coverContainer}>
-        {coverUrl.length > 0 && (
-        <Image style={styles.cover} source={{ uri: coverUrl }} />
-        )}
-      </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.text}>{name}</Text>
-        {channelType === 'group' && this.renderUserSeenData(index)}
-      </View>
-    </TouchableOpacity>
-  );
+  }) => {
+    const { onlineStatuses } = this.props;
+    const lastSeenStyle = onlineStatuses[index] === 0;
+    return (
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => this.handleChannelEnter(url, channelType, index, lastSeenStyle)
+        }
+      >
+        <View style={styles.coverContainer}>
+          {coverUrl.length > 0 && (
+            <Image style={styles.cover} source={{ uri: coverUrl }} />
+          )}
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>{name}</Text>
+          {channelType === 'group'
+            && this.renderUserSeenData(index, lastSeenStyle)}
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   render() {
     const { showOpenChats } = this.state;
@@ -168,5 +172,5 @@ export default connect(
       user.user.sbUserId,
     ),
   }),
-  { enterChannel },
+  { enterChannel, setCurrentOnlineMessage },
 )(Chats);

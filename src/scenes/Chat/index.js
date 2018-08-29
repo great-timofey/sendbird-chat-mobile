@@ -12,6 +12,7 @@ import { ChatsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
 import colors from '../../global/colors';
 import styles from './styles';
+import { currentChannelSelector } from '../../redux/selectors';
 import images from '../../global/images';
 
 type Props = {
@@ -53,16 +54,20 @@ class Chat extends Component<Props> {
               marginBottom: 2,
             }}
           >
-            {navigation.getParam('chatName', 'Chat')}
+            {navigation.getParam('name', 'Chat')}
           </Text>
-          <Text
-            style={{
-              color: colors.darkGreyTransparent,
-              fontSize: 12,
-            }}
-          >
-            Last Seen
-          </Text>
+          {navigation.getParam('channelType') === 'group' && (
+            <Text
+              style={{
+                color: navigation.getParam('userSeenData').startsWith('Online')
+                  ? colors.darkSkyBlue
+                  : colors.darkGreyTransparent,
+                fontSize: 12,
+              }}
+            >
+              {navigation.getParam('userSeenData', 'Last seen long time ago')}
+            </Text>
+          )}
         </View>
         <View
           style={{
@@ -74,9 +79,9 @@ class Chat extends Component<Props> {
             marginBottom: 5,
           }}
         >
-          {navigation.state.params.chatCoverUrl !== '' && (
+          {navigation.state.params.coverUrl !== '' && (
             <Image
-              source={{ uri: `${navigation.state.params.chatCoverUrl}` }}
+              source={{ uri: `${navigation.state.params.coverUrl}` }}
               style={{
                 width: 30,
                 height: 30,

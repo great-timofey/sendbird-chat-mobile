@@ -55,6 +55,6 @@ export default StyleSheet.create({
     fontSize: 12,
   },
   lastSeenText: {
-    color: colors.white,
+    color: colors.white20,
   },
 });
