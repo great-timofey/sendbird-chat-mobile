@@ -98,7 +98,14 @@ class Chats extends Component<Props> {
           )}
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.text}>{name}</Text>
+          <Text
+            style={[
+              styles.text,
+              channelType === 'open' ? { marginBottom: 0 } : {},
+            ]}
+          >
+            {name}
+          </Text>
           {channelType === 'group'
             && this.renderUserSeenData(index, lastSeenStyle)}
         </View>
