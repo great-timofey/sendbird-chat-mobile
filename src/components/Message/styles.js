@@ -3,7 +3,7 @@ import colors from '../../global/colors';
 
 export default StyleSheet.create({
   container: {
-    marginVertical: 20,
+    marginTop: 10,
   },
   messageContainer: {
     padding: 10,

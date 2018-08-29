@@ -8,9 +8,9 @@ type Props = {
   sender: String,
   userId: String,
   senderId: String,
-  date: String,
+  date?: String,
   time: String,
-  isFirst: Boolean,
+  isLast: Boolean,
 };
 
 const Message = ({
@@ -21,14 +21,22 @@ const Message = ({
   senderId,
   date,
   time,
-  isFirst,
+  isLast,
 }: Props) => {
   const isOwner = userId === senderId;
   return (
-    <View style={[styles.container, isFirst ? { marginTop: 40 } : {}]}>
-      <View style={styles.dateContainer}>
-        <Text style={styles.dateText}>{date}</Text>
-      </View>
+    <View
+      style={[
+        styles.container,
+        date && { marginTop: 40 },
+        isLast && { marginBottom: 10 },
+      ]}
+    >
+      {date && (
+        <View style={styles.dateContainer}>
+          <Text style={styles.dateText}>{date}</Text>
+        </View>
+      )}
       <View
         style={[
           styles.messageContainer,
@@ -47,6 +55,10 @@ const Message = ({
       </View>
     </View>
   );
+};
+
+Message.defaultProps = {
+  date: '',
 };
 
 export default Message;

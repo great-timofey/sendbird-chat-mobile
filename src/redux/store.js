@@ -16,6 +16,7 @@ const configureStore = (initialState) => {
   );
   sagaMiddleware.run(rootSaga);
 
+  window.store = store
   return store;
 };
 
