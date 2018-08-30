@@ -23,7 +23,13 @@ const setTypers = (state, typers) => {
   if (typers.length) {
     return { ...state, typers, messages: [1, ...state.messages] };
   }
-  return { ...state, typers, messages: state.messages.slice(1) };
+  if (state.messages.includes(1)) {
+    const newMessages = state.messages
+      .slice(0, state.messages.indexOf(1))
+      .concat(state.messages.slice(state.messages.indexOf(1) + 1));
+    return { ...state, messages: [...newMessages] };
+  }
+  return { ...state, messages: [...state.messages] };
 };
 
 const handlers = {
