@@ -1,16 +1,38 @@
 import {
   call, put, select, takeEvery,
 } from 'redux-saga/effects';
-import { loadMessages } from '../../services/SendBird';
+import { loadMessages, sendUserMessage } from '../../services/SendBird';
 import { ChatScene } from '../../navigation/scenes';
 import { navigate } from '../../navigation';
 import * as TYPES from './types';
 import { toggleLoading, setError } from '../common/actions';
-import { loadMessagesFinish } from './actions';
+import { setMessage, loadMessagesFinish } from './actions';
 import {
   currentChannelSelector,
   currentOnlineMessageSelector,
 } from '../selectors';
+
+function* sendMessageWorker(action) {
+  try {
+    const channel = yield select(currentChannelSelector);
+    const message = yield call(sendUserMessage, channel, action.payload);
+    yield put(setMessage(message));
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function* receiveMessageWorker(action) {
+  try {
+    const { receivedChannel, message } = action.payload;
+    const currentChannel = yield select(currentChannelSelector);
+    if (currentChannel === receivedChannel) {
+      yield put(setMessage(message));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 function* loadMessagesWorker() {
   try {
@@ -34,5 +56,7 @@ function* loadMessagesWorker() {
 }
 
 export default function* sagas() {
+  yield takeEvery(TYPES.SEND_TEXT_MESSAGE, sendMessageWorker);
+  yield takeEvery(TYPES.RECEIVE_MESSAGE, receiveMessageWorker);
   yield takeEvery(TYPES.LOAD_MESSAGES_START, loadMessagesWorker);
 }

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View, Text, TouchableOpacity,
-} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { createUser, fetchUser } from '../../redux/user/actions';
 import Input from '../../components/Input';
@@ -21,9 +19,9 @@ class Auth extends Component<Props> {
 
   state = {
     isSingUp: false,
-    username: 'tim',
-    email: '121212',
-    password: '121212',
+    username: 'tim2',
+    email: '232323',
+    password: '232323',
     hidePassword: true,
     // username: 'Asdf',
     // email: 'asdfasdf',

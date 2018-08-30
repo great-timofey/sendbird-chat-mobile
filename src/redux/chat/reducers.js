@@ -9,7 +9,7 @@ const setMessages = (state, messages) => ({ ...state, messages });
 
 const setMessage = (state, message) => ({
   ...state,
-  messages: [...state.messages, message],
+  messages: [message, ...state.messages],
 });
 
 const handlers = {

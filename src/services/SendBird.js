@@ -1,4 +1,6 @@
 import SendBird from 'sendbird';
+import store from '../redux/store';
+import { receiveMessage } from '../redux/chat/actions';
 
 const sb = new SendBird({
   appId: '0867B9E8-AC7A-4744-A99F-2420FA273CB0',
@@ -122,3 +124,27 @@ export const createGroupChannel = (
     },
   );
 });
+
+export const sendUserMessage = (
+  channel,
+  message,
+  data = null,
+  customType = null
+) =>
+  new Promise((res, rej) => {
+    channel.sendUserMessage(message, data, customType, (msg, error) => {
+      if (error) {
+        rej(error);
+      }
+
+      res(msg);
+    });
+  });
+
+const ChannelHandler = new sb.ChannelHandler();
+
+ChannelHandler.onMessageReceived = (channel, message) => {
+  store.dispatch(receiveMessage(channel, message));
+};
+
+sb.addChannelHandler('111', ChannelHandler);

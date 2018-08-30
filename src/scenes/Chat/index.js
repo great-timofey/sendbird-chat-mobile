@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux';
 import { ChatsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
+import { sendTextMessage } from '../../redux/chat/actions';
 import images from '../../global/images';
 import styles from './styles';
 import headerStyles from './headerStyles';
@@ -17,6 +18,7 @@ import headerStyles from './headerStyles';
 type Props = {
   messages: Array,
   userId?: String,
+  sendTextMessage: Function,
 };
 
 class Chat extends Component<Props> {
@@ -57,7 +59,21 @@ class Chat extends Component<Props> {
     ),
   });
 
+  state = {
+    text: '',
+  };
+
+  handleSendMessage = () => {
+    const { text } = this.state;
+    const { sendTextMessage } = this.props;
+    sendTextMessage(text);
+    this.setState({ text: '' });
+  };
+
+  handleChangeText = text => this.setState({ text });
+
   render() {
+    const { text } = this.state;
     const { messages, userId } = this.props;
     return (
       <KeyboardAvoidingView
@@ -67,8 +83,16 @@ class Chat extends Component<Props> {
       >
         <MessagesList userId={userId} messages={messages} />
         <View style={styles.bottomBar}>
-          <TextInput placeholder="Your message" style={styles.messageInput} />
-          <TouchableOpacity style={styles.sendButton}>
+          <TextInput
+            value={text}
+            onChangeText={this.handleChangeText}
+            placeholder="Your message"
+            style={styles.messageInput}
+          />
+          <TouchableOpacity
+            onPress={this.handleSendMessage}
+            style={styles.sendButton}
+          >
             <Image source={images.send} />
           </TouchableOpacity>
         </View>
@@ -81,7 +105,10 @@ Chat.defaultProps = {
   userId: '',
 };
 
-export default connect(({ user, chat }) => ({
-  messages: chat.messages,
-  userId: user.user.sbUserId,
-}))(Chat);
+export default connect(
+  ({ user, chat }) => ({
+    messages: chat.messages,
+    userId: user.user.sbUserId,
+  }),
+  { sendTextMessage },
+)(Chat);
