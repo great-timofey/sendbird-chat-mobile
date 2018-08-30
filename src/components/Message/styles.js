@@ -10,7 +10,6 @@ export default StyleSheet.create({
     minWidth: 150,
     minHeight: 80,
     borderRadius: 10,
-    position: 'relative',
   },
   leftSide: {
     backgroundColor: colors.darkGreyTransparent,
