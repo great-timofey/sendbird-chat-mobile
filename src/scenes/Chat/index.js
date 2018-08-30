@@ -5,13 +5,14 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
+  Image,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { toggleMenu } from '../../redux/common/actions';
 import { ChatsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
-import colors from '../../global/colors';
+import images from '../../global/images';
 import styles from './styles';
+import headerStyles from './headerStyles';
 
 type Props = {
   messages: Array,
@@ -20,23 +21,39 @@ type Props = {
 
 class Chat extends Component<Props> {
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.getParam('chatName', 'Chat'),
-    headerStyle: {
-      backgroundColor: colors.darkSky,
-    },
-    headerTintColor: colors.darkSkyBlue,
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
-    headerLeft: (
-      <TouchableOpacity
-        style={{ marginLeft: 10 }}
-        onPress={() => navigation.navigate(ChatsScene)}
-      >
-        <Text style={{ color: colors.darkSkyBlue, fontSize: 18 }}>
-          To Chats
-        </Text>
-      </TouchableOpacity>
+    header: (
+      <View style={headerStyles.container}>
+        <TouchableOpacity
+          style={headerStyles.leftButton}
+          onPress={() => navigation.navigate(ChatsScene)}
+        >
+          <Image style={headerStyles.leftImage} source={images.close_chat} />
+        </TouchableOpacity>
+        <View style={headerStyles.headerContainer}>
+          <Text style={headerStyles.chatName}>
+            {navigation.getParam('name', 'Chat')}
+          </Text>
+          {navigation.getParam('channelType') === 'group' && (
+            <Text
+              style={
+                navigation.getParam('userSeenData').startsWith('Online')
+                  ? headerStyles.userOnlineStatus
+                  : headerStyles.userSeenStatus
+              }
+            >
+              {navigation.getParam('userSeenData', 'Last seen long time ago')}
+            </Text>
+          )}
+        </View>
+        <View style={headerStyles.rightButton}>
+          {navigation.state.params.coverUrl !== '' && (
+            <Image
+              source={{ uri: `${navigation.state.params.coverUrl}` }}
+              style={headerStyles.rightImage}
+            />
+          )}
+        </View>
+      </View>
     ),
   });
 
@@ -50,9 +67,9 @@ class Chat extends Component<Props> {
       >
         <MessagesList userId={userId} messages={messages} />
         <View style={styles.bottomBar}>
-          <TextInput style={styles.messageInput} />
+          <TextInput placeholder="Your message" style={styles.messageInput} />
           <TouchableOpacity style={styles.sendButton}>
-            <Text style={styles.sendText}>></Text>
+            <Image source={images.send} />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -64,10 +81,7 @@ Chat.defaultProps = {
   userId: '',
 };
 
-export default connect(
-  ({ user, chat }) => ({
-    messages: chat.messages,
-    userId: user.user.sbUserId,
-  }),
-  { toggleMenu },
-)(Chat);
+export default connect(({ user, chat }) => ({
+  messages: chat.messages,
+  userId: user.user.sbUserId,
+}))(Chat);

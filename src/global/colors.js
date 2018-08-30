@@ -8,8 +8,9 @@ const colors = {
   darkSkyBlue: 'rgb(61, 165, 217)',
   darkGreyBlueTwo: 'rgb(46, 56, 87)',
   darkGreyBlueTransparent: 'rgba(46, 56, 87, 0.8)',
-  darkGreyTransparent: 'rgba(123, 153, 196, 0.7)',
+  darkGreyTransparent: 'rgba(123, 153, 196, 0.4)',
   dark: 'rgb(34, 42, 65)',
+  blue: 'rgb(65, 103, 178)'
 };
 
 export default colors;

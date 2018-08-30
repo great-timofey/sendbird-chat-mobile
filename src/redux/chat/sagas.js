@@ -7,21 +7,29 @@ import { navigate } from '../../navigation';
 import * as TYPES from './types';
 import { toggleLoading, setError } from '../common/actions';
 import { loadMessagesFinish } from './actions';
-import { currentChannelSelector } from '../selectors';
+import {
+  currentChannelSelector,
+  currentOnlineMessageSelector,
+} from '../selectors';
 
 function* loadMessagesWorker() {
   try {
     const channel = yield select(currentChannelSelector);
-    const { name } = channel;
+    const userSeenData = yield select(currentOnlineMessageSelector);
+    const { name, coverUrl, channelType } = channel;
     const messages = yield call(loadMessages, channel);
     yield put(loadMessagesFinish(messages));
     yield put(toggleLoading());
-    yield call(navigate, ChatScene, { chatName: name });
+    yield call(navigate, ChatScene, {
+      name,
+      channelType,
+      coverUrl,
+      userSeenData,
+    });
   } catch (err) {
-    const { error } = err.response.data;
     yield put(toggleLoading());
-    yield put(setError(error));
-    console.log(error);
+    yield put(setError(err));
+    console.log(err);
   }
 }
 

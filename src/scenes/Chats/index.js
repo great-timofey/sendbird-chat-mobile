@@ -7,17 +7,21 @@ import {
   Text,
   SegmentedControlIOS,
 } from 'react-native';
+import dayjs from 'dayjs';
 import { connect } from 'react-redux';
 import { NewChatScene } from '../../navigation/scenes';
-import { toggleMenu } from '../../redux/common/actions';
 import { enterChannel } from '../../redux/user/actions';
+import { setCurrentOnlineMessage } from '../../redux/common/actions';
+import { getUsersOnlineStatuses, getLastSeenAt } from '../../utils/chatHelpers';
 import colors from '../../global/colors';
 import styles from './styles';
 
 type Props = {
   channels: Array,
-  navigation: Object,
   enterChannel: Function,
+  onlineStatuses: Array,
+  lastSeenStatuses: Array,
+  setCurrentOnlineMessage: Function,
 };
 
 class Chats extends Component<Props> {
@@ -46,30 +50,71 @@ class Chats extends Component<Props> {
   });
 
   state = {
-    showOpen: true,
+    showOpenChats: true,
   };
 
-  handleChannelEnter = (channelUrl, channelType) => {
-    const { navigation, enterChannel, channels } = this.props;
+  handleChannelEnter = (channelUrl, channelType, index, lastSeenStyle) => {
+    const { enterChannel, setCurrentOnlineMessage } = this.props;
+    setCurrentOnlineMessage(this.getUserSeenData(index, lastSeenStyle));
     enterChannel(channelUrl, channelType);
-    navigation.setParams({
-      chatName: channels.find(channel => channel.url === channelUrl).name,
-    });
   };
 
-  handleToggleControl = () => this.setState(({ showOpen }) => ({ showOpen: !showOpen }));
+  handleToggleControl = () => this.setState(({ showOpenChats }) => ({ showOpenChats: !showOpenChats }));
 
-  renderChat = ({ item: { channelType, name, url } }) => (
-    <TouchableOpacity
-      style={styles.button}
-      onPress={() => this.handleChannelEnter(url, channelType)}
-    >
-      <Text style={styles.text}>{name}</Text>
-    </TouchableOpacity>
+  getUserSeenData = (index, lastSeenStyle) => {
+    const { onlineStatuses, lastSeenStatuses } = this.props;
+    if (lastSeenStyle) {
+      return `Last seen ${dayjs(lastSeenStatuses[index]).format('DD/MM/YY')}`;
+    }
+    return `Online:${
+      onlineStatuses[index] === 1
+        ? ' one user'
+        : ` ${onlineStatuses[index]} users`
+    }`;
+  };
+
+  renderUserSeenData = (index, lastSeenStyle) => (
+    <Text style={[styles.onlineText, lastSeenStyle ? styles.lastSeenText : {}]}>
+      {this.getUserSeenData(index, lastSeenStyle)}
+    </Text>
   );
 
+  renderChat = ({
+    item: {
+      channelType, name, url, coverUrl,
+    }, index,
+  }) => {
+    const { onlineStatuses } = this.props;
+    const lastSeenStyle = onlineStatuses[index] === 0;
+    return (
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => this.handleChannelEnter(url, channelType, index, lastSeenStyle)
+        }
+      >
+        <View style={styles.coverContainer}>
+          {coverUrl.length > 0 && (
+            <Image style={styles.cover} source={{ uri: coverUrl }} />
+          )}
+        </View>
+        <View style={styles.textContainer}>
+          <Text
+            style={[
+              styles.text,
+              channelType === 'open' ? { marginBottom: 0 } : {},
+            ]}
+          >
+            {name}
+          </Text>
+          {channelType === 'group'
+            && this.renderUserSeenData(index, lastSeenStyle)}
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   render() {
-    const { showOpen } = this.state;
+    const { showOpenChats } = this.state;
     const { channels } = this.props;
     return (
       <View style={styles.container}>
@@ -83,7 +128,7 @@ class Chats extends Component<Props> {
         <FlatList
           style={styles.list}
           data={channels.filter(
-            channel => channel.channelType === (showOpen ? 'open' : 'group'),
+            channel => channel.channelType === (showOpenChats ? 'open' : 'group'),
           )}
           renderItem={this.renderChat}
           keyExtractor={item => item.url}
@@ -97,6 +142,16 @@ export default connect(
   ({ common, user }) => ({
     isMenuOpen: common.isMenuOpen,
     channels: user.channels,
+    onlineStatuses: getUsersOnlineStatuses(
+      user.channels.filter(channel => channel.channelType === 'group'),
+      user.user.sbUserId,
+    ),
+    lastSeenStatuses: getLastSeenAt(
+      user.channels.filter(
+        channel => channel.channelType === 'group' && channel.memberCount === 2,
+      ),
+      user.user.sbUserId,
+    ),
   }),
-  { enterChannel, toggleMenu },
+  { enterChannel, setCurrentOnlineMessage },
 )(Chats);
