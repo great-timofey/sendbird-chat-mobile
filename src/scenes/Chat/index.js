@@ -7,11 +7,17 @@ import {
   KeyboardAvoidingView,
   Image,
 } from 'react-native';
+import { DotsLoader } from 'react-native-indicator';
 import { connect } from 'react-redux';
 import { ChatsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
-import { sendTextMessage } from '../../redux/chat/actions';
+import {
+  sendTextMessage,
+  startTyping,
+  endTyping,
+} from '../../redux/chat/actions';
 import images from '../../global/images';
+import colors from '../../global/colors';
 import styles from './styles';
 import headerStyles from './headerStyles';
 
@@ -19,6 +25,10 @@ type Props = {
   messages: Array,
   userId?: String,
   sendTextMessage: Function,
+  currentChannel: Object,
+  startTyping: Function,
+  endTyping: Function,
+  typers: Array,
 };
 
 class Chat extends Component<Props> {
@@ -63,6 +73,22 @@ class Chat extends Component<Props> {
     text: '',
   };
 
+  timer = null;
+
+  handleChangeText = (text) => {
+    const { currentChannel, startTyping, endTyping } = this.props;
+    this.setState({ text }, () => {
+      if (!this.timer) {
+        startTyping(currentChannel);
+      }
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        endTyping(currentChannel);
+        this.timer = null;
+      }, 500);
+    });
+  };
+
   handleSendMessage = () => {
     const { text } = this.state;
     const { sendTextMessage } = this.props;
@@ -70,7 +96,23 @@ class Chat extends Component<Props> {
     this.setState({ text: '' });
   };
 
-  handleChangeText = text => this.setState({ text });
+  areTypersActive = typers => typers.length > 0;
+
+  renderTypingIndicator = () => {
+    const { currentChannel, typers } = this.props;
+    if (
+      currentChannel.channelType === 'group'
+      && currentChannel.members.length === 2
+    ) {
+      return (
+        <View style={styles.typingIndicator}>
+          {this.areTypersActive(typers) && (
+            <DotsLoader size={20} color={colors.darkSkyBlue} />
+          )}
+        </View>
+      );
+    }
+  };
 
   render() {
     const { text } = this.state;
@@ -96,6 +138,7 @@ class Chat extends Component<Props> {
             <Image source={images.send} />
           </TouchableOpacity>
         </View>
+        {this.renderTypingIndicator()}
       </KeyboardAvoidingView>
     );
   }
@@ -107,8 +150,10 @@ Chat.defaultProps = {
 
 export default connect(
   ({ user, chat }) => ({
+    currentChannel: user.currentChannel,
     messages: chat.messages,
     userId: user.user.sbUserId,
+    typers: chat.typers,
   }),
-  { sendTextMessage },
+  { sendTextMessage, startTyping, endTyping },
 )(Chat);

@@ -1,12 +1,17 @@
 import {
   call, put, select, takeEvery,
 } from 'redux-saga/effects';
-import { loadMessages, sendUserMessage } from '../../services/SendBird';
+import {
+  loadMessages,
+  sendUserMessage,
+  startTyping,
+  endTyping,
+} from '../../services/SendBird';
 import { ChatScene } from '../../navigation/scenes';
 import { navigate } from '../../navigation';
 import * as TYPES from './types';
 import { toggleLoading, setError } from '../common/actions';
-import { setMessage, loadMessagesFinish } from './actions';
+import { setMessage, loadMessagesFinish, setTypers } from './actions';
 import {
   currentChannelSelector,
   currentOnlineMessageSelector,
@@ -55,8 +60,35 @@ function* loadMessagesWorker() {
   }
 }
 
+function* typingStatusWorker(action) {
+  try {
+    if (action.type === TYPES.START_TYPING) {
+      yield call(startTyping, action.payload);
+    } else {
+      yield call(endTyping, action.payload);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function* changeTypingStatusWorker(action) {
+  try {
+    const currentChannel = yield select(currentChannelSelector);
+    const { channel, typers } = action.payload;
+    if (currentChannel === channel) {
+      yield put(setTypers(typers));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export default function* sagas() {
   yield takeEvery(TYPES.SEND_TEXT_MESSAGE, sendMessageWorker);
   yield takeEvery(TYPES.RECEIVE_MESSAGE, receiveMessageWorker);
   yield takeEvery(TYPES.LOAD_MESSAGES_START, loadMessagesWorker);
+  yield takeEvery(TYPES.START_TYPING, typingStatusWorker);
+  yield takeEvery(TYPES.END_TYPING, typingStatusWorker);
+  yield takeEvery(TYPES.CHANGE_TYPING_STATUS, changeTypingStatusWorker);
 }

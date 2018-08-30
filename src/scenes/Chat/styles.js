@@ -25,6 +25,14 @@ export default StyleSheet.create({
     fontSize: 18,
     backgroundColor: colors.white,
   },
+  typingIndicator: {
+    width: 100,
+    height: 50,
+    position: 'absolute',
+    bottom: 500,
+    left: '50%',
+    right: '50%',
+  },
   sendButton: {
     height: 40,
     width: 40,

@@ -1,6 +1,6 @@
 import SendBird from 'sendbird';
 import store from '../redux/store';
-import { receiveMessage } from '../redux/chat/actions';
+import { receiveMessage, changeTypingStatus } from '../redux/chat/actions';
 
 const sb = new SendBird({
   appId: '0867B9E8-AC7A-4744-A99F-2420FA273CB0',
@@ -17,6 +17,8 @@ export const SBconnect = (sbUserId, sbAccessToken) => new Promise((res, rej) => 
     }
   },
 ));
+
+// CHANNELS STUFF
 
 const getOpenChannels = () => new Promise((res, rej) => {
   const openChannelListQuery = sb.OpenChannel.createOpenChannelListQuery();
@@ -125,26 +127,56 @@ export const createGroupChannel = (
   );
 });
 
+// MESSAGES STUFF
+
 export const sendUserMessage = (
   channel,
   message,
   data = null,
-  customType = null
-) =>
-  new Promise((res, rej) => {
-    channel.sendUserMessage(message, data, customType, (msg, error) => {
-      if (error) {
-        rej(error);
-      }
+  customType = null,
+) => new Promise((res, rej) => {
+  channel.sendUserMessage(message, data, customType, (msg, error) => {
+    if (error) {
+      rej(error);
+    }
 
-      res(msg);
-    });
+    res(msg);
   });
+});
+
+export const startTyping = channel => new Promise((res) => {
+  // console.log('sendbird starttyping');
+  channel.startTyping();
+  res();
+});
+
+export const endTyping = channel => new Promise((res) => {
+  // console.log('sendbird endTyping');
+  channel.endTyping();
+  res();
+});
+
+const getTypingUsers = channel => new Promise((res) => {
+  const toResolve = channel.getTypingMembers();
+  res(toResolve);
+});
+
+async function resolveTypingUsers(channel) {
+  const users = await getTypingUsers(channel);
+  return [...users];
+}
 
 const ChannelHandler = new sb.ChannelHandler();
 
 ChannelHandler.onMessageReceived = (channel, message) => {
   store.dispatch(receiveMessage(channel, message));
+};
+
+ChannelHandler.onTypingStatusUpdated = (channel) => {
+  const typers = resolveTypingUsers(channel);
+  typers.then((result) => {
+    store.dispatch(changeTypingStatus(channel, result));
+  });
 };
 
 sb.addChannelHandler('111', ChannelHandler);

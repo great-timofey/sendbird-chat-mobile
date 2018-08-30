@@ -27,3 +27,23 @@ export const loadMessagesFinish = messages => ({
   type: TYPES.LOAD_MESSAGES_FINISH,
   payload: messages,
 });
+
+export const startTyping = channel => ({
+  type: TYPES.START_TYPING,
+  payload: channel,
+});
+
+export const endTyping = channel => ({
+  type: TYPES.END_TYPING,
+  payload: channel,
+});
+
+export const changeTypingStatus = (channel, typers) => ({
+  type: TYPES.CHANGE_TYPING_STATUS,
+  payload: { channel, typers },
+});
+
+export const setTypers = typers => ({
+  type: TYPES.SET_TYPERS,
+  payload: typers,
+});
