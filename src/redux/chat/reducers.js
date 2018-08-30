@@ -9,10 +9,15 @@ const initialState = {
 
 const setMessages = (state, messages) => ({ ...state, messages });
 
-const setMessage = (state, message) => ({
-  ...state,
-  messages: [message, ...state.messages],
-});
+const setMessage = (state, message) => {
+  if (state.messages.includes(1)) {
+    const newMessages = state.messages
+      .slice(0, state.messages.indexOf(1))
+      .concat(state.messages.slice(state.messages.indexOf(1) + 1));
+    return { ...state, messages: [message, ...newMessages] };
+  }
+  return { ...state, messages: [message, ...state.messages] };
+};
 
 const setTypers = (state, typers) => {
   if (typers.length) {

@@ -142,6 +142,9 @@ export default connect(
   ({ common, user }) => ({
     isMenuOpen: common.isMenuOpen,
     channels: user.channels,
+    //  need refactoring
+    // groupChannelsStatuses: ???,
+    // openChannelsStatuses: ???,
     onlineStatuses: getUsersOnlineStatuses(
       user.channels.filter(channel => channel.channelType === 'group'),
       user.user.sbUserId,
