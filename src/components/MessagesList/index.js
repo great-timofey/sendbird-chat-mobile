@@ -2,6 +2,7 @@ import React from 'react';
 import { View, FlatList } from 'react-native';
 import dayjs from 'dayjs';
 import Message from '../Message';
+import TypingIndicator from '../TypingIndicator';
 import styles from './styles';
 
 type Props = {
@@ -9,7 +10,7 @@ type Props = {
   userId: String,
 };
 
-const MessagesList = ({ messages, userId, areTyping }: Props) => {
+const MessagesList = ({ messages, userId }: Props) => {
   //  search indexes of changing dates. finding out when we should render them
 
   const changeIndexes = messages.reduce((acc, message, index) => {
@@ -24,33 +25,28 @@ const MessagesList = ({ messages, userId, areTyping }: Props) => {
     return acc.concat(1);
   }, []);
 
-  const getLastGuestMessage = () => messages.find(message => message._sender.userId !== userId);
-  console.log('render');
-  console.log(areTyping);
+  const MessageToRender = (item, index) => (
+    <Message
+      isLast={index === 0}
+      userId={userId}
+      message={item.message}
+      date={
+        changeIndexes[index] ? dayjs(item.createdAt).format('MMMM D') : null
+      }
+      type={item.messageType}
+      sender={item._sender.nickname}
+      senderId={item._sender.userId}
+      time={dayjs(item.createdAt).format('HH:mm')}
+    />
+  );
 
   return (
     <View style={styles.chatZone}>
       <FlatList
         inverted
         data={messages}
-        renderItem={({ item, index }) => (
-          <Message
-            areTyping={areTyping}
-            isLast={index === 0}
-            userId={userId}
-            message={item.message}
-            typingIndicationAvailable={item === getLastGuestMessage()}
-            date={
-              changeIndexes[index]
-                ? dayjs(item.createdAt).format('MMMM D')
-                : null
-            }
-            type={item.messageType}
-            sender={item._sender.nickname}
-            senderId={item._sender.userId}
-            time={dayjs(item.createdAt).format('HH:mm')}
-          />
-        )}
+        renderItem={({ item, index }) => (item === 1 ? <TypingIndicator /> : MessageToRender(item, index))
+        }
         keyExtractor={item => `${item.messageId}`}
       />
     </View>

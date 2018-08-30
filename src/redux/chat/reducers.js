@@ -14,7 +14,12 @@ const setMessage = (state, message) => ({
   messages: [message, ...state.messages],
 });
 
-const setTypers = (state, typers) => ({ ...state, typers });
+const setTypers = (state, typers) => {
+  if (typers.length) {
+    return { ...state, typers, messages: [1, ...state.messages] };
+  }
+  return { ...state, typers, messages: state.messages.slice(1) };
+};
 
 const handlers = {
   [TYPES.LOAD_MESSAGES_FINISH]: setMessages,

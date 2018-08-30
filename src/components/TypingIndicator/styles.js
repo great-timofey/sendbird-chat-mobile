@@ -4,13 +4,12 @@ import colors from '../../global/colors';
 export default StyleSheet.create({
   typingIndicator: {
     backgroundColor: colors.darkGreyTransparent,
-    position: 'absolute',
+    marginVertical: 10,
     height: 20,
+    width: 50,
     borderRadius: 5,
-    left: 50,
-    right: 50,
-    bottom: -30,
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'center',
   },
 });

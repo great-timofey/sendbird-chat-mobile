@@ -99,8 +99,6 @@ class Chat extends Component<Props> {
   render() {
     const { text } = this.state;
     const { messages, userId, typers } = this.props;
-    console.log('render');
-    console.log(this.areTypersActive(typers));
     return (
       <KeyboardAvoidingView
         style={styles.container}
@@ -108,7 +106,7 @@ class Chat extends Component<Props> {
         keyboardVerticalOffset={65}
       >
         <MessagesList
-          areTyping={this.areTypersActive(typers)}
+          showTypingIndicator={this.areTypersActive(typers)}
           userId={userId}
           messages={messages}
         />
