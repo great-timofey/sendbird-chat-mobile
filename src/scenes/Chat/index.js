@@ -10,6 +10,11 @@ import {
 import { connect } from 'react-redux';
 import { ChatsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
+import {
+  sendTextMessage,
+  startTyping,
+  endTyping,
+} from '../../redux/chat/actions';
 import images from '../../global/images';
 import styles from './styles';
 import headerStyles from './headerStyles';
@@ -17,6 +22,11 @@ import headerStyles from './headerStyles';
 type Props = {
   messages: Array,
   userId?: String,
+  sendTextMessage: Function,
+  currentChannel: Object,
+  startTyping: Function,
+  endTyping: Function,
+  typers: Array,
 };
 
 class Chat extends Component<Props> {
@@ -57,18 +67,60 @@ class Chat extends Component<Props> {
     ),
   });
 
+  state = {
+    text: '',
+  };
+
+  timer = null;
+
+  handleChangeText = (text) => {
+    const { currentChannel, startTyping, endTyping } = this.props;
+    this.setState({ text }, () => {
+      if (!this.timer) {
+        startTyping(currentChannel);
+      }
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        endTyping(currentChannel);
+        this.timer = null;
+      }, 500);
+    });
+  };
+
+  handleSendMessage = () => {
+    const { text } = this.state;
+    const { sendTextMessage } = this.props;
+    sendTextMessage(text);
+    this.setState({ text: '' });
+  };
+
+  areTypersActive = typers => typers.length > 0;
+
   render() {
-    const { messages, userId } = this.props;
+    const { text } = this.state;
+    const { messages, userId, typers } = this.props;
     return (
       <KeyboardAvoidingView
         style={styles.container}
         behavior="padding"
         keyboardVerticalOffset={65}
       >
-        <MessagesList userId={userId} messages={messages} />
+        <MessagesList
+          showTypingIndicator={this.areTypersActive(typers)}
+          userId={userId}
+          messages={messages}
+        />
         <View style={styles.bottomBar}>
-          <TextInput placeholder="Your message" style={styles.messageInput} />
-          <TouchableOpacity style={styles.sendButton}>
+          <TextInput
+            value={text}
+            onChangeText={this.handleChangeText}
+            placeholder="Your message"
+            style={styles.messageInput}
+          />
+          <TouchableOpacity
+            onPress={this.handleSendMessage}
+            style={styles.sendButton}
+          >
             <Image source={images.send} />
           </TouchableOpacity>
         </View>
@@ -81,7 +133,12 @@ Chat.defaultProps = {
   userId: '',
 };
 
-export default connect(({ user, chat }) => ({
-  messages: chat.messages,
-  userId: user.user.sbUserId,
-}))(Chat);
+export default connect(
+  ({ user, chat }) => ({
+    currentChannel: user.currentChannel,
+    messages: chat.messages,
+    userId: user.user.sbUserId,
+    typers: chat.typers,
+  }),
+  { sendTextMessage, startTyping, endTyping },
+)(Chat);

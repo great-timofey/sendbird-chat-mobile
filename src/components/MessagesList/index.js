@@ -2,6 +2,7 @@ import React from 'react';
 import { View, FlatList } from 'react-native';
 import dayjs from 'dayjs';
 import Message from '../Message';
+import TypingIndicator from '../TypingIndicator';
 import styles from './styles';
 
 type Props = {
@@ -24,27 +25,28 @@ const MessagesList = ({ messages, userId }: Props) => {
     return acc.concat(1);
   }, []);
 
+  const MessageToRender = (item, index) => (
+    <Message
+      isLast={index === 0}
+      userId={userId}
+      message={item.message}
+      date={
+        changeIndexes[index] ? dayjs(item.createdAt).format('MMMM D') : null
+      }
+      type={item.messageType}
+      sender={item._sender.nickname}
+      senderId={item._sender.userId}
+      time={dayjs(item.createdAt).format('HH:mm')}
+    />
+  );
+
   return (
     <View style={styles.chatZone}>
       <FlatList
         inverted
         data={messages}
-        renderItem={({ item, index }) => (
-          <Message
-            isLast={index === 0}
-            userId={userId}
-            message={item.message}
-            date={
-              changeIndexes[index]
-                ? dayjs(item.createdAt).format('MMMM D')
-                : null
-            }
-            type={item.messageType}
-            sender={item._sender.nickname}
-            senderId={item._sender.userId}
-            time={dayjs(item.createdAt).format('HH:mm')}
-          />
-        )}
+        renderItem={({ item, index }) => (item === 1 ? <TypingIndicator /> : MessageToRender(item, index))
+        }
         keyExtractor={item => `${item.messageId}`}
       />
     </View>
