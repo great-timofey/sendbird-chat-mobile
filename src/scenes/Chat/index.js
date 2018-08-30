@@ -7,7 +7,6 @@ import {
   KeyboardAvoidingView,
   Image,
 } from 'react-native';
-import { DotsLoader } from 'react-native-indicator';
 import { connect } from 'react-redux';
 import { ChatsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
@@ -17,7 +16,6 @@ import {
   endTyping,
 } from '../../redux/chat/actions';
 import images from '../../global/images';
-import colors from '../../global/colors';
 import styles from './styles';
 import headerStyles from './headerStyles';
 
@@ -98,32 +96,22 @@ class Chat extends Component<Props> {
 
   areTypersActive = typers => typers.length > 0;
 
-  renderTypingIndicator = () => {
-    const { currentChannel, typers } = this.props;
-    if (
-      currentChannel.channelType === 'group'
-      && currentChannel.members.length === 2
-    ) {
-      return (
-        <View style={styles.typingIndicator}>
-          {this.areTypersActive(typers) && (
-            <DotsLoader size={20} color={colors.darkSkyBlue} />
-          )}
-        </View>
-      );
-    }
-  };
-
   render() {
     const { text } = this.state;
-    const { messages, userId } = this.props;
+    const { messages, userId, typers } = this.props;
+    console.log('render');
+    console.log(this.areTypersActive(typers));
     return (
       <KeyboardAvoidingView
         style={styles.container}
         behavior="padding"
         keyboardVerticalOffset={65}
       >
-        <MessagesList userId={userId} messages={messages} />
+        <MessagesList
+          areTyping={this.areTypersActive(typers)}
+          userId={userId}
+          messages={messages}
+        />
         <View style={styles.bottomBar}>
           <TextInput
             value={text}
@@ -138,7 +126,6 @@ class Chat extends Component<Props> {
             <Image source={images.send} />
           </TouchableOpacity>
         </View>
-        {this.renderTypingIndicator()}
       </KeyboardAvoidingView>
     );
   }

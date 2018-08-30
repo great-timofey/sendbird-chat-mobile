@@ -9,7 +9,7 @@ type Props = {
   userId: String,
 };
 
-const MessagesList = ({ messages, userId }: Props) => {
+const MessagesList = ({ messages, userId, areTyping }: Props) => {
   //  search indexes of changing dates. finding out when we should render them
 
   const changeIndexes = messages.reduce((acc, message, index) => {
@@ -24,6 +24,10 @@ const MessagesList = ({ messages, userId }: Props) => {
     return acc.concat(1);
   }, []);
 
+  const getLastGuestMessage = () => messages.find(message => message._sender.userId !== userId);
+  console.log('render');
+  console.log(areTyping);
+
   return (
     <View style={styles.chatZone}>
       <FlatList
@@ -31,9 +35,11 @@ const MessagesList = ({ messages, userId }: Props) => {
         data={messages}
         renderItem={({ item, index }) => (
           <Message
+            areTyping={areTyping}
             isLast={index === 0}
             userId={userId}
             message={item.message}
+            typingIndicationAvailable={item === getLastGuestMessage()}
             date={
               changeIndexes[index]
                 ? dayjs(item.createdAt).format('MMMM D')
