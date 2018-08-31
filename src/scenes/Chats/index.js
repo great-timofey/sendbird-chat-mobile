@@ -63,15 +63,16 @@ class Chats extends Component<Props> {
 
   handleToggleControl = () => this.setState(({ showOpenChats }) => ({ showOpenChats: !showOpenChats }));
 
-  getGroupMembersCount = index => this.props.channels.filter(channel => channel.channelType === 'group')[
-    index
-  ].memberCount;
-
-  getUserSeenData = (index) => {
-    const { onlineOpenStatuses, onlineGroupStatuses, channels } = this.props;
+  getUserOnlineStatusData = (index) => {
+    const {
+      onlineOpenStatuses,
+      onlineGroupStatuses,
+      groupChannels,
+      channels,
+    } = this.props;
     const { showOpenChats } = this.state;
     let count = onlineGroupStatuses[index];
-    if (!showOpenChats && this.getGroupMembersCount(index) === 2) {
+    if (!showOpenChats && groupChannels[index] === 2) {
       return count === 1 ? 'Online' : 'Last seen somewhen';
     }
     if (showOpenChats) {
@@ -98,7 +99,9 @@ class Chats extends Component<Props> {
       </View>
       <View style={styles.textContainer}>
         <Text style={[styles.text]}>{name}</Text>
-        <Text style={styles.onlineText}>{this.getUserSeenData(index)}</Text>
+        <Text style={styles.onlineText}>
+          {this.getUserOnlineStatusData(index)}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -106,8 +109,8 @@ class Chats extends Component<Props> {
   render() {
     const { showOpenChats } = this.state;
     const { channels, onlineOpenStatuses, onlineGroupStatuses } = this.props;
-    console.log(onlineOpenStatuses);
-    console.log(onlineGroupStatuses);
+    // console.log(onlineOpenStatuses);
+    // console.log(onlineGroupStatuses);
     return (
       <View style={styles.container}>
         <SegmentedControlIOS
@@ -130,15 +133,18 @@ class Chats extends Component<Props> {
   }
 }
 
+const getChannelsByType = (channels, type) => channels.filter(channel => channel.channelType === type);
+
 export default connect(
   ({ common, user }) => ({
     isMenuOpen: common.isMenuOpen,
     channels: user.channels,
+    groupChannels: getChannelsByType(user.channels, 'group'),
     onlineOpenStatuses: calculateOnline(
-      user.channels.filter(channel => channel.channelType === 'open'),
+      getChannelsByType(user.channels, 'open'),
     ),
     onlineGroupStatuses: calculateOnline(
-      user.channels.filter(channel => channel.channelType === 'group'),
+      getChannelsByType(user.channels, 'group'),
     ),
   }),
   { enterChannel, setCurrentOnlineMessage },
