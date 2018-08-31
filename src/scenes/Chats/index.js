@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { NewChatScene } from '../../navigation/scenes';
 import { enterChannel } from '../../redux/user/actions';
 import { setCurrentOnlineMessage } from '../../redux/common/actions';
+import { calculateOnline } from '../../utils/chatHelpers';
 import colors from '../../global/colors';
 import styles from './styles';
 
@@ -50,13 +51,36 @@ class Chats extends Component<Props> {
     showOpenChats: true,
   };
 
+  //  methods for handling chat logic
+
   handleChannelEnter = (channelUrl, channelType, index) => {
     const { enterChannel, setCurrentOnlineMessage } = this.props;
     setCurrentOnlineMessage('fake online bar message');
     enterChannel(channelUrl, channelType);
   };
 
+  //  methods for rendering chats and online statuses
+
   handleToggleControl = () => this.setState(({ showOpenChats }) => ({ showOpenChats: !showOpenChats }));
+
+  getGroupMembersCount = index => this.props.channels.filter(channel => channel.channelType === 'group')[
+    index
+  ].memberCount;
+
+  getUserSeenData = (index) => {
+    const { onlineOpenStatuses, onlineGroupStatuses, channels } = this.props;
+    const { showOpenChats } = this.state;
+    let count = onlineGroupStatuses[index];
+    if (!showOpenChats && this.getGroupMembersCount(index) === 2) {
+      return count === 1 ? 'Online' : 'Last seen somewhen';
+    }
+    if (showOpenChats) {
+      count = onlineOpenStatuses[index];
+    }
+    return count === 0
+      ? 'No users online'
+      : `${count} user${count > 1 ? 's' : ''} online`;
+  };
 
   renderChat = ({
     item: {
@@ -74,14 +98,16 @@ class Chats extends Component<Props> {
       </View>
       <View style={styles.textContainer}>
         <Text style={[styles.text]}>{name}</Text>
-        <Text style={styles.onlineText}>Fake user seen chats message</Text>
+        <Text style={styles.onlineText}>{this.getUserSeenData(index)}</Text>
       </View>
     </TouchableOpacity>
   );
 
   render() {
     const { showOpenChats } = this.state;
-    const { channels } = this.props;
+    const { channels, onlineOpenStatuses, onlineGroupStatuses } = this.props;
+    console.log(onlineOpenStatuses);
+    console.log(onlineGroupStatuses);
     return (
       <View style={styles.container}>
         <SegmentedControlIOS
@@ -108,9 +134,12 @@ export default connect(
   ({ common, user }) => ({
     isMenuOpen: common.isMenuOpen,
     channels: user.channels,
-    //  need refactoring
-    // groupChannelsStatuses: ???,
-    // openChannelsStatuses: ???,
+    onlineOpenStatuses: calculateOnline(
+      user.channels.filter(channel => channel.channelType === 'open'),
+    ),
+    onlineGroupStatuses: calculateOnline(
+      user.channels.filter(channel => channel.channelType === 'group'),
+    ),
   }),
   { enterChannel, setCurrentOnlineMessage },
 )(Chats);
