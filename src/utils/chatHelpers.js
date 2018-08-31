@@ -1,26 +1,10 @@
-//  function for getting array with values of online users count for every GROUP channel
+const countOnlineMembers = channel => channel.members.filter(member => member.connectionStatus === 'online').length;
 
-export const getUsersOnlineStatuses = (channels, currentUserId) => channels
-  .map(channel => channel.members
-    .filter(member => member.userId !== currentUserId)
-    .map(member => member.connectionStatus))
-  .reduce((acc, item, index) => {
-    if (!acc[index]) {
-      acc[index] = 0;
-    }
-    if (item[0] === 'online') {
-      acc[index]++;
-    }
+export const calculateOnline = channels => channels.reduce((acc, channel, index) => {
+  if (channel.channelType === 'open') {
+    acc[index] = channel.participantCount;
     return acc;
-  }, []);
-
-export const getLastSeenAt = (channels, currentUserId) => channels
-  .map(channel => channel.members
-    .filter(member => member.userId !== currentUserId)
-    .map(member => member.lastSeenAt))
-  .reduce((acc, item, index) => {
-    if (item[0] !== 0) {
-      acc[index] = item[0];
-    }
-    return acc;
-  }, {});
+  }
+  acc[index] = countOnlineMembers(channel) - 1;
+  return acc;
+}, []);
