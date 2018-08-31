@@ -56,7 +56,7 @@ class Chats extends Component<Props> {
 
   //  methods for handling chat logic
 
-  handleChannelEnter = (channelUrl, channelType, index) => {
+  handleChannelEnter = (channelUrl, channelType) => {
     const { enterChannel, setCurrentOnlineMessage } = this.props;
     setCurrentOnlineMessage('fake online bar message');
     enterChannel(channelUrl, channelType);
@@ -64,7 +64,9 @@ class Chats extends Component<Props> {
 
   //  methods for rendering chats and online statuses
 
-  handleToggleControl = () => this.setState(({ showOpenChats }) => ({ showOpenChats: !showOpenChats }));
+  getMemberLastSeen = index => this.props.groupChannels[index].members.find(
+    member => member.userId !== this.props.currentSbUserId,
+  ).lastSeenAt;
 
   getUserOnlineStatusData = (index) => {
     const {
@@ -75,7 +77,11 @@ class Chats extends Component<Props> {
     const { showOpenChats } = this.state;
     let count = onlineGroupStatuses[index];
     if (!showOpenChats && groupChannels[index].memberCount === 2) {
-      return count === 1 ? 'Online' : 'Last seen somewhen';
+      return count === 1
+        ? 'Online'
+        : `Last seen ${dayjs(this.getMemberLastSeen(index)).format(
+          'DD/MM/YY',
+        )}`;
     }
     if (showOpenChats) {
       count = onlineOpenStatuses[index];
@@ -84,6 +90,8 @@ class Chats extends Component<Props> {
       ? 'No users online'
       : `${count} user${count > 1 ? 's' : ''} online`;
   };
+
+  handleToggleControl = () => this.setState(({ showOpenChats }) => ({ showOpenChats: !showOpenChats }));
 
   renderChat = ({
     item: {
@@ -113,8 +121,8 @@ class Chats extends Component<Props> {
     const {
       openChannels,
       groupChannels,
-      onlineOpenStatuses,
-      onlineGroupStatuses,
+      // onlineOpenStatuses,
+      // onlineGroupStatuses,
     } = this.props;
     // console.log(onlineOpenStatuses);
     // console.log(onlineGroupStatuses);
@@ -143,6 +151,7 @@ const getGroupChannels = user => user.channels.filter(channel => channel.channel
 
 export default connect(
   ({ common, user }) => ({
+    currentSbUserId: user.user.sbUserId,
     isMenuOpen: common.isMenuOpen,
     openChannels: getOpenChannels(user),
     groupChannels: getGroupChannels(user),
