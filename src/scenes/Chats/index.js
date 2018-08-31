@@ -12,15 +12,12 @@ import { connect } from 'react-redux';
 import { NewChatScene } from '../../navigation/scenes';
 import { enterChannel } from '../../redux/user/actions';
 import { setCurrentOnlineMessage } from '../../redux/common/actions';
-import { getUsersOnlineStatuses, getLastSeenAt } from '../../utils/chatHelpers';
 import colors from '../../global/colors';
 import styles from './styles';
 
 type Props = {
   channels: Array,
   enterChannel: Function,
-  onlineStatuses: Array,
-  lastSeenStatuses: Array,
   setCurrentOnlineMessage: Function,
 };
 
@@ -53,65 +50,34 @@ class Chats extends Component<Props> {
     showOpenChats: true,
   };
 
-  handleChannelEnter = (channelUrl, channelType, index, lastSeenStyle) => {
+  handleChannelEnter = (channelUrl, channelType, index) => {
     const { enterChannel, setCurrentOnlineMessage } = this.props;
-    setCurrentOnlineMessage(this.getUserSeenData(index, lastSeenStyle));
+    setCurrentOnlineMessage('fake online bar message');
     enterChannel(channelUrl, channelType);
   };
 
   handleToggleControl = () => this.setState(({ showOpenChats }) => ({ showOpenChats: !showOpenChats }));
 
-  getUserSeenData = (index, lastSeenStyle) => {
-    const { onlineStatuses, lastSeenStatuses } = this.props;
-    if (lastSeenStyle) {
-      return `Last seen ${dayjs(lastSeenStatuses[index]).format('DD/MM/YY')}`;
-    }
-    return `Online:${
-      onlineStatuses[index] === 1
-        ? ' one user'
-        : ` ${onlineStatuses[index]} users`
-    }`;
-  };
-
-  renderUserSeenData = (index, lastSeenStyle) => (
-    <Text style={[styles.onlineText, lastSeenStyle ? styles.lastSeenText : {}]}>
-      {this.getUserSeenData(index, lastSeenStyle)}
-    </Text>
-  );
-
   renderChat = ({
     item: {
       channelType, name, url, coverUrl,
     }, index,
-  }) => {
-    const { onlineStatuses } = this.props;
-    const lastSeenStyle = onlineStatuses[index] === 0;
-    return (
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => this.handleChannelEnter(url, channelType, index, lastSeenStyle)
-        }
-      >
-        <View style={styles.coverContainer}>
-          {coverUrl.length > 0 && (
-            <Image style={styles.cover} source={{ uri: coverUrl }} />
-          )}
-        </View>
-        <View style={styles.textContainer}>
-          <Text
-            style={[
-              styles.text,
-              channelType === 'open' ? { marginBottom: 0 } : {},
-            ]}
-          >
-            {name}
-          </Text>
-          {channelType === 'group'
-            && this.renderUserSeenData(index, lastSeenStyle)}
-        </View>
-      </TouchableOpacity>
-    );
-  };
+  }) => (
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => this.handleChannelEnter(url, channelType, index)}
+    >
+      <View style={styles.coverContainer}>
+        {coverUrl.length > 0 && (
+        <Image style={styles.cover} source={{ uri: coverUrl }} />
+        )}
+      </View>
+      <View style={styles.textContainer}>
+        <Text style={[styles.text]}>{name}</Text>
+        <Text style={styles.onlineText}>Fake user seen chats message</Text>
+      </View>
+    </TouchableOpacity>
+  );
 
   render() {
     const { showOpenChats } = this.state;
@@ -145,16 +111,6 @@ export default connect(
     //  need refactoring
     // groupChannelsStatuses: ???,
     // openChannelsStatuses: ???,
-    onlineStatuses: getUsersOnlineStatuses(
-      user.channels.filter(channel => channel.channelType === 'group'),
-      user.user.sbUserId,
-    ),
-    lastSeenStatuses: getLastSeenAt(
-      user.channels.filter(
-        channel => channel.channelType === 'group' && channel.memberCount === 2,
-      ),
-      user.user.sbUserId,
-    ),
   }),
   { enterChannel, setCurrentOnlineMessage },
 )(Chats);
