@@ -19,6 +19,10 @@ import styles from './styles';
 type Props = {
   enterChannel: Function,
   setCurrentOnlineMessage: Function,
+  openChannels: Array,
+  groupChannels: Array,
+  onlineOpenStatuses: Array,
+  onlineGroupStatuses: Array,
 };
 
 class Chats extends Component<Props> {
@@ -70,7 +74,7 @@ class Chats extends Component<Props> {
     } = this.props;
     const { showOpenChats } = this.state;
     let count = onlineGroupStatuses[index];
-    if (!showOpenChats && groupChannels[index] === 2) {
+    if (!showOpenChats && groupChannels[index].memberCount === 2) {
       return count === 1 ? 'Online' : 'Last seen somewhen';
     }
     if (showOpenChats) {
