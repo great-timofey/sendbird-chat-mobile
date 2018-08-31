@@ -13,7 +13,6 @@ export default StyleSheet.create({
     width: 300,
     marginBottom: 20,
   },
-  sectionHeader: {},
   list: {
     width: '100%',
     flex: 1,
@@ -50,9 +49,11 @@ export default StyleSheet.create({
   },
   onlineText: {
     color: colors.darkSkyBlue,
+    fontWeight: 'bold',
     fontSize: 12,
   },
   offlineText: {
+    fontWeight: 'normal',
     color: colors.white30,
   },
 });

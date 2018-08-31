@@ -56,9 +56,9 @@ class Chats extends Component<Props> {
 
   //  methods for handling chat logic
 
-  handleChannelEnter = (channelUrl, channelType) => {
+  handleChannelEnter = (channelUrl, channelType, index) => {
     const { enterChannel, setCurrentOnlineMessage } = this.props;
-    setCurrentOnlineMessage('fake online bar message');
+    setCurrentOnlineMessage(this.getUserOnlineStatusData(index));
     enterChannel(channelUrl, channelType);
   };
 
