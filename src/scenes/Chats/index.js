@@ -17,7 +17,6 @@ import colors from '../../global/colors';
 import styles from './styles';
 
 type Props = {
-  channels: Array,
   enterChannel: Function,
   setCurrentOnlineMessage: Function,
 };
@@ -68,7 +67,6 @@ class Chats extends Component<Props> {
       onlineOpenStatuses,
       onlineGroupStatuses,
       groupChannels,
-      channels,
     } = this.props;
     const { showOpenChats } = this.state;
     let count = onlineGroupStatuses[index];
@@ -108,7 +106,12 @@ class Chats extends Component<Props> {
 
   render() {
     const { showOpenChats } = this.state;
-    const { channels, onlineOpenStatuses, onlineGroupStatuses } = this.props;
+    const {
+      openChannels,
+      groupChannels,
+      onlineOpenStatuses,
+      onlineGroupStatuses,
+    } = this.props;
     // console.log(onlineOpenStatuses);
     // console.log(onlineGroupStatuses);
     return (
@@ -122,9 +125,7 @@ class Chats extends Component<Props> {
         />
         <FlatList
           style={styles.list}
-          data={channels.filter(
-            channel => channel.channelType === (showOpenChats ? 'open' : 'group'),
-          )}
+          data={showOpenChats ? openChannels : groupChannels}
           renderItem={this.renderChat}
           keyExtractor={item => item.url}
         />
@@ -133,19 +134,16 @@ class Chats extends Component<Props> {
   }
 }
 
-const getChannelsByType = (channels, type) => channels.filter(channel => channel.channelType === type);
+const getOpenChannels = user => user.channels.filter(channel => channel.channelType === 'open');
+const getGroupChannels = user => user.channels.filter(channel => channel.channelType === 'group');
 
 export default connect(
   ({ common, user }) => ({
     isMenuOpen: common.isMenuOpen,
-    channels: user.channels,
-    groupChannels: getChannelsByType(user.channels, 'group'),
-    onlineOpenStatuses: calculateOnline(
-      getChannelsByType(user.channels, 'open'),
-    ),
-    onlineGroupStatuses: calculateOnline(
-      getChannelsByType(user.channels, 'group'),
-    ),
+    openChannels: getOpenChannels(user),
+    groupChannels: getGroupChannels(user),
+    onlineOpenStatuses: calculateOnline(getOpenChannels(user)),
+    onlineGroupStatuses: calculateOnline(getGroupChannels(user)),
   }),
   { enterChannel, setCurrentOnlineMessage },
 )(Chats);
