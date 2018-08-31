@@ -52,4 +52,7 @@ export default StyleSheet.create({
     color: colors.darkSkyBlue,
     fontSize: 12,
   },
+  offlineText: {
+    color: colors.white30,
+  },
 });

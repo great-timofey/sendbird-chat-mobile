@@ -108,8 +108,18 @@ class Chats extends Component<Props> {
         )}
       </View>
       <View style={styles.textContainer}>
-        <Text style={[styles.text]}>{name}</Text>
-        <Text style={styles.onlineText}>
+        <Text style={styles.text}>{name}</Text>
+        <Text
+          style={[
+            styles.onlineText,
+            (channelType === 'open'
+              && this.props.onlineOpenStatuses[index] === 0)
+            || (channelType === 'group'
+              && this.props.onlineGroupStatuses[index] === 0)
+              ? styles.offlineText
+              : {},
+          ]}
+        >
           {this.getUserOnlineStatusData(index)}
         </Text>
       </View>
