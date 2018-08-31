@@ -128,14 +128,7 @@ class Chats extends Component<Props> {
 
   render() {
     const { showOpenChats } = this.state;
-    const {
-      openChannels,
-      groupChannels,
-      // onlineOpenStatuses,
-      // onlineGroupStatuses,
-    } = this.props;
-    // console.log(onlineOpenStatuses);
-    // console.log(onlineGroupStatuses);
+    const { openChannels, groupChannels } = this.props;
     return (
       <View style={styles.container}>
         <SegmentedControlIOS
