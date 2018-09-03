@@ -155,7 +155,9 @@ export const sendFileMessage = (
 ) => new Promise((res, rej) => channel.sendFileMessage(
   { uri: fileUrl, name: fileName, type: fileType },
   data,
-  customType,
+  (e) => {
+    console.log(`${parseInt(Math.floor((e.loaded / e.total) * 100))}%`);
+  },
   (msg, error) => {
     if (error) {
       rej(error);

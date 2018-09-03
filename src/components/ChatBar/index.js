@@ -2,7 +2,7 @@ import React from 'react';
 import {
   View, TouchableOpacity, TextInput, Image,
 } from 'react-native';
-import ProgressPie from 'react-native-progress/Pie';
+import ChatInput from '../ChatInput';
 import images from '../../global/images';
 import styles from './styles';
 
@@ -12,15 +12,17 @@ type Props = {
   handleSendCallback: Function,
   inputValue: String,
   placeholder: String,
+  progress: Number,
   active: Boolean,
 };
 
-const ChatBar = ({
+export default ({
   handleChooseFileCallback,
   handleTextChangeCallback,
   handleSendCallback,
   inputValue,
   placeholder,
+  progress,
   active,
 }: Props) => (
   <View style={styles.bottomBar}>
@@ -30,31 +32,16 @@ const ChatBar = ({
     >
       <Image source={images.attachement} />
     </TouchableOpacity>
-    <TextInput
+    <ChatInput
       value={inputValue}
       editable={active}
       onChangeText={handleTextChangeCallback}
       placeholder={placeholder}
       style={styles.messageInput}
+      progress={0.5}
     />
-    {null && (
-      <View
-        style={{
-          position: 'absolute',
-          width: 40,
-          height: 40,
-          backgroundColor: 'red',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <ProgressPie progress={0.5} />
-      </View>
-    )}
     <TouchableOpacity onPress={handleSendCallback} style={styles.sendButton}>
       <Image source={images.send} />
     </TouchableOpacity>
   </View>
 );
-
-export default ChatBar;

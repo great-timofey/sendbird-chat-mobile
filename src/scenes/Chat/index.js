@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
   KeyboardAvoidingView,
   Image,
 } from 'react-native';
@@ -134,7 +133,7 @@ class Chat extends Component<Props> {
           userId={userId}
           messages={messages}
         />
-        <ChatBar 
+        <ChatBar
           handleChooseFileCallback={this.handleChooseFile}
           handleSendCallback={this.handleSendMessage}
           handleTextChangeCallback={this.handleChangeText}

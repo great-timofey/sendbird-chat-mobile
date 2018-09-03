@@ -15,7 +15,7 @@ type Props = {
   customStyles?: Object,
 };
 
-function Input({
+const AuthInput = ({
   type,
   onInput,
   hidePassword,
@@ -23,7 +23,7 @@ function Input({
   value,
   withImage = false,
   customStyles = null,
-}: Props) {
+}: Props) => {
   const innerStyles = customStyles || styles;
   return (
     <View style={innerStyles.inputSection}>
@@ -45,9 +45,9 @@ function Input({
       )}
     </View>
   );
-}
+};
 
-Input.defaultProps = {
+AuthInput.defaultProps = {
   type: '',
   hidePassword: false,
   handleShowPassword: false,
@@ -55,4 +55,4 @@ Input.defaultProps = {
   customStyles: null,
 };
 
-export default Input;
+export default AuthInput;
