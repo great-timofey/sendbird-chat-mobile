@@ -71,7 +71,7 @@ class Chat extends Component<Props> {
 
   state = {
     text: '',
-    file: '',
+    file: null,
   };
 
   timer = null;
@@ -96,7 +96,9 @@ class Chat extends Component<Props> {
       height: 400,
       cropping: true,
     }).then((file) => {
-      this.setState({ file });
+      this.setState({
+        file,
+      });
     });
   };
 
@@ -106,7 +108,7 @@ class Chat extends Component<Props> {
     if (file) {
       console.log(this.state);
       sendFileMessage(file);
-      this.setState({ file: '' });
+      this.setState({ file: null });
     } else if (text.length > 0) {
       sendTextMessage(text);
       this.setState({ text: '' });
@@ -118,7 +120,7 @@ class Chat extends Component<Props> {
   areTypersActive = typers => typers.length > 0;
 
   render() {
-    const { text } = this.state;
+    const { text, file } = this.state;
     const { messages, userId, typers } = this.props;
     return (
       <KeyboardAvoidingView
@@ -140,8 +142,9 @@ class Chat extends Component<Props> {
           </TouchableOpacity>
           <TextInput
             value={text}
+            editable={!file}
             onChangeText={this.handleChangeText}
-            placeholder="Your message"
+            placeholder={file ? 'Press button to send photo' : 'Your message'}
             style={styles.messageInput}
           />
           <TouchableOpacity
