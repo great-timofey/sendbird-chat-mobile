@@ -4,6 +4,7 @@ import {
 import {
   loadMessages,
   sendUserMessage,
+  sendFileMessage,
   startTyping,
   endTyping,
 } from '../../services/SendBird';
@@ -20,7 +21,22 @@ import {
 function* sendMessageWorker(action) {
   try {
     const channel = yield select(currentChannelSelector);
-    const message = yield call(sendUserMessage, channel, action.payload);
+    let message;
+    if (action.type === TYPES.SEND_TEXT_MESSAGE) {
+      message = yield call(sendUserMessage, channel, action.payload);
+    } else if (action.type === TYPES.SEND_FILE_MESSAGE) {
+      const {
+        path, filename, mime, size,
+      } = action.payload;
+      message = yield call(
+        sendFileMessage,
+        channel,
+        path,
+        filename,
+        mime,
+        size,
+      );
+    }
     yield put(setMessage(message));
   } catch (err) {
     console.log(err);
@@ -86,6 +102,7 @@ function* changeTypingStatusWorker(action) {
 
 export default function* sagas() {
   yield takeEvery(TYPES.SEND_TEXT_MESSAGE, sendMessageWorker);
+  yield takeEvery(TYPES.SEND_FILE_MESSAGE, sendMessageWorker);
   yield takeEvery(TYPES.RECEIVE_MESSAGE, receiveMessageWorker);
   yield takeEvery(TYPES.LOAD_MESSAGES_START, loadMessagesWorker);
   yield takeEvery(TYPES.START_TYPING, typingStatusWorker);

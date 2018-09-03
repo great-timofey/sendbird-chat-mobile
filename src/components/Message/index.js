@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import styles from './styles';
 
 type Props = {
   message: String,
+  url?: String,
   type: String,
   sender: String,
   userId: String,
@@ -16,6 +17,7 @@ type Props = {
 const Message = ({
   message,
   type,
+  url,
   sender,
   userId,
   senderId,
@@ -49,7 +51,11 @@ const Message = ({
         <Text
           style={[styles.message, isOwner ? styles.owner : styles.notOwner]}
         >
-          {type === 'user' ? message : 'User sent a file message'}
+          {type === 'user' ? (
+            message
+          ) : (
+            <Image style={styles.image} source={{ uri: url }} />
+          )}
         </Text>
         <Text style={[styles.time, isOwner ? styles.owner : {}]}>{time}</Text>
       </View>
@@ -59,6 +65,7 @@ const Message = ({
 
 Message.defaultProps = {
   date: '',
+  url: '',
 };
 
 export default Message;

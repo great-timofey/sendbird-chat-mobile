@@ -30,6 +30,7 @@ const MessagesList = ({ messages, userId }: Props) => {
       isLast={index === 0}
       userId={userId}
       message={item.message}
+      url={item.url}
       date={
         changeIndexes[index] ? dayjs(item.createdAt).format('MMMM D') : null
       }

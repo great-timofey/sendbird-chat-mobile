@@ -5,6 +5,11 @@ export const sendTextMessage = message => ({
   payload: message,
 });
 
+export const sendFileMessage = message => ({
+  type: TYPES.SEND_FILE_MESSAGE,
+  payload: message,
+});
+
 export const receiveMessages = () => ({
   type: TYPES.RECEIVE_MESSAGES,
 });
