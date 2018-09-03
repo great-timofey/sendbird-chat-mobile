@@ -153,6 +153,14 @@ export const sendFileMessage = (
   data = null,
   customType = null,
 ) => new Promise((res, rej) => {
+  console.log(
+    'got data in sendbird: ',
+    fileUrl,
+    fileName,
+    fileType,
+    fileSize,
+  );
+  // res();
   channel.sendFileMessage(
     fileUrl,
     fileName,

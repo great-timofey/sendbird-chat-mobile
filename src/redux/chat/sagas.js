@@ -25,11 +25,10 @@ function* sendMessageWorker(action) {
     if (action.type === TYPES.SEND_TEXT_MESSAGE) {
       message = yield call(sendUserMessage, channel, action.payload);
     } else if (action.type === TYPES.SEND_FILE_MESSAGE) {
-      cosnole.log('sended');
       const {
         sourceURL, filename, mime, size,
       } = action.payload;
-      console.log(action.payload);
+      // console.log(action.payload);
       message = yield call(
         sendFileMessage,
         channel,
@@ -104,6 +103,7 @@ function* changeTypingStatusWorker(action) {
 
 export default function* sagas() {
   yield takeEvery(TYPES.SEND_TEXT_MESSAGE, sendMessageWorker);
+  yield takeEvery(TYPES.SEND_FILE_MESSAGE, sendMessageWorker);
   yield takeEvery(TYPES.RECEIVE_MESSAGE, receiveMessageWorker);
   yield takeEvery(TYPES.LOAD_MESSAGES_START, loadMessagesWorker);
   yield takeEvery(TYPES.START_TYPING, typingStatusWorker);
