@@ -144,6 +144,32 @@ export const sendUserMessage = (
   });
 });
 
+export const sendFileMessage = (
+  channel,
+  fileUrl,
+  fileName,
+  fileType,
+  fileSize,
+  data = null,
+  customType = null,
+) => new Promise((res, rej) => {
+  channel.sendFileMessage(
+    fileUrl,
+    fileName,
+    fileType,
+    fileSize,
+    data,
+    customType,
+    (msg, error) => {
+      if (error) {
+        rej(error);
+      }
+      console.log(msg);
+      res(msg);
+    },
+  );
+});
+
 export const startTyping = channel => new Promise((res) => {
   // console.log('sendbird starttyping');
   channel.startTyping();

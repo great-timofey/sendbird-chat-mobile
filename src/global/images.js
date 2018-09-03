@@ -5,6 +5,7 @@ const images = {
   login: require('./images/login/login.png'),
   error: require('./images/error/error.png'),
   send: require('./images/send/Send.png'),
+  attachement: require('./images/attachement/attachement.png'),
   close_chat: require('./images/close_chat/close_chat.png'),
 };
 

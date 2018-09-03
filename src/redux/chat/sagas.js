@@ -4,6 +4,7 @@ import {
 import {
   loadMessages,
   sendUserMessage,
+  sendFileMessage,
   startTyping,
   endTyping,
 } from '../../services/SendBird';
@@ -20,7 +21,24 @@ import {
 function* sendMessageWorker(action) {
   try {
     const channel = yield select(currentChannelSelector);
-    const message = yield call(sendUserMessage, channel, action.payload);
+    let message;
+    if (action.type === TYPES.SEND_TEXT_MESSAGE) {
+      message = yield call(sendUserMessage, channel, action.payload);
+    } else if (action.type === TYPES.SEND_FILE_MESSAGE) {
+      cosnole.log('sended');
+      const {
+        sourceURL, filename, mime, size,
+      } = action.payload;
+      console.log(action.payload);
+      message = yield call(
+        sendFileMessage,
+        channel,
+        sourceURL,
+        filename,
+        mime,
+        size,
+      );
+    }
     yield put(setMessage(message));
   } catch (err) {
     console.log(err);

@@ -8,10 +8,12 @@ import {
   Image,
 } from 'react-native';
 import { connect } from 'react-redux';
+import ImagePicker from 'react-native-image-crop-picker';
 import { ChatsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
 import {
   sendTextMessage,
+  sendFileMessage,
   startTyping,
   endTyping,
 } from '../../redux/chat/actions';
@@ -69,6 +71,7 @@ class Chat extends Component<Props> {
 
   state = {
     text: '',
+    file: '',
   };
 
   timer = null;
@@ -87,11 +90,29 @@ class Chat extends Component<Props> {
     });
   };
 
+  handleChooseFile = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then((file) => {
+      this.setState({ file });
+    });
+  };
+
   handleSendMessage = () => {
-    const { text } = this.state;
-    const { sendTextMessage } = this.props;
-    sendTextMessage(text);
-    this.setState({ text: '' });
+    const { text, file } = this.state;
+    const { sendTextMessage, sendFileMessage } = this.props;
+    if (file) {
+      console.log(this.state);
+      sendFileMessage(file);
+      this.setState({ file: '' });
+    } else if (text.length > 0) {
+      sendTextMessage(text);
+      this.setState({ text: '' });
+    } else {
+      console.log('you cannot send empty message');
+    }
   };
 
   areTypersActive = typers => typers.length > 0;
@@ -111,6 +132,12 @@ class Chat extends Component<Props> {
           messages={messages}
         />
         <View style={styles.bottomBar}>
+          <TouchableOpacity
+            onPress={this.handleChooseFile}
+            style={styles.sendButton}
+          >
+            <Image source={images.attachement} />
+          </TouchableOpacity>
           <TextInput
             value={text}
             onChangeText={this.handleChangeText}
@@ -140,5 +167,10 @@ export default connect(
     userId: user.user.sbUserId,
     typers: chat.typers,
   }),
-  { sendTextMessage, startTyping, endTyping },
+  {
+    sendTextMessage,
+    sendFileMessage,
+    startTyping,
+    endTyping,
+  },
 )(Chat);
