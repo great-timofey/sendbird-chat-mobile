@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  View, TouchableOpacity, TextInput, Image,
+  View, TouchableOpacity, Image,
 } from 'react-native';
 import ChatInput from '../ChatInput';
 import images from '../../global/images';

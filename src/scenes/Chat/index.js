@@ -98,6 +98,7 @@ class Chat extends Component<Props> {
     }).then((file) => {
       this.setState({
         file,
+        text: '',
       });
     });
   };

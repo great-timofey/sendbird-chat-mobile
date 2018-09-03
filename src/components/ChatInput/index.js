@@ -4,30 +4,30 @@ import ProgressPie from 'react-native-progress/Pie';
 import styles from './styles';
 
 type Props = {
-  handleTextChangeCallback: Function,
-  inputValue: String,
+  onChangeText: Function,
+  value: String,
   placeholder: String,
   progress: Number,
-  active: Boolean,
+  editable: Boolean,
 };
 
 export default ({
-  handleTextChangeCallback,
-  inputValue,
+  onChangeText,
+  value,
   placeholder,
   progress,
-  active,
+  editable,
 }: Props) => (
   <View styles={styles.container}>
     <TextInput
-      value={inputValue}
-      editable={active}
-      onChangeText={handleTextChangeCallback}
+      value={value}
+      editable={editable}
+      onChangeText={onChangeText}
       placeholder={placeholder}
       style={styles.messageInput}
     />
     <View style={styles.progress}>
-      <ProgressPie progress={progress} />
+      <ProgressPie size={25} progress={progress} />
     </View>
   </View>
 );

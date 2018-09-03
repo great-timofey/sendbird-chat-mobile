@@ -3,9 +3,12 @@ import colors from '../../global/colors';
 
 export default StyleSheet.create({
   bottomBar: {
-    padding: 5,
+    alignSelf: 'stretch',
     overflow: 'hidden',
+    height: 70,
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     backgroundColor: colors.darkGreyTransparent,
   },
   sendButton: {
