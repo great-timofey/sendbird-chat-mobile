@@ -26,13 +26,12 @@ function* sendMessageWorker(action) {
       message = yield call(sendUserMessage, channel, action.payload);
     } else if (action.type === TYPES.SEND_FILE_MESSAGE) {
       const {
-        sourceURL, filename, mime, size,
+        path, filename, mime, size,
       } = action.payload;
-      // console.log(action.payload);
       message = yield call(
         sendFileMessage,
         channel,
-        sourceURL,
+        path,
         filename,
         mime,
         size,

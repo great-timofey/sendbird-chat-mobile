@@ -6,7 +6,9 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   messageContainer: {
-    padding: 10,
+    paddingTop: 10,
+    paddingBottom: 20,
+    paddingHorizontal: 10,
     minWidth: 150,
     minHeight: 80,
     borderRadius: 10,
@@ -25,6 +27,7 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 16,
+    marginBottom: 10,
   },
   message: {
     fontSize: 14,
@@ -55,5 +58,9 @@ export default StyleSheet.create({
     position: 'absolute',
     bottom: 5,
     right: 5,
+  },
+  image: {
+    width: 180,
+    height: 90,
   },
 });

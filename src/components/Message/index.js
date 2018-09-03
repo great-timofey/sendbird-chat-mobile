@@ -51,7 +51,11 @@ const Message = ({
         <Text
           style={[styles.message, isOwner ? styles.owner : styles.notOwner]}
         >
-          {type === 'user' ? message : <Image source={{ uri: url }} />}
+          {type === 'user' ? (
+            message
+          ) : (
+            <Image style={styles.image} source={{ uri: url }} />
+          )}
         </Text>
         <Text style={[styles.time, isOwner ? styles.owner : {}]}>{time}</Text>
       </View>

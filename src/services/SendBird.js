@@ -152,31 +152,17 @@ export const sendFileMessage = (
   fileSize,
   data = null,
   customType = null,
-) => new Promise((res, rej) => {
-  console.log(
-    'got data in sendbird: ',
-    fileUrl,
-    fileName,
-    fileType,
-    fileSize,
-  );
-  // res();
-  channel.sendFileMessage(
-    fileUrl,
-    fileName,
-    fileType,
-    fileSize,
-    data,
-    customType,
-    (msg, error) => {
-      if (error) {
-        rej(error);
-      }
-      console.log(msg);
-      res(msg);
-    },
-  );
-});
+) => new Promise((res, rej) => channel.sendFileMessage(
+  { uri: fileUrl, name: fileName, type: fileType },
+  data,
+  customType,
+  (msg, error) => {
+    if (error) {
+      rej(error);
+    }
+    res(msg);
+  },
+));
 
 export const startTyping = channel => new Promise((res) => {
   // console.log('sendbird starttyping');
