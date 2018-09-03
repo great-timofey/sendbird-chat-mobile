@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
 import { ChatsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
+import ChatBar from '../../components/ChatBar';
 import {
   sendTextMessage,
   sendFileMessage,
@@ -133,27 +134,14 @@ class Chat extends Component<Props> {
           userId={userId}
           messages={messages}
         />
-        <View style={styles.bottomBar}>
-          <TouchableOpacity
-            onPress={this.handleChooseFile}
-            style={styles.sendButton}
-          >
-            <Image source={images.attachement} />
-          </TouchableOpacity>
-          <TextInput
-            value={text}
-            editable={!file}
-            onChangeText={this.handleChangeText}
-            placeholder={file ? 'Press button to send photo' : 'Your message'}
-            style={styles.messageInput}
-          />
-          <TouchableOpacity
-            onPress={this.handleSendMessage}
-            style={styles.sendButton}
-          >
-            <Image source={images.send} />
-          </TouchableOpacity>
-        </View>
+        <ChatBar 
+          handleChooseFileCallback={this.handleChooseFile}
+          handleSendCallback={this.handleSendMessage}
+          handleTextChangeCallback={this.handleChangeText}
+          inputValue={text}
+          active={!file}
+          placeholder={file ? 'Press button to send photo' : 'Your message'}
+        />
       </KeyboardAvoidingView>
     );
   }
