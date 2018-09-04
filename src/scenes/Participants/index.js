@@ -27,16 +27,28 @@ class Participants extends Component<Props> {
     },
   });
 
-  renderUsers = ({ item: { nickname, connectionStatus } }) => (
-    <View style={styles.user}>
-      <Text style={{ color: 'white' }}>
-        {nickname}
-      </Text>
-      <Text style={{ color: colors.darkSkyBlue, fontWeight: 'bold' }}>
-        {connectionStatus}
-      </Text>
-    </View>
-  );
+  renderUsers = ({ item: { nickname, connectionStatus } }) => {
+    const { currentUserName } = this.props;
+    const isCurrent = currentUserName === nickname;
+    const isOnline = connectionStatus === 'online';
+    return (
+      <View style={styles.user}>
+        <Text style={{ color: 'white' }}>
+          {nickname}
+        </Text>
+        <Text
+          style={[
+            isCurrent
+              ? { color: colors.white20 }
+              : { color: isOnline ? colors.darkSkyBlue : colors.white },
+            isOnline && { fontWeight: 'bold' },
+          ]}
+        >
+          {isCurrent ? 'You' : connectionStatus}
+        </Text>
+      </View>
+    );
+  };
 
   render() {
     const { participants } = this.props;
@@ -52,6 +64,7 @@ class Participants extends Component<Props> {
   }
 }
 
-export default connect(({ chat: { participants } }) => ({ participants }))(
-  Participants,
-);
+export default connect(({ user, chat: { participants } }) => ({
+  participants,
+  currentUserName: user.user.username,
+}))(Participants);
