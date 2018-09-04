@@ -5,11 +5,12 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Image,
+  FlatList,
 } from 'react-native';
 import { connect } from 'react-redux';
 import MessagesList from '../../components/MessagesList';
 import colors from '../../global/colors';
-// import styles from './styles';
+import styles from './styles';
 
 type Props = {};
 
@@ -27,9 +28,9 @@ export default class Participants extends Component<Props> {
 
   render() {
     return (
-      <Text>
-here goes Participants screen
-      </Text>
+      <View style={styles.container}>
+        <FlatList />
+      </View>
     );
   }
 }

@@ -8,6 +8,7 @@ import {
   getGroupChannel,
   createOpenChannel,
   createGroupChannel,
+  getOpenChannelOnline,
 } from '../../services/SendBird';
 import { loginUser, registerUser } from './requests';
 import { navigate } from '../../navigation';
@@ -67,6 +68,8 @@ function* enterChannelWorker(action) {
     let channel;
     if (type === 'open') {
       channel = yield call(enterOpenChannel, url);
+      const participants = yield call(getOpenChannelOnline, channel);
+      console.log(participants);
     } else {
       channel = yield call(getGroupChannel, url);
     }
