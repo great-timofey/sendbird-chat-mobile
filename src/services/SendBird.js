@@ -1,10 +1,9 @@
 import SendBird from 'sendbird';
 import store from '../redux/store';
 import {
+  toggleFileUpload,
   receiveMessage,
   changeTypingStatus,
-  fileUploadStart,
-  fileUploadFinish,
   setFileUploadProgress,
 } from '../redux/chat/actions';
 
@@ -158,7 +157,7 @@ export const sendFileMessage = (
   fileSize,
   data = null,
 ) => new Promise((res, rej) => {
-  store.dispatch(fileUploadStart());
+  store.dispatch(toggleFileUpload());
   channel.sendFileMessage(
     { uri: fileUrl, name: fileName, type: fileType },
     data,
@@ -174,7 +173,7 @@ export const sendFileMessage = (
       if (error) {
         rej(error);
       }
-      store.dispatch(fileUploadFinish());
+      store.dispatch(toggleFileUpload());
       res(msg);
     },
   );

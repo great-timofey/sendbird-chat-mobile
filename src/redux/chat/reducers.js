@@ -39,25 +39,17 @@ const setFileUploadProgress = (state, progress) => ({
   fileUploadProgress: progress,
 });
 
-const startFileUpload = state => ({
+const toggleFileUpload = state => ({
   ...state,
-  isFileUploading: true,
-  UploaddingProgress: 0,
-});
-
-const finishFileUpload = state => ({
-  ...state,
-  isFileUploading: false,
-  fileUploadProgress: 100,
+  isFileUploading: !state.isFileUploading,
 });
 
 const handlers = {
   [TYPES.LOAD_MESSAGES_FINISH]: setMessages,
   [TYPES.SET_MESSAGE]: setMessage,
   [TYPES.SET_TYPERS]: setTypers,
-  [TYPES.FILE_UPLOAD_START]: startFileUpload,
-  [TYPES.FILE_UPLOAD_FINISH]: finishFileUpload,
   [TYPES.SET_FILE_UPLOAD_PROGRESS]: setFileUploadProgress,
+  [TYPES.TOGGLE_UPLOAD_FILE]: toggleFileUpload,
 };
 
 export default createReducer(initialState, handlers);
