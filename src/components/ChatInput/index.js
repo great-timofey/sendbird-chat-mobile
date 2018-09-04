@@ -24,7 +24,7 @@ export default ({
       editable={editable}
       onChangeText={onChangeText}
       placeholder={placeholder}
-      style={styles.messageInput}
+      style={[styles.messageInput, progress === 0 && { paddingRight: 5 }]}
     />
     <View
       style={[
