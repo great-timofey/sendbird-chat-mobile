@@ -18,7 +18,7 @@ class Auth extends Component<Props> {
   };
 
   state = {
-    isSingUp: false,
+    isSignUp: false,
     username: 'tim2',
     email: '232323',
     password: '232323',
@@ -28,8 +28,8 @@ class Auth extends Component<Props> {
     // password: 'asdfasdf',
   };
 
-  toggleMode = () => this.setState(({ isSingUp }) => ({
-    isSingUp: !isSingUp,
+  toggleMode = () => this.setState(({ isSignUp }) => ({
+    isSignUp: !isSignUp,
     username: '',
     email: '',
     password: '',
@@ -61,12 +61,14 @@ class Auth extends Component<Props> {
   render() {
     const { loading } = this.props;
     const {
-      hidePassword, isSingUp, username, email, password,
+      hidePassword, isSignUp, username, email, password,
     } = this.state;
     return (
       <View style={styles.container}>
         {loading && <Spinner />}
-        <Text style={styles.header}>{isSingUp ? 'Sign Up' : 'Sign In'}</Text>
+        <Text style={styles.header}>
+          {isSignUp ? 'Sign Up' : 'Sign In'}
+        </Text>
         <View style={styles.form}>
           <AuthInput
             onInput={this.handleChange('username')}
@@ -91,21 +93,21 @@ class Auth extends Component<Props> {
         </View>
         <TouchableOpacity
           style={styles.signButton}
-          onPress={isSingUp ? this.handleSignUp : this.handleSignIn}
+          onPress={isSignUp ? this.handleSignUp : this.handleSignIn}
         >
           <Text style={styles.signText}>
-            {isSingUp ? 'Sign Up' : 'Sign In'}
+            {isSignUp ? 'Sign Up' : 'Sign In'}
           </Text>
         </TouchableOpacity>
         <View style={styles.toggleModeSection}>
           <Text style={styles.toggleModeText}>
-            {isSingUp
+            {isSignUp
               ? 'Already have an account? '
               : 'Don’t have an account yet? '}
           </Text>
           <TouchableOpacity onPress={this.toggleMode}>
             <Text style={styles.toggleModeButton}>
-              {isSingUp ? 'Sign In' : 'Sing Up'}
+              {isSignUp ? 'Sign In' : 'Sign Up'}
             </Text>
           </TouchableOpacity>
         </View>
