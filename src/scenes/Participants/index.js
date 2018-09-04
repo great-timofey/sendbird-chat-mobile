@@ -14,10 +14,11 @@ import styles from './styles';
 type Props = {
   participants: Array,
   currentUserName: String,
+  currentChannel: Object,
 };
 
 class Participants extends Component<Props> {
-  static navigationOptions = ({ navigation }) => ({
+  static navigationOptions = () => ({
     title: 'Channel Members',
     headerStyle: {
       backgroundColor: colors.darkSky,
@@ -26,14 +27,6 @@ class Participants extends Component<Props> {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
-    headerRight:
-      navigation.getParam('channelType') === 'group' ? (
-        <TouchableOpacity style={{ marginRight: 10 }}>
-          <Text style={{ color: colors.white }}>
-Invite...
-          </Text>
-        </TouchableOpacity>
-      ) : null,
   });
 
   renderUsers = ({ item: { nickname, connectionStatus } }) => {
@@ -42,7 +35,7 @@ Invite...
     const isOnline = connectionStatus === 'online';
     return (
       <View style={styles.user}>
-        <Text style={{ color: 'white' }}>
+        <Text>
           {nickname}
         </Text>
         <Text
@@ -60,14 +53,24 @@ Invite...
   };
 
   render() {
-    const { participants } = this.props;
+    const { participants, currentChannel } = this.props;
     return (
       <View style={styles.container}>
-        <FlatList
-          data={participants}
-          renderItem={this.renderUsers}
-          keyExtractor={item => item.userId}
-        />
+        <View style={{ flex: 1 }}>
+          <FlatList
+            data={participants.concat(participants)}
+            renderItem={this.renderUsers}
+            keyExtractor={item => item.userId}
+            style={{ height: 100 }}
+          />
+        </View>
+        {currentChannel.channelType === 'group' && (
+          <TouchableOpacity style={styles.button}>
+            <Text style={{ color: colors.white }}>
+Invite User
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   }
@@ -75,5 +78,6 @@ Invite...
 
 export default connect(({ user, chat: { participants } }) => ({
   participants,
+  currentChannel: user.currentChannel,
   currentUserName: user.user.username,
 }))(Participants);
