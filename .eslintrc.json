@@ -15,6 +15,7 @@
     "global-require": 1,
     "react/no-multi-comp": 1,
     "react/jsx-filename-extension": 0,
+    "react/jsx-one-expression-per-line": 0,
     "camelcase": 1,
     "import/no-unresolved": 1,
     "import/prefer-default-export": 1,
