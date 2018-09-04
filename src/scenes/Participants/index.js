@@ -35,7 +35,7 @@ class Participants extends Component<Props> {
     const isOnline = connectionStatus === 'online';
     return (
       <View style={styles.user}>
-        <Text>
+        <Text style={{ color: colors.white, fontSize: 18 }}>
           {nickname}
         </Text>
         <Text
@@ -56,21 +56,18 @@ class Participants extends Component<Props> {
     const { participants, currentChannel } = this.props;
     return (
       <View style={styles.container}>
-        <View style={{ flex: 1 }}>
-          <FlatList
-            data={participants.concat(participants)}
-            renderItem={this.renderUsers}
-            keyExtractor={item => item.userId}
-            style={{ height: 100 }}
-          />
-        </View>
         {currentChannel.channelType === 'group' && (
-          <TouchableOpacity style={styles.button}>
-            <Text style={{ color: colors.white }}>
+          <TouchableOpacity style={styles.inviteButton}>
+            <Text style={styles.inviteButtonText}>
 Invite User
             </Text>
           </TouchableOpacity>
         )}
+        <FlatList
+          data={participants}
+          renderItem={this.renderUsers}
+          keyExtractor={item => item.userId}
+        />
       </View>
     );
   }

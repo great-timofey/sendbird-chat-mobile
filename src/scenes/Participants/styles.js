@@ -21,13 +21,20 @@ export default StyleSheet.create({
     borderColor: colors.black,
     backgroundColor: colors.darkSky,
   },
-  buttonContainer: {
+  inviteButton: {
     flex: 0,
-  },
-  button: {
-    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'red',
+    width: 290,
+    height: 50,
+    marginBottom: 20,
+    borderRadius: 6,
+    backgroundColor: colors.darkSkyBlue,
+    alignSelf: 'center',
+  },
+  inviteButtonText: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: colors.dark,
   },
 });
