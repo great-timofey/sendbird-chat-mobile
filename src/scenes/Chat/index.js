@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
-import { ChatsScene } from '../../navigation/scenes';
+import { ChatsScene, ParticipantsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
 import ChatBar from '../../components/ChatBar';
 import {
@@ -59,14 +59,17 @@ class Chat extends Component<Props> {
             </Text>
           )}
         </View>
-        <View style={headerStyles.rightButton}>
+        <TouchableOpacity
+          style={headerStyles.rightButton}
+          onPress={() => navigation.navigate(ParticipantsScene)}
+        >
           {navigation.state.params.coverUrl !== '' && (
             <Image
               source={{ uri: `${navigation.state.params.coverUrl}` }}
               style={headerStyles.rightImage}
             />
           )}
-        </View>
+        </TouchableOpacity>
       </View>
     ),
   });
