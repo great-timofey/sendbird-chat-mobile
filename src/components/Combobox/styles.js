@@ -34,6 +34,7 @@ export default StyleSheet.create({
     color: colors.darkSkyBlue,
     paddingLeft: 0,
     marginLeft: 0,
+    marginRight: 10,
     fontSize: 18,
   },
   optionsList: {

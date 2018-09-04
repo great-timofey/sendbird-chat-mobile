@@ -4,8 +4,6 @@ import colors from '../../global/colors';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
-    // justifyContent: 'space-between',
     backgroundColor: colors.darkGreyBlueTwo,
     paddingVertical: 20,
     paddingHorizontal: 10,
@@ -36,5 +34,30 @@ export default StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
     color: colors.dark,
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    backgroundColor: colors.darkGreyBlueTransparent,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    backgroundColor: colors.darkSky,
+    borderRadius: 10,
+    height: 200,
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  label: {
+    fontSize: 15,
+    maxWidth: 100,
+    color: colors.darkSkyBlue,
+    textAlign: 'center',
   },
 });
