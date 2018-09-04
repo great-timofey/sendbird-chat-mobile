@@ -42,7 +42,7 @@ const setFileUploadProgress = (state, progress) => ({
 const toggleFileUpload = state => ({
   ...state,
   isFileUploading: !state.isFileUploading,
-  fileUploadProgress: 0
+  fileUploadProgress: 0,
 });
 
 const handlers = {
