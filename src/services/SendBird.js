@@ -35,6 +35,17 @@ const getOpenChannels = () => new Promise((res, rej) => {
   });
 });
 
+export const getOpenChannelOnline = channel => new Promise((res, rej) => {
+  const participantListQuery = channel.createParticipantListQuery();
+
+  participantListQuery.next((participantList, error) => {
+    if (error) {
+      rej(error);
+    }
+    res(participantList);
+  });
+});
+
 const getGroupChannels = () => new Promise((res, rej) => {
   const channelListQuery = sb.GroupChannel.createMyGroupChannelListQuery();
   channelListQuery.includeEmpty = true;

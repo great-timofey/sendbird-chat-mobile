@@ -53,6 +53,11 @@ export const setTypers = typers => ({
   payload: typers,
 });
 
+export const setParticipants = participants => ({
+  type: TYPES.SET_PARTICIPANTS,
+  payload: participants,
+});
+
 export const toggleFileUpload = () => ({
   type: TYPES.TOGGLE_UPLOAD_FILE,
 });

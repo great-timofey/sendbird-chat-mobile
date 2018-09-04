@@ -7,15 +7,22 @@ import {
   sendFileMessage,
   startTyping,
   endTyping,
+  getOpenChannelOnline,
 } from '../../services/SendBird';
 import { ChatScene } from '../../navigation/scenes';
 import { navigate } from '../../navigation';
 import * as TYPES from './types';
 import { toggleLoading, setError } from '../common/actions';
-import { setMessage, loadMessagesFinish, setTypers } from './actions';
+import {
+  setMessage,
+  loadMessagesFinish,
+  setTypers,
+  setParticipants,
+} from './actions';
 import {
   currentChannelSelector,
   currentOnlineMessageSelector,
+  currentMembersSelector,
 } from '../selectors';
 
 function* sendMessageWorker(action) {
@@ -61,6 +68,13 @@ function* loadMessagesWorker() {
     const userSeenData = yield select(currentOnlineMessageSelector);
     const { name, coverUrl, channelType } = channel;
     const messages = yield call(loadMessages, channel);
+    if (channelType === 'open') {
+      const participants = yield call(getOpenChannelOnline, channel);
+      yield put(setParticipants(participants));
+    } else {
+      const participants = yield select(currentMembersSelector);
+      yield put(setParticipants(participants));
+    }
     yield put(loadMessagesFinish(messages));
     yield put(toggleLoading());
     yield call(navigate, ChatScene, {

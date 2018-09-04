@@ -7,6 +7,7 @@ const initialState = {
   typers: [],
   isFileUploading: false,
   fileUploadProgress: 0,
+  participants: [],
 };
 
 const setMessages = (state, messages) => ({ ...state, messages });
@@ -45,12 +46,18 @@ const toggleFileUpload = state => ({
   fileUploadProgress: 0,
 });
 
+const setParticipants = (state, participants) => ({
+  ...state,
+  participants,
+});
+
 const handlers = {
   [TYPES.LOAD_MESSAGES_FINISH]: setMessages,
   [TYPES.SET_MESSAGE]: setMessage,
   [TYPES.SET_TYPERS]: setTypers,
   [TYPES.SET_FILE_UPLOAD_PROGRESS]: setFileUploadProgress,
   [TYPES.TOGGLE_UPLOAD_FILE]: toggleFileUpload,
+  [TYPES.SET_PARTICIPANTS]: setParticipants,
 };
 
 export default createReducer(initialState, handlers);

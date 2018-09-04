@@ -3,15 +3,15 @@ import colors from '../../global/colors';
 
 export default StyleSheet.create({
   container: {
-    height: 65,
+    height: 64,
     paddingTop: 20,
     paddingHorizontal: 5,
     backgroundColor: colors.darkSky,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomWidth: 2,
-    borderColor: colors.darkGreyTransparent,
+    borderBottomWidth: 1,
+    borderColor: colors.white20,
   },
   leftButton: {
     marginLeft: 10,
