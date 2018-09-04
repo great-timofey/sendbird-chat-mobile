@@ -8,13 +8,14 @@ import {
   FlatList,
 } from 'react-native';
 import { connect } from 'react-redux';
-import MessagesList from '../../components/MessagesList';
 import colors from '../../global/colors';
 import styles from './styles';
 
-type Props = {};
+type Props = {
+  participants: Array,
+};
 
-export default class Participants extends Component<Props> {
+class Participants extends Component<Props> {
   static navigationOptions = ({ navigation }) => ({
     title: 'Participants',
     headerStyle: {
@@ -26,11 +27,31 @@ export default class Participants extends Component<Props> {
     },
   });
 
+  renderUsers = ({ item: { nickname, connectionStatus } }) => (
+    <View style={styles.user}>
+      <Text style={{ color: 'white' }}>
+        {nickname}
+      </Text>
+      <Text style={{ color: colors.darkSkyBlue, fontWeight: 'bold' }}>
+        {connectionStatus}
+      </Text>
+    </View>
+  );
+
   render() {
+    const { participants } = this.props;
     return (
       <View style={styles.container}>
-        <FlatList />
+        <FlatList
+          data={participants}
+          renderItem={this.renderUsers}
+          keyExtractor={item => item.userId}
+        />
       </View>
     );
   }
 }
+
+export default connect(({ chat: { participants } }) => ({ participants }))(
+  Participants,
+);
