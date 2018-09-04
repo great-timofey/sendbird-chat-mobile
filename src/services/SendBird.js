@@ -143,6 +143,19 @@ export const createGroupChannel = (
   );
 });
 
+export const inviteUsersToGroupChannel = (channel, ...users) => new Promise((res, rej) => {
+  const userIds = [...users];
+  console.log(userIds);
+  res();
+  //  TODO: IMPLEMENT INVITING USERS
+  // groupChannel.inviteWithUserIds(userIds, function(response, error) {
+  // if (error) {
+  // console.error(error);
+  // return;
+  // }
+  // });
+});
+
 // MESSAGES STUFF
 
 export const sendUserMessage = (
@@ -173,7 +186,6 @@ export const sendFileMessage = (
     { uri: fileUrl, name: fileName, type: fileType },
     data,
     (e) => {
-      console.log(`${parseInt(Math.floor((e.loaded / e.total) * 100))}%`);
       store.dispatch(
         setFileUploadProgress(
           parseInt(Math.floor((e.loaded / e.total) * 100)),

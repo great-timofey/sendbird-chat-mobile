@@ -47,7 +47,10 @@ class Participants extends Component<Props> {
         query: this.getChosenUserName(index),
         inviteeId: this.getChosenUserId(index),
       },
-      () => unsetUsers(),
+      () => {
+        console.log(this.state);
+        unsetUsers();
+      },
     );
   };
 
@@ -66,7 +69,9 @@ class Participants extends Component<Props> {
     return foundUsers[index].username;
   };
 
-  handleInvite = () => this.setState(({ showModal }) => ({ showModal: !showModal }));
+  handleModal = () => this.setState(({ showModal }) => ({ showModal: !showModal }));
+
+  handleInvite = () => console.log('trying to invite');
 
   inputChangeCallback = (value) => {
     const { findUsers } = this.props;
@@ -143,7 +148,7 @@ class Participants extends Component<Props> {
         )}
         {currentChannel.channelType === 'group' && (
           <TouchableOpacity
-            onPress={this.handleInvite}
+            onPress={this.handleModal}
             style={styles.inviteButton}
           >
             <Text style={styles.inviteButtonText}>Invite User</Text>

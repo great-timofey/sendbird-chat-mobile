@@ -18,14 +18,14 @@ class Auth extends Component<Props> {
   };
 
   state = {
-    isSignUp: false,
-    username: 'tim2',
-    email: '232323',
-    password: '232323',
+    // isSignUp: false,
+    // username: 'tim2',
+    // email: '232323',
+    // password: '232323',
     hidePassword: true,
-    // username: 'Asdf',
-    // email: 'asdfasdf',
-    // password: 'asdfasdf',
+    username: 'Tim_local',
+    email: 'Tim_local',
+    password: 'Tim_local',
   };
 
   toggleMode = () => this.setState(({ isSignUp }) => ({
@@ -66,9 +66,7 @@ class Auth extends Component<Props> {
     return (
       <View style={styles.container}>
         {loading && <Spinner />}
-        <Text style={styles.header}>
-          {isSignUp ? 'Sign Up' : 'Sign In'}
-        </Text>
+        <Text style={styles.header}>{isSignUp ? 'Sign Up' : 'Sign In'}</Text>
         <View style={styles.form}>
           <AuthInput
             onInput={this.handleChange('username')}
