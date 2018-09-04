@@ -12,7 +12,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { createChannel } from '../../redux/user/actions';
 import { findUsers, unsetUsers } from '../../redux/search/actions';
 import Combobox from '../../components/Combobox';
-import Input from '../../components/Input';
+import AuthInput from '../../components/AuthInput';
 import colors from '../../global/colors';
 import styles from './styles';
 
@@ -81,7 +81,6 @@ class NewChat extends Component<Props> {
   handleCreateChannel = () => {
     const { channelType, channelName, inviteeId } = this.state;
     const { inviterId, createChannel } = this.props;
-    // console.log(channelType, channelName, inviterId, inviteeId);
     createChannel(channelType, channelName, inviterId, inviteeId);
   };
 
@@ -121,7 +120,7 @@ class NewChat extends Component<Props> {
           )}
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Chat Name</Text>
-            <Input
+            <AuthInput
               onInput={this.handleChangeData('channelName')}
               value={channelName}
               customStyles={styles}

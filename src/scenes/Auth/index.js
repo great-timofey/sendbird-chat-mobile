@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { createUser, fetchUser } from '../../redux/user/actions';
-import Input from '../../components/Input';
+import AuthInput from '../../components/AuthInput';
 import Spinner from '../../components/Spinner';
 import styles from './styles';
 
@@ -68,19 +68,19 @@ class Auth extends Component<Props> {
         {loading && <Spinner />}
         <Text style={styles.header}>{isSingUp ? 'Sign Up' : 'Sign In'}</Text>
         <View style={styles.form}>
-          <Input
+          <AuthInput
             onInput={this.handleChange('username')}
             type="login"
             value={username}
             withImage
           />
-          <Input
+          <AuthInput
             onInput={this.handleChange('email')}
             type="mail"
             value={email}
             withImage
           />
-          <Input
+          <AuthInput
             onInput={this.handleChange('password')}
             handleShowPassword={this.handleShowPassword}
             hidePassword={hidePassword}

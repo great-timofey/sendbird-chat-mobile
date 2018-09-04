@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
   KeyboardAvoidingView,
   Image,
 } from 'react-native';
@@ -11,6 +10,7 @@ import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
 import { ChatsScene } from '../../navigation/scenes';
 import MessagesList from '../../components/MessagesList';
+import ChatBar from '../../components/ChatBar';
 import {
   sendTextMessage,
   sendFileMessage,
@@ -25,10 +25,12 @@ type Props = {
   messages: Array,
   userId?: String,
   sendTextMessage: Function,
+  fileUploadProgress: Number,
   currentChannel: Object,
   startTyping: Function,
   endTyping: Function,
   typers: Array,
+  isFileUploading: Boolean,
 };
 
 class Chat extends Component<Props> {
@@ -98,6 +100,7 @@ class Chat extends Component<Props> {
     }).then((file) => {
       this.setState({
         file,
+        text: '',
       });
     });
   };
@@ -121,7 +124,13 @@ class Chat extends Component<Props> {
 
   render() {
     const { text, file } = this.state;
-    const { messages, userId, typers } = this.props;
+    const {
+      messages,
+      userId,
+      typers,
+      isFileUploading,
+      fileUploadProgress,
+    } = this.props;
     return (
       <KeyboardAvoidingView
         style={styles.container}
@@ -133,27 +142,15 @@ class Chat extends Component<Props> {
           userId={userId}
           messages={messages}
         />
-        <View style={styles.bottomBar}>
-          <TouchableOpacity
-            onPress={this.handleChooseFile}
-            style={styles.sendButton}
-          >
-            <Image source={images.attachement} />
-          </TouchableOpacity>
-          <TextInput
-            value={text}
-            editable={!file}
-            onChangeText={this.handleChangeText}
-            placeholder={file ? 'Press button to send photo' : 'Your message'}
-            style={styles.messageInput}
-          />
-          <TouchableOpacity
-            onPress={this.handleSendMessage}
-            style={styles.sendButton}
-          >
-            <Image source={images.send} />
-          </TouchableOpacity>
-        </View>
+        <ChatBar
+          handleChooseFileCallback={this.handleChooseFile}
+          handleSendCallback={this.handleSendMessage}
+          handleTextChangeCallback={this.handleChangeText}
+          inputValue={text}
+          active={!file}
+          fileUploadProgress={isFileUploading ? fileUploadProgress : 0}
+          placeholder={file ? 'Press button to send photo' : 'Your message'}
+        />
       </KeyboardAvoidingView>
     );
   }
@@ -169,6 +166,8 @@ export default connect(
     messages: chat.messages,
     userId: user.user.sbUserId,
     typers: chat.typers,
+    isFileUploading: chat.isFileUploading,
+    fileUploadProgress: chat.fileUploadProgress,
   }),
   {
     sendTextMessage,
