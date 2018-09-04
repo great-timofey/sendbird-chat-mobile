@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  View, TouchableOpacity, Image,
-} from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import ChatInput from '../ChatInput';
 import images from '../../global/images';
 import styles from './styles';
@@ -10,9 +8,9 @@ type Props = {
   handleChooseFileCallback: Function,
   handleTextChangeCallback: Function,
   handleSendCallback: Function,
+  fileUploadProgress: Number,
   inputValue: String,
   placeholder: String,
-  progress: Number,
   active: Boolean,
 };
 
@@ -20,9 +18,9 @@ export default ({
   handleChooseFileCallback,
   handleTextChangeCallback,
   handleSendCallback,
+  fileUploadProgress,
   inputValue,
   placeholder,
-  progress,
   active,
 }: Props) => (
   <View style={styles.bottomBar}>
@@ -38,7 +36,7 @@ export default ({
       onChangeText={handleTextChangeCallback}
       placeholder={placeholder}
       style={styles.messageInput}
-      progress={0.5}
+      progress={fileUploadProgress}
     />
     <TouchableOpacity onPress={handleSendCallback} style={styles.sendButton}>
       <Image source={images.send} />

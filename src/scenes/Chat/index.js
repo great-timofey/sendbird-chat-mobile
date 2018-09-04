@@ -25,10 +25,12 @@ type Props = {
   messages: Array,
   userId?: String,
   sendTextMessage: Function,
+  fileUploadProgress: Number,
   currentChannel: Object,
   startTyping: Function,
   endTyping: Function,
   typers: Array,
+  isFileUploading: Boolean,
 };
 
 class Chat extends Component<Props> {
@@ -122,7 +124,13 @@ class Chat extends Component<Props> {
 
   render() {
     const { text, file } = this.state;
-    const { messages, userId, typers } = this.props;
+    const {
+      messages,
+      userId,
+      typers,
+      isFileUploading,
+      fileUploadProgress,
+    } = this.props;
     return (
       <KeyboardAvoidingView
         style={styles.container}
@@ -140,6 +148,7 @@ class Chat extends Component<Props> {
           handleTextChangeCallback={this.handleChangeText}
           inputValue={text}
           active={!file}
+          fileUploadProgress={isFileUploading ? fileUploadProgress : 0}
           placeholder={file ? 'Press button to send photo' : 'Your message'}
         />
       </KeyboardAvoidingView>
@@ -157,6 +166,8 @@ export default connect(
     messages: chat.messages,
     userId: user.user.sbUserId,
     typers: chat.typers,
+    isFileUploading: chat.isFileUploading,
+    fileUploadProgress: chat.fileUploadProgress,
   }),
   {
     sendTextMessage,

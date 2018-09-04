@@ -26,7 +26,12 @@ export default ({
       placeholder={placeholder}
       style={styles.messageInput}
     />
-    <View style={styles.progress}>
+    <View
+      style={[
+        styles.progress,
+        progress > 0 ? { display: 'flex' } : { display: 'none' },
+      ]}
+    >
       <ProgressPie size={25} progress={progress} />
     </View>
   </View>

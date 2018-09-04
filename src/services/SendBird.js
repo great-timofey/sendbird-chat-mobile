@@ -1,6 +1,12 @@
 import SendBird from 'sendbird';
 import store from '../redux/store';
-import { receiveMessage, changeTypingStatus } from '../redux/chat/actions';
+import {
+  receiveMessage,
+  changeTypingStatus,
+  fileUploadStart,
+  fileUploadFinish,
+  setFileUploadProgress,
+} from '../redux/chat/actions';
 
 const sb = new SendBird({
   appId: '0867B9E8-AC7A-4744-A99F-2420FA273CB0',
@@ -151,20 +157,28 @@ export const sendFileMessage = (
   fileType,
   fileSize,
   data = null,
-  customType = null,
-) => new Promise((res, rej) => channel.sendFileMessage(
-  { uri: fileUrl, name: fileName, type: fileType },
-  data,
-  (e) => {
-    console.log(`${parseInt(Math.floor((e.loaded / e.total) * 100))}%`);
-  },
-  (msg, error) => {
-    if (error) {
-      rej(error);
-    }
-    res(msg);
-  },
-));
+) => new Promise((res, rej) => {
+  store.dispatch(fileUploadStart());
+  channel.sendFileMessage(
+    { uri: fileUrl, name: fileName, type: fileType },
+    data,
+    (e) => {
+      console.log(`${parseInt(Math.floor((e.loaded / e.total) * 100))}%`);
+      store.dispatch(
+        setFileUploadProgress(
+          parseInt(Math.floor((e.loaded / e.total) * 100)),
+        ),
+      );
+    },
+    (msg, error) => {
+      if (error) {
+        rej(error);
+      }
+      store.dispatch(fileUploadFinish());
+      res(msg);
+    },
+  );
+});
 
 export const startTyping = channel => new Promise((res) => {
   // console.log('sendbird starttyping');

@@ -52,3 +52,16 @@ export const setTypers = typers => ({
   type: TYPES.SET_TYPERS,
   payload: typers,
 });
+
+export const fileUploadStart = () => ({
+  type: TYPES.FILE_UPLOAD_START,
+});
+
+export const fileUploadFinish = () => ({
+  type: TYPES.FILE_UPLOAD_FINISH,
+});
+
+export const setFileUploadProgress = progress => ({
+  type: TYPES.SET_FILE_UPLOAD_PROGRESS,
+  payload: progress,
+});
