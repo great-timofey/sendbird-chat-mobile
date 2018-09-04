@@ -22,6 +22,7 @@ import {
 import {
   currentChannelSelector,
   currentOnlineMessageSelector,
+  currentMembersSelector,
 } from '../selectors';
 
 function* sendMessageWorker(action) {
@@ -69,6 +70,9 @@ function* loadMessagesWorker() {
     const messages = yield call(loadMessages, channel);
     if (channelType === 'open') {
       const participants = yield call(getOpenChannelOnline, channel);
+      yield put(setParticipants(participants));
+    } else {
+      const participants = yield select(currentMembersSelector);
       yield put(setParticipants(participants));
     }
     yield put(loadMessagesFinish(messages));
