@@ -61,7 +61,10 @@ class Chat extends Component<Props> {
         </View>
         <TouchableOpacity
           style={headerStyles.rightButton}
-          onPress={() => navigation.navigate(ParticipantsScene)}
+          onPress={() => {
+            const channelType = navigation.getParam('channelType');
+            navigation.navigate(ParticipantsScene, { channelType });
+          }}
         >
           {navigation.state.params.coverUrl !== '' && (
             <Image

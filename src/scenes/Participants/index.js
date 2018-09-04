@@ -13,11 +13,12 @@ import styles from './styles';
 
 type Props = {
   participants: Array,
+  currentUserName: String,
 };
 
 class Participants extends Component<Props> {
   static navigationOptions = ({ navigation }) => ({
-    title: 'Participants',
+    title: 'Channel Members',
     headerStyle: {
       backgroundColor: colors.darkSky,
     },
@@ -25,6 +26,14 @@ class Participants extends Component<Props> {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
+    headerRight:
+      navigation.getParam('channelType') === 'group' ? (
+        <TouchableOpacity style={{ marginRight: 10 }}>
+          <Text style={{ color: colors.white }}>
+Invite...
+          </Text>
+        </TouchableOpacity>
+      ) : null,
   });
 
   renderUsers = ({ item: { nickname, connectionStatus } }) => {
