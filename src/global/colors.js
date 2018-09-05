@@ -10,6 +10,7 @@ const colors = {
   darkGreyBlueTransparent: 'rgba(46, 56, 87, 0.8)',
   darkGreyTransparent: 'rgba(123, 153, 196, 0.4)',
   reddish: 'rgb(255, 36, 101)',
+  seaGreen: 'rgb(0, 251, 197)',
   dark: 'rgb(34, 42, 65)',
   blue: 'rgb(65, 103, 178)',
 };
