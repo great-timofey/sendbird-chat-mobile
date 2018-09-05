@@ -143,13 +143,13 @@ export const createGroupChannel = (
   );
 });
 
-export const inviteUserToGroupChannel = (channel, user) => new Promise((res, rej) => {
-  channel.inviteWithUserIds([user], (response, error) => {
+export const inviteUsersToGroupChannel = (channel, users) => new Promise((res, rej) => {
+  channel.inviteWithUserIds(users, (response, error) => {
     if (error) {
       rej(error);
     }
 
-    res('user have been successful invited');
+    res();
   });
 });
 

@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Image,
-  FlatList,
+  View, Text, TouchableOpacity, FlatList,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { findUsers, unsetUsers } from '../../redux/search/actions';
-import { inviteUser } from '../../redux/user/actions';
+import { inviteUsers } from '../../redux/user/actions';
 import Combobox from '../../components/Combobox';
 import colors from '../../global/colors';
 import styles from './styles';
@@ -21,6 +16,9 @@ type Props = {
   foundUsers: Array,
   searching: Boolean,
   successful: Boolean,
+  findUsers: Function,
+  unsetUsers: Function,
+  inviteUsers: Function,
 };
 
 class Participants extends Component<Props> {
@@ -38,15 +36,19 @@ class Participants extends Component<Props> {
   state = {
     showModal: false,
     query: '',
-    inviteeId: '',
+    invitees: [],
   };
 
   choosePositionCallback = (index) => {
     const { unsetUsers } = this.props;
+    const { invitees } = this.state;
+    const name = this.getChosenUserName(index);
+    const id = this.getChosenUserId(index);
+    const newInvitee = { name, id };
     this.setState(
       {
-        query: this.getChosenUserName(index),
-        inviteeId: this.getChosenUserId(index),
+        query: '',
+        invitees: [...invitees, newInvitee],
       },
       () => {
         console.log(this.state);
@@ -57,7 +59,7 @@ class Participants extends Component<Props> {
 
   clearCallback = () => {
     const { unsetUsers } = this.props;
-    this.setState({ query: '', inviteeId: '' }, () => unsetUsers());
+    this.setState({ query: '' }, () => unsetUsers());
   };
 
   getChosenUserId = (index) => {
@@ -72,7 +74,11 @@ class Participants extends Component<Props> {
 
   handleModal = () => this.setState(({ showModal }) => ({ showModal: !showModal }));
 
-  handleInvite = () => this.props.inviteUser(this.state.inviteeId);
+  handleInvite = () => {
+    const { inviteUsers } = this.props;
+    const { invitees } = this.state;
+    inviteUsers(invitees.map(invitee => invitee.id));
+  };
 
   inputChangeCallback = (value) => {
     const { findUsers } = this.props;
@@ -100,6 +106,12 @@ class Participants extends Component<Props> {
     );
   };
 
+  renderInvitees = ({ item }) => (
+    <Text style={{ marginRight: 10, color: colors.darkSkyBlue, fontSize: 18 }}>
+      {item.name}
+    </Text>
+  );
+
   render() {
     const {
       participants,
@@ -108,7 +120,7 @@ class Participants extends Component<Props> {
       searching,
       successful,
     } = this.props;
-    const { query, showModal } = this.state;
+    const { query, showModal, invitees } = this.state;
     return (
       <View style={styles.container}>
         {showModal && (
@@ -122,7 +134,7 @@ class Participants extends Component<Props> {
                   fontWeight: 'bold',
                 }}
               >
-                Invite User
+                Invite Users
               </Text>
               <Combobox
                 value={query}
@@ -135,6 +147,25 @@ class Participants extends Component<Props> {
                 displayValue="username"
                 customKey="_id"
               />
+              <View
+                style={{
+                  height: 50,
+                  alignItems: 'center',
+                  // flexDirection: 'row',
+                }}
+              >
+                <Text style={{ color: 'white', fontSize: 16 }}>
+                  Invited Users:
+                </Text>
+                <FlatList
+                  contentContainerStyle={{
+                    flexDirection: 'row',
+                  }}
+                  data={invitees}
+                  renderItem={this.renderInvitees}
+                  keyExtractor={(item, index) => index}
+                />
+              </View>
               <TouchableOpacity
                 onPress={this.handleInvite}
                 style={[
@@ -175,5 +206,5 @@ export default connect(
     searching: search.searching,
     successful: search.successful,
   }),
-  { findUsers, unsetUsers, inviteUser },
+  { findUsers, unsetUsers, inviteUsers },
 )(Participants);

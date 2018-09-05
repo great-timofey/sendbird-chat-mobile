@@ -50,7 +50,7 @@ export const createChannel = (
   },
 });
 
-export const inviteUser = user => ({
-  type: TYPES.INVITE_USER,
-  payload: user
+export const inviteUsers = users => ({
+  type: TYPES.INVITE_USERS,
+  payload: users,
 });

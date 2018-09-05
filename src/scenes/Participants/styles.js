@@ -49,7 +49,6 @@ export default StyleSheet.create({
   modalContainer: {
     backgroundColor: colors.darkSky,
     borderRadius: 10,
-    height: 200,
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',

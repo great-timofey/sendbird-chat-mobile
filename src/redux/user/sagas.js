@@ -8,7 +8,7 @@ import {
   getGroupChannel,
   createOpenChannel,
   createGroupChannel,
-  inviteUserToGroupChannel,
+  inviteUsersToGroupChannel,
 } from '../../services/SendBird';
 import { loginUser, registerUser } from './requests';
 import { currentChannelSelector } from '../selectors';
@@ -107,10 +107,10 @@ function* createChannelWorker(action) {
   }
 }
 
-export function* inviteUserWorker(action) {
+export function* inviteUsersWorker(action) {
   try {
     const channel = yield select(currentChannelSelector);
-    yield call(inviteUserToGroupChannel, channel, action.payload);
+    yield call(inviteUsersToGroupChannel, channel, action.payload);
   } catch (err) {
     console.log(err);
   }
@@ -121,5 +121,5 @@ export default function* sagas() {
   yield takeEvery(TYPES.CREATE_USER, addUserWorker);
   yield takeLatest(TYPES.ENTER_CHANNEL, enterChannelWorker);
   yield takeEvery(TYPES.CREATE_CHANNEL, createChannelWorker);
-  yield takeEvery(TYPES.INVITE_USER, inviteUserWorker);
+  yield takeEvery(TYPES.INVITE_USERS, inviteUsersWorker);
 }
