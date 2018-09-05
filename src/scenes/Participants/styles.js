@@ -56,6 +56,8 @@ export default StyleSheet.create({
   },
   modalContainer: {
     backgroundColor: colors.darkSky,
+    height: 300,
+    width: 350,
     borderRadius: 10,
     padding: 10,
     justifyContent: 'center',

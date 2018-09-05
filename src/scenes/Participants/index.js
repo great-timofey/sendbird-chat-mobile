@@ -81,11 +81,14 @@ class Participants extends Component<Props> {
   );
 
   handleInvite = () => {
-    const { inviteUsers, setError } = this.props;
+    const { inviteUsers, setError, loading } = this.props;
     const { invitees } = this.state;
     invitees.length > 0
       ? inviteUsers(invitees.map(invitee => invitee.id))
       : setError('You should choose at least one user to invite');
+    if (!loading) {
+      this.handleModal();
+    }
   };
 
   inputChangeCallback = (value) => {
@@ -146,7 +149,15 @@ class Participants extends Component<Props> {
                 Invite Users
               </Text>
               {error ? (
-                <Text>{error}</Text>
+                <Text
+                  style={{
+                    color: colors.reddish,
+                    fontWeight: 'bold',
+                    marginBottom: 10,
+                  }}
+                >
+                  {error}
+                </Text>
               ) : (
                 <Fragment>
                   <Combobox
@@ -171,16 +182,24 @@ class Participants extends Component<Props> {
                     >
                       Invited Users:
                     </Text>
+                    {invitees.length === 0 && (
+                      <Text
+                        style={{
+                          color: colors.white30,
+                          fontSize: 16,
+                          marginBottom: 5,
+                        }}
+                      >
+                        No users are invited
+                      </Text>
+                    )}
                     <FlatList
                       contentContainerStyle={{
                         flexDirection: 'row',
                       }}
                       data={invitees}
                       renderItem={this.renderInvitees}
-                      keyExtractor={(index) => {
-                        console.log(index);
-                        return index.toString();
-                      }}
+                      keyExtractor={(item, index) => index.toString()}
                     />
                   </View>
                 </Fragment>
@@ -250,6 +269,7 @@ export default connect(
     searching: search.searching,
     successful: search.successful,
     error: common.error,
+    loading: common.loading,
   }),
   {
     findUsers,
