@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   error: null,
   currentOnlineMessage: '',
+  successMessage: ''
 };
 
 const toggleLoading = state => ({ ...state, loading: !state.loading });
@@ -14,10 +15,14 @@ const setCurrentOnlineMessage = (state, message) => ({
   ...state,
   currentOnlineMessage: message,
 });
+const setSuccessMessage = (state, successMessage) => ({ ...state, successMessage });
+const unsetSuccessMessage = (state) => ({ ...state, successMessage: '' });
 
 const handlers = {
   [TYPES.TOGGLE_LOADING]: toggleLoading,
   [TYPES.SET_CURRENT_ONLINE_MESSAGE]: setCurrentOnlineMessage,
+  [TYPES.SET_SUCCESS_MESSAGE]: setSuccessMessage,
+  [TYPES.UNSET_SUCCESS_MESSAGE]: unsetSuccessMessage,
   [TYPES.SET_ERROR]: setError,
   [TYPES.UNSET_ERROR]: unsetError,
 };
