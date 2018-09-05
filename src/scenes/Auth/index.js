@@ -18,14 +18,14 @@ class Auth extends Component<Props> {
   };
 
   state = {
-    // isSignUp: false,
-    // username: 'tim2',
-    // email: '232323',
-    // password: '232323',
+    isSignUp: false,
+    username: 'tim2',
+    email: '232323',
+    password: '232323',
     hidePassword: true,
-    username: 'Tim_local',
-    email: 'Tim_local',
-    password: 'Tim_local',
+    // username: 'Tim_local',
+    // email: 'Tim_local',
+    // password: 'Tim_local',
   };
 
   toggleMode = () => this.setState(({ isSignUp }) => ({

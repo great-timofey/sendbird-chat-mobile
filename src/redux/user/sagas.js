@@ -1,5 +1,5 @@
 import {
-  call, put, takeEvery, takeLatest,
+  call, put, takeEvery, takeLatest, select,
 } from 'redux-saga/effects';
 import {
   SBconnect,
@@ -8,8 +8,10 @@ import {
   getGroupChannel,
   createOpenChannel,
   createGroupChannel,
+  inviteUserToGroupChannel,
 } from '../../services/SendBird';
 import { loginUser, registerUser } from './requests';
+import { currentChannelSelector } from '../selectors';
 import { navigate } from '../../navigation';
 import { ChatsScene } from '../../navigation/scenes';
 import * as TYPES from './types';
@@ -105,9 +107,19 @@ function* createChannelWorker(action) {
   }
 }
 
+export function* inviteUserWorker(action) {
+  try {
+    const channel = yield select(currentChannelSelector);
+    yield call(inviteUserToGroupChannel, channel, action.payload);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export default function* sagas() {
   yield takeEvery(TYPES.FETCH_USER, fetchUserWorker);
   yield takeEvery(TYPES.CREATE_USER, addUserWorker);
   yield takeLatest(TYPES.ENTER_CHANNEL, enterChannelWorker);
   yield takeEvery(TYPES.CREATE_CHANNEL, createChannelWorker);
+  yield takeEvery(TYPES.INVITE_USER, inviteUserWorker);
 }

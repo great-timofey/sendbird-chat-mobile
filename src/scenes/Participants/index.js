@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { findUsers, unsetUsers } from '../../redux/search/actions';
+import { inviteUser } from '../../redux/user/actions';
 import Combobox from '../../components/Combobox';
 import colors from '../../global/colors';
 import styles from './styles';
@@ -71,7 +72,7 @@ class Participants extends Component<Props> {
 
   handleModal = () => this.setState(({ showModal }) => ({ showModal: !showModal }));
 
-  handleInvite = () => console.log('trying to invite');
+  handleInvite = () => this.props.inviteUser(this.state.inviteeId);
 
   inputChangeCallback = (value) => {
     const { findUsers } = this.props;
@@ -174,5 +175,5 @@ export default connect(
     searching: search.searching,
     successful: search.successful,
   }),
-  { findUsers, unsetUsers },
+  { findUsers, unsetUsers, inviteUser },
 )(Participants);
