@@ -28,7 +28,7 @@ import {
   addChannel,
 } from './actions';
 import { toggleLoading, setError } from '../common/actions';
-import { loadMessagesStart } from '../chat/actions';
+import { loadMessagesStart, setParticipants } from '../chat/actions';
 
 function* fetchUserWorker(action) {
   try {
@@ -120,6 +120,8 @@ export function* inviteUsersWorker(action) {
     const compared = intersection(action.payload, participantsIds);
     if (isEmpty(compared)) {
       yield call(inviteUsersToGroupChannel, channel, action.payload);
+      const participants = yield select(currentMembersSelector);
+      yield put(setParticipants(participants));
     } else {
       const members = yield select(currentMembersSelector);
       const alreadyInChannel = members
@@ -127,8 +129,8 @@ export function* inviteUsersWorker(action) {
         .map(member => member.nickname);
       yield put(
         setError(
-          `${alreadyInChannel.join()} ${
-            alreadyInChannel.length > 0 ? 'are' : 'in'
+          `${alreadyInChannel.join(', ')} ${
+            alreadyInChannel.length > 1 ? 'are' : 'is'
           } already in channel`,
         ),
       );
