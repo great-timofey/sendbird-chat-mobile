@@ -1,12 +1,16 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import {
   View, Text, TouchableOpacity, FlatList,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { findUsers, unsetUsers } from '../../redux/search/actions';
 import { inviteUsers } from '../../redux/user/actions';
-import { setError, unsetError } from '../../redux/common/actions';
-import Combobox from '../../components/Combobox';
+import {
+  setError,
+  unsetError,
+  unsetSuccessMessage,
+} from '../../redux/common/actions';
+import ParticipantsModal from '../../components/ParticipantsModal';
 import colors from '../../global/colors';
 import styles from './styles';
 
@@ -20,6 +24,9 @@ type Props = {
   findUsers: Function,
   unsetUsers: Function,
   inviteUsers: Function,
+  unsetError: Function,
+  unsetSuccessMessage: Function,
+  successMessage?: String,
   error?: String,
 };
 
@@ -58,7 +65,10 @@ class Participants extends Component<Props> {
 
   clearCallback = () => {
     const { unsetUsers } = this.props;
-    this.setState({ query: '' }, () => unsetUsers());
+    const { invitees } = this.state;
+    this.setState({ query: '' }, () => {
+      if (invitees.length > 0) this.sunsetUsers();
+    });
   };
 
   getChosenUserId = (index) => {
@@ -77,18 +87,24 @@ class Participants extends Component<Props> {
       query: '',
       invitees: [],
     }),
-    () => this.props.error && this.props.unsetError(),
+    () => {
+      const {
+        error,
+        successMessage,
+        unsetError,
+        unsetSuccessMessage,
+      } = this.props;
+      if (error) unsetError();
+      if (successMessage) unsetSuccessMessage();
+    },
   );
 
   handleInvite = () => {
-    const { inviteUsers, setError, loading } = this.props;
+    const { inviteUsers, setError } = this.props;
     const { invitees } = this.state;
     invitees.length > 0
       ? inviteUsers(invitees.map(invitee => invitee.id))
       : setError('You should choose at least one user to invite');
-    if (!loading) {
-      this.handleModal();
-    }
   };
 
   inputChangeCallback = (value) => {
@@ -118,9 +134,7 @@ class Participants extends Component<Props> {
   };
 
   renderInvitees = ({ item }) => (
-    <Text style={{ marginRight: 10, color: colors.darkSkyBlue, fontSize: 18 }}>
-      {item.name}
-    </Text>
+    <Text style={styles.invitee}>{item.name}</Text>
   );
 
   render() {
@@ -130,111 +144,12 @@ class Participants extends Component<Props> {
       foundUsers,
       searching,
       successful,
+      successMessage,
       error,
     } = this.props;
     const { query, showModal, invitees } = this.state;
     return (
       <View style={styles.container}>
-        {showModal && (
-          <View style={styles.overlay}>
-            <View style={styles.modalContainer}>
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: 30,
-                  marginBottom: 20,
-                  fontWeight: 'bold',
-                }}
-              >
-                Invite Users
-              </Text>
-              {error ? (
-                <Text
-                  style={{
-                    color: colors.reddish,
-                    fontWeight: 'bold',
-                    marginBottom: 10,
-                  }}
-                >
-                  {error}
-                </Text>
-              ) : (
-                <Fragment>
-                  <Combobox
-                    value={query}
-                    options={foundUsers}
-                    searching={searching}
-                    inputChangeCallback={this.inputChangeCallback}
-                    choosePositionCallback={this.choosePositionCallback}
-                    clearCallback={this.clearCallback}
-                    successful={successful}
-                    displayValue="username"
-                    customKey="_id"
-                  />
-                  <View
-                    style={{
-                      height: 50,
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text
-                      style={{ color: 'white', fontSize: 16, marginBottom: 5 }}
-                    >
-                      Invited Users:
-                    </Text>
-                    {invitees.length === 0 && (
-                      <Text
-                        style={{
-                          color: colors.white30,
-                          fontSize: 16,
-                          marginBottom: 5,
-                        }}
-                      >
-                        No users are invited
-                      </Text>
-                    )}
-                    <FlatList
-                      contentContainerStyle={{
-                        flexDirection: 'row',
-                      }}
-                      data={invitees}
-                      renderItem={this.renderInvitees}
-                      keyExtractor={(item, index) => index.toString()}
-                    />
-                  </View>
-                </Fragment>
-              )}
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  width: 250,
-                  marginTop: 10,
-                }}
-              >
-                <TouchableOpacity
-                  onPress={this.handleModal}
-                  style={[
-                    styles.modalButton,
-                    { backgroundColor: colors.darkGreyBlueTransparent },
-                  ]}
-                >
-                  <Text style={[styles.inviteButtonText, { color: 'white' }]}>
-                    Return
-                  </Text>
-                </TouchableOpacity>
-                {!error && (
-                  <TouchableOpacity
-                    onPress={this.handleInvite}
-                    style={styles.modalButton}
-                  >
-                    <Text style={styles.inviteButtonText}>Invite</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
-          </View>
-        )}
         {currentChannel.channelType === 'group' && (
           <TouchableOpacity
             onPress={this.handleModal}
@@ -248,6 +163,23 @@ class Participants extends Component<Props> {
           renderItem={this.renderUsers}
           keyExtractor={item => item.userId}
         />
+        {showModal && (
+          <ParticipantsModal
+            foundUsers={foundUsers}
+            searching={searching}
+            successful={successful}
+            error={error}
+            invitees={invitees}
+            renderInvitees={this.renderInvitees}
+            handleInvite={this.handleInvite}
+            handleModal={this.handleModal}
+            onChoosePosition={this.choosePositionCallback}
+            onClear={this.clearCallback}
+            onInputChange={this.inputChangeCallback}
+            query={query}
+            successMessage={successMessage}
+          />
+        )}
       </View>
     );
   }
@@ -255,6 +187,7 @@ class Participants extends Component<Props> {
 
 Participants.defaultProps = {
   error: '',
+  successMessage: '',
 };
 
 export default connect(
@@ -270,6 +203,7 @@ export default connect(
     successful: search.successful,
     error: common.error,
     loading: common.loading,
+    successMessage: common.successMessage,
   }),
   {
     findUsers,
@@ -277,5 +211,6 @@ export default connect(
     inviteUsers,
     setError,
     unsetError,
+    unsetSuccessMessage,
   },
 )(Participants);

@@ -18,7 +18,7 @@ import {
   currentChannelParticipantsIds,
 } from '../selectors';
 import { navigate } from '../../navigation';
-import { ChatsScene, ParticipantsScene } from '../../navigation/scenes';
+import { ChatsScene } from '../../navigation/scenes';
 import * as TYPES from './types';
 import {
   setUser,
@@ -27,7 +27,7 @@ import {
   enterChannel,
   addChannel,
 } from './actions';
-import { toggleLoading, setError } from '../common/actions';
+import { toggleLoading, setError, setSuccessMessage } from '../common/actions';
 import { loadMessagesStart, setParticipants } from '../chat/actions';
 
 function* fetchUserWorker(action) {
@@ -122,6 +122,7 @@ export function* inviteUsersWorker(action) {
       yield call(inviteUsersToGroupChannel, channel, action.payload);
       const participants = yield select(currentMembersSelector);
       yield put(setParticipants(participants));
+      yield put(setSuccessMessage('Users have been successfully invited!'));
     } else {
       const members = yield select(currentMembersSelector);
       const alreadyInChannel = members
