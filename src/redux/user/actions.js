@@ -49,3 +49,8 @@ export const createChannel = (
     inviteeId,
   },
 });
+
+export const inviteUsers = users => ({
+  type: TYPES.INVITE_USERS,
+  payload: users,
+});

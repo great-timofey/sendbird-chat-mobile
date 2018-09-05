@@ -1,5 +1,6 @@
 export const FETCH_USER = 'USER/FETCH_USER';
 export const SET_USER = 'USER/SET_USER';
+export const INVITE_USERS = 'USER/INVITE_USERS';
 export const CREATE_USER = 'USER/CREATE_USER';
 export const ENTER_CHANNEL = 'USER/ENTER_CHANNEL';
 export const CREATE_CHANNEL = 'USER/CREATE_CHANNEL';
