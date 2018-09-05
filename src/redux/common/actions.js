@@ -13,3 +13,7 @@ export const setError = error => ({
   type: TYPES.SET_ERROR,
   payload: error,
 });
+
+export const unsetError = () => ({
+  type: TYPES.UNSET_ERROR,
+});
