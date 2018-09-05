@@ -50,10 +50,7 @@ class Participants extends Component<Props> {
         query: '',
         invitees: [...invitees, newInvitee],
       },
-      () => {
-        console.log(this.state);
-        unsetUsers();
-      },
+      () => unsetUsers(),
     );
   };
 
@@ -72,7 +69,11 @@ class Participants extends Component<Props> {
     return foundUsers[index].username;
   };
 
-  handleModal = () => this.setState(({ showModal }) => ({ showModal: !showModal }));
+  handleModal = () => this.setState(({ showModal }) => ({
+    showModal: !showModal,
+    query: '',
+    invitees: [],
+  }));
 
   handleInvite = () => {
     const { inviteUsers } = this.props;
@@ -151,10 +152,9 @@ class Participants extends Component<Props> {
                 style={{
                   height: 50,
                   alignItems: 'center',
-                  // flexDirection: 'row',
                 }}
               >
-                <Text style={{ color: 'white', fontSize: 16 }}>
+                <Text style={{ color: 'white', fontSize: 16, marginBottom: 5 }}>
                   Invited Users:
                 </Text>
                 <FlatList
@@ -163,18 +163,35 @@ class Participants extends Component<Props> {
                   }}
                   data={invitees}
                   renderItem={this.renderInvitees}
-                  keyExtractor={(item, index) => index}
+                  keyExtractor={index => index.toString()}
                 />
               </View>
-              <TouchableOpacity
-                onPress={this.handleInvite}
-                style={[
-                  styles.inviteButton,
-                  { height: 40, width: 120, marginTop: 10 },
-                ]}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: 250,
+                  marginTop: 10,
+                }}
               >
-                <Text style={styles.inviteButtonText}>Invite</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={this.handleModal}
+                  style={[
+                    styles.modalButton,
+                    { backgroundColor: colors.darkGreyBlueTransparent },
+                  ]}
+                >
+                  <Text style={[styles.inviteButtonText, { color: 'white' }]}>
+                    Return
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={this.handleInvite}
+                  style={styles.modalButton}
+                >
+                  <Text style={styles.inviteButtonText}>Invite</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         )}
@@ -197,7 +214,9 @@ class Participants extends Component<Props> {
 }
 
 export default connect(
-  ({ user, search, chat: { participants } }) => ({
+  ({
+    user, search, chat: { participants }, common,
+  }) => ({
     participants,
     foundUsers: search.users,
     currentChannel: user.currentChannel,
@@ -205,6 +224,7 @@ export default connect(
     currentUserName: user.user.username,
     searching: search.searching,
     successful: search.successful,
+    error: common.error,
   }),
   { findUsers, unsetUsers, inviteUsers },
 )(Participants);

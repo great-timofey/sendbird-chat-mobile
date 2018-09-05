@@ -20,7 +20,6 @@ export default StyleSheet.create({
     backgroundColor: colors.darkSky,
   },
   inviteButton: {
-    flex: 0,
     alignItems: 'center',
     justifyContent: 'center',
     width: 290,
@@ -34,6 +33,15 @@ export default StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
     color: colors.dark,
+  },
+  modalButton: {
+    height: 40,
+    width: 120,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+    borderRadius: 6,
+    backgroundColor: colors.darkSkyBlue,
   },
   overlay: {
     position: 'absolute',
