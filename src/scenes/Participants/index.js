@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
   View, Text, TouchableOpacity, FlatList,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { findUsers, unsetUsers } from '../../redux/search/actions';
 import { inviteUsers } from '../../redux/user/actions';
+import { setError, unsetError } from '../../redux/common/actions';
 import Combobox from '../../components/Combobox';
 import colors from '../../global/colors';
 import styles from './styles';
@@ -19,6 +20,7 @@ type Props = {
   findUsers: Function,
   unsetUsers: Function,
   inviteUsers: Function,
+  error?: String,
 };
 
 class Participants extends Component<Props> {
@@ -69,16 +71,21 @@ class Participants extends Component<Props> {
     return foundUsers[index].username;
   };
 
-  handleModal = () => this.setState(({ showModal }) => ({
-    showModal: !showModal,
-    query: '',
-    invitees: [],
-  }));
+  handleModal = () => this.setState(
+    ({ showModal }) => ({
+      showModal: !showModal,
+      query: '',
+      invitees: [],
+    }),
+    () => this.props.error && this.props.unsetError(),
+  );
 
   handleInvite = () => {
-    const { inviteUsers } = this.props;
+    const { inviteUsers, setError } = this.props;
     const { invitees } = this.state;
-    inviteUsers(invitees.map(invitee => invitee.id));
+    invitees.length > 0
+      ? inviteUsers(invitees.map(invitee => invitee.id))
+      : setError('You should choose at least one user to invite');
   };
 
   inputChangeCallback = (value) => {
@@ -120,6 +127,7 @@ class Participants extends Component<Props> {
       foundUsers,
       searching,
       successful,
+      error,
     } = this.props;
     const { query, showModal, invitees } = this.state;
     return (
@@ -137,39 +145,50 @@ class Participants extends Component<Props> {
               >
                 Invite Users
               </Text>
-              <Combobox
-                value={query}
-                options={foundUsers}
-                searching={searching}
-                inputChangeCallback={this.inputChangeCallback}
-                choosePositionCallback={this.choosePositionCallback}
-                clearCallback={this.clearCallback}
-                successful={successful}
-                displayValue="username"
-                customKey="_id"
-              />
-              <View
-                style={{
-                  height: 50,
-                  alignItems: 'center',
-                }}
-              >
-                <Text style={{ color: 'white', fontSize: 16, marginBottom: 5 }}>
-                  Invited Users:
-                </Text>
-                <FlatList
-                  contentContainerStyle={{
-                    flexDirection: 'row',
-                  }}
-                  data={invitees}
-                  renderItem={this.renderInvitees}
-                  keyExtractor={index => index.toString()}
-                />
-              </View>
+              {error ? (
+                <Text>{error}</Text>
+              ) : (
+                <Fragment>
+                  <Combobox
+                    value={query}
+                    options={foundUsers}
+                    searching={searching}
+                    inputChangeCallback={this.inputChangeCallback}
+                    choosePositionCallback={this.choosePositionCallback}
+                    clearCallback={this.clearCallback}
+                    successful={successful}
+                    displayValue="username"
+                    customKey="_id"
+                  />
+                  <View
+                    style={{
+                      height: 50,
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text
+                      style={{ color: 'white', fontSize: 16, marginBottom: 5 }}
+                    >
+                      Invited Users:
+                    </Text>
+                    <FlatList
+                      contentContainerStyle={{
+                        flexDirection: 'row',
+                      }}
+                      data={invitees}
+                      renderItem={this.renderInvitees}
+                      keyExtractor={(index) => {
+                        console.log(index);
+                        return index.toString();
+                      }}
+                    />
+                  </View>
+                </Fragment>
+              )}
               <View
                 style={{
                   flexDirection: 'row',
-                  justifyContent: 'space-between',
+                  justifyContent: 'space-around',
                   width: 250,
                   marginTop: 10,
                 }}
@@ -185,12 +204,14 @@ class Participants extends Component<Props> {
                     Return
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={this.handleInvite}
-                  style={styles.modalButton}
-                >
-                  <Text style={styles.inviteButtonText}>Invite</Text>
-                </TouchableOpacity>
+                {!error && (
+                  <TouchableOpacity
+                    onPress={this.handleInvite}
+                    style={styles.modalButton}
+                  >
+                    <Text style={styles.inviteButtonText}>Invite</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           </View>
@@ -213,6 +234,10 @@ class Participants extends Component<Props> {
   }
 }
 
+Participants.defaultProps = {
+  error: '',
+};
+
 export default connect(
   ({
     user, search, chat: { participants }, common,
@@ -226,5 +251,11 @@ export default connect(
     successful: search.successful,
     error: common.error,
   }),
-  { findUsers, unsetUsers, inviteUsers },
+  {
+    findUsers,
+    unsetUsers,
+    inviteUsers,
+    setError,
+    unsetError,
+  },
 )(Participants);

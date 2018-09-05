@@ -1,3 +1,4 @@
+import { intersection, isEmpty, contains } from 'ramda';
 import {
   call, put, takeEvery, takeLatest, select,
 } from 'redux-saga/effects';
@@ -11,9 +12,13 @@ import {
   inviteUsersToGroupChannel,
 } from '../../services/SendBird';
 import { loginUser, registerUser } from './requests';
-import { currentChannelSelector } from '../selectors';
+import {
+  currentMembersSelector,
+  currentChannelSelector,
+  currentChannelParticipantsIds,
+} from '../selectors';
 import { navigate } from '../../navigation';
-import { ChatsScene } from '../../navigation/scenes';
+import { ChatsScene, ParticipantsScene } from '../../navigation/scenes';
 import * as TYPES from './types';
 import {
   setUser,
@@ -109,10 +114,30 @@ function* createChannelWorker(action) {
 
 export function* inviteUsersWorker(action) {
   try {
+    yield put(toggleLoading());
     const channel = yield select(currentChannelSelector);
-    yield call(inviteUsersToGroupChannel, channel, action.payload);
+    const participantsIds = yield select(currentChannelParticipantsIds);
+    const compared = intersection(action.payload, participantsIds);
+    if (isEmpty(compared)) {
+      yield call(inviteUsersToGroupChannel, channel, action.payload);
+    } else {
+      const members = yield select(currentMembersSelector);
+      const alreadyInChannel = members
+        .filter(member => contains(member.userId, compared))
+        .map(member => member.nickname);
+      yield put(
+        setError(
+          `${alreadyInChannel.join()} ${
+            alreadyInChannel.length > 0 ? 'are' : 'in'
+          } already in channel`,
+        ),
+      );
+    }
+    yield put(toggleLoading());
   } catch (err) {
     console.log(err);
+    yield put(setError(err));
+    yield put(toggleLoading());
   }
 }
 
